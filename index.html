@@ -1600,6 +1600,27 @@ footer::before {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .hero > .container > .hero-grid > * {
   animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) backwards;
 }
@@ -1716,7 +1737,7 @@ footer::before {
   }
 
   /* CASES — carrossel horizontal */
-  .cases-section { padding: 80px 0; }
+  .cases-section { padding: 60px 0; }
 
   .case-image {
     height: 220px !important;
@@ -1735,7 +1756,7 @@ footer::before {
   .cases-cta h3 { font-size: 24px !important; }
 
   /* ROI Calculator — empilhar */
-  .roi-section { padding: 80px 0; }
+  .roi-section { padding: 60px 0; }
 
   .roi-wrapper {
     grid-template-columns: 1fr !important;
@@ -1770,7 +1791,7 @@ footer::before {
   }
 
   /* Pricing — empilhar */
-  .pricing-section { padding: 80px 0; }
+  .pricing-section { padding: 60px 0; }
 
   .pricing-grid {
     grid-template-columns: 1fr !important;
@@ -1796,7 +1817,7 @@ footer::before {
   .custom-content h3 { font-size: 28px !important; }
 
   /* Founder */
-  .founder-section { padding: 80px 0; }
+  .founder-section { padding: 60px 0; }
 
   .founder-wrapper {
     grid-template-columns: 1fr !important;
@@ -1816,7 +1837,7 @@ footer::before {
   .founder-stat-value { font-size: 26px !important; }
 
   /* How */
-  .how-section { padding: 80px 0; }
+  .how-section { padding: 60px 0; }
 
   .how-section h2 {
     font-size: 36px !important;
@@ -1838,7 +1859,7 @@ footer::before {
   }
 
   /* FAQ */
-  .faq-section { padding: 80px 0; }
+  .faq-section { padding: 60px 0; }
 
   .faq-question {
     font-size: 17px !important;
@@ -1855,7 +1876,7 @@ footer::before {
 
   /* Final CTA */
   .final-cta {
-    padding: 90px 0 !important;
+    padding: 70px 0 !important;
   }
 
   .final-cta h2 {
@@ -2651,6 +2672,56 @@ document.querySelectorAll('.faq-item').forEach(item => {
     item.classList.toggle('open');
   });
 });
+
+// Reveal on scroll - apply to main content sections
+(() => {
+  // Skip if user prefers reduced motion
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  // Targets: section headers, key cards, founder content, etc.
+  const selectors = [
+    '.cases-section .section-header',
+    '.cases-section .cases-cta',
+    '.roi-section .section-header',
+    '.roi-section .roi-controls',
+    '.roi-section .roi-result',
+    '.pricing-section .section-header',
+    '.price-card',
+    '.custom-card',
+    '.founder-image',
+    '.founder-content',
+    '.how-section .section-label',
+    '.how-section h2',
+    '.step',
+    '.faq-section .section-header',
+    '.faq-item',
+    '.final-cta-content',
+  ];
+
+  const elements = document.querySelectorAll(selectors.join(','));
+  elements.forEach(el => el.classList.add('reveal'));
+
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: show all immediately
+    elements.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  elements.forEach(el => observer.observe(el));
+})();
 </script>
 
 </body>
