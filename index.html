@@ -2763,5 +2763,305 @@ document.querySelectorAll('.faq-item').forEach(item => {
 })();
 </script>
 
+
+<!-- ============================================================ -->
+<!-- LIA - Atendente IA da landingnow (canto inferior esquerdo) -->
+<!-- ============================================================ -->
+<style>
+  .lia-root {
+    --lia-neon: #C8FF3D;
+    --lia-neon-glow: rgba(200, 255, 61, 0.4);
+    --lia-bg: #0A0A0A;
+    --lia-bg-soft: #131313;
+    --lia-bg-card: #1A1A1A;
+    --lia-line: #2A2A2A;
+    --lia-ink: #FAFAFA;
+    --lia-ink-soft: #B8B8B8;
+    --lia-muted: #6B6B6B;
+    --lia-whatsapp: #25D366;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .lia-bubble {
+    position: fixed; bottom: 24px; left: 24px; z-index: 9998;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 20px 14px 16px;
+    background: var(--lia-neon); color: var(--lia-bg);
+    border: none; border-radius: 100px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: -0.01em;
+    cursor: pointer;
+    box-shadow: 0 8px 32px var(--lia-neon-glow), 0 0 0 1px rgba(200, 255, 61, 0.3);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+    animation: liaBubbleEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both;
+  }
+  .lia-bubble:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 40px var(--lia-neon-glow), 0 0 0 1px rgba(200, 255, 61, 0.5); }
+  .lia-bubble svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .lia-bubble-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: #FF4D6D; border-radius: 50%; border: 2px solid var(--lia-neon); animation: liaPulse 2s infinite; }
+  @keyframes liaBubbleEnter { from { opacity: 0; transform: translateY(20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes liaPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.6; } }
+
+  .lia-window {
+    position: fixed; bottom: 24px; left: 24px; z-index: 9998;
+    width: 380px; max-width: calc(100vw - 32px);
+    height: 580px; max-height: calc(100vh - 48px);
+    background: var(--lia-bg-soft); border: 1px solid var(--lia-line);
+    border-radius: 20px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(200, 255, 61, 0.1);
+    display: none; flex-direction: column; overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+  .lia-window.open { display: flex; animation: liaWindowEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes liaWindowEnter { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  .lia-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: var(--lia-bg); border-bottom: 1px solid var(--lia-line); }
+  .lia-avatar { width: 40px; height: 40px; background: var(--lia-neon); color: var(--lia-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 800; font-size: 18px; box-shadow: 0 0 20px var(--lia-neon-glow); }
+  .lia-header-text { flex: 1; line-height: 1.2; color: var(--lia-ink); }
+  .lia-header-text strong { display: block; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .lia-header-text span { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--lia-ink-soft); margin-top: 3px; font-weight: 500; }
+  .lia-status-dot { width: 8px; height: 8px; background: var(--lia-neon); border-radius: 50%; box-shadow: 0 0 8px var(--lia-neon); animation: liaStatus 2s infinite; }
+  @keyframes liaStatus { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .lia-close { width: 32px; height: 32px; background: var(--lia-bg-card); border: 1px solid var(--lia-line); border-radius: 50%; color: var(--lia-ink-soft); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; padding: 0; }
+  .lia-close:hover { background: var(--lia-line); color: var(--lia-ink); }
+  .lia-close svg { width: 14px; height: 14px; }
+
+  .lia-messages { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; background: var(--lia-bg-soft); scroll-behavior: smooth; }
+  .lia-messages::-webkit-scrollbar { width: 6px; }
+  .lia-messages::-webkit-scrollbar-track { background: transparent; }
+  .lia-messages::-webkit-scrollbar-thumb { background: var(--lia-line); border-radius: 3px; }
+
+  .lia-msg { display: flex; max-width: 85%; animation: liaMsgEnter 0.3s ease-out; }
+  @keyframes liaMsgEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .lia-msg-user { align-self: flex-end; }
+  .lia-msg-bot { align-self: flex-start; }
+  .lia-msg-bubble { padding: 11px 15px; border-radius: 16px; font-size: 14px; line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; font-weight: 400; }
+  .lia-msg-user .lia-msg-bubble { background: var(--lia-neon); color: var(--lia-bg); border-bottom-right-radius: 4px; font-weight: 500; }
+  .lia-msg-bot .lia-msg-bubble { background: var(--lia-bg-card); color: var(--lia-ink); border: 1px solid var(--lia-line); border-bottom-left-radius: 4px; }
+  .lia-msg-bot .lia-msg-bubble a { color: var(--lia-neon); text-decoration: underline; }
+  .lia-link-wpp { display: inline-flex; align-items: center; gap: 6px; background: var(--lia-whatsapp); color: white !important; padding: 8px 14px; border-radius: 10px; font-weight: 600; font-size: 13px; text-decoration: none !important; margin-top: 6px; transition: transform 0.2s; }
+  .lia-link-wpp:hover { transform: translateY(-1px); }
+  .lia-link-wpp svg { width: 14px; height: 14px; fill: currentColor; }
+
+  .lia-typing { display: inline-flex; gap: 4px; padding: 14px 16px; align-items: center; }
+  .lia-typing span { width: 7px; height: 7px; background: var(--lia-muted); border-radius: 50%; animation: liaTyping 1.4s infinite ease-in-out; }
+  .lia-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .lia-typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes liaTyping { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-6px); opacity: 1; } }
+
+  .lia-limit-warning { background: rgba(255, 77, 109, 0.1); border: 1px solid rgba(255, 77, 109, 0.3); border-radius: 12px; padding: 14px; font-size: 13px; color: var(--lia-ink-soft); line-height: 1.5; margin-top: 8px; text-align: center; }
+  .lia-limit-warning strong { color: var(--lia-ink); }
+
+  .lia-input-area { display: flex; gap: 8px; padding: 14px; background: var(--lia-bg); border-top: 1px solid var(--lia-line); }
+  .lia-input-area input { flex: 1; padding: 11px 14px; background: var(--lia-bg-card); border: 1px solid var(--lia-line); border-radius: 100px; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; color: var(--lia-ink); transition: all 0.2s; }
+  .lia-input-area input::placeholder { color: var(--lia-muted); }
+  .lia-input-area input:focus { border-color: var(--lia-neon); box-shadow: 0 0 0 3px rgba(200, 255, 61, 0.15); }
+  .lia-input-area input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .lia-send { width: 42px; height: 42px; background: var(--lia-neon); border: none; border-radius: 50%; color: var(--lia-bg); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; box-shadow: 0 4px 16px var(--lia-neon-glow); padding: 0; }
+  .lia-send:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 6px 20px var(--lia-neon-glow); }
+  .lia-send:disabled { opacity: 0.3; cursor: not-allowed; transform: none; box-shadow: none; }
+  .lia-send svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+
+  .lia-footer { padding: 8px 14px 12px; font-size: 10px; text-align: center; color: var(--lia-muted); background: var(--lia-bg); border-top: 1px solid var(--lia-line); letter-spacing: 0.02em; }
+
+  @media (max-width: 480px) {
+    .lia-window { bottom: 0; left: 0; right: 0; width: 100%; max-width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; border: none; }
+    .lia-bubble { bottom: 16px; left: 16px; padding: 12px 18px 12px 14px; font-size: 13px; }
+  }
+</style>
+
+<div class="lia-root" id="liaRoot">
+  <button class="lia-bubble" id="liaBubble" aria-label="Abrir chat com a Lia">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <span>Pergunte à Lia</span>
+    <span class="lia-bubble-dot" id="liaBubbleDot"></span>
+  </button>
+
+  <div class="lia-window" id="liaWindow" role="dialog" aria-label="Chat com a Lia">
+    <div class="lia-header">
+      <div class="lia-avatar">L</div>
+      <div class="lia-header-text">
+        <strong>Lia</strong>
+        <span><span class="lia-status-dot"></span> Atendimento landingnow · IA</span>
+      </div>
+      <button class="lia-close" id="liaClose" aria-label="Fechar chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="lia-messages" id="liaMessages"></div>
+
+    <div class="lia-input-area">
+      <input type="text" id="liaInput" placeholder="Pergunte qualquer coisa sobre as landings..." maxlength="500" autocomplete="off">
+      <button class="lia-send" id="liaSend" aria-label="Enviar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+
+    <div class="lia-footer">Powered by IA · Atendimento landingnow</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const MAX_USER_MESSAGES = 12;
+  const WHATSAPP_URL = 'https://wa.me/5561985970300';
+  const WPP_SVG = '<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>';
+
+  const bubble = document.getElementById('liaBubble');
+  const bubbleDot = document.getElementById('liaBubbleDot');
+  const windowEl = document.getElementById('liaWindow');
+  const closeBtn = document.getElementById('liaClose');
+  const messagesEl = document.getElementById('liaMessages');
+  const input = document.getElementById('liaInput');
+  const sendBtn = document.getElementById('liaSend');
+
+  let messages = [];
+  let loading = false;
+  let userMessageCount = 0;
+
+  const greeting = 'Oi! Sou a Lia, atendimento virtual da landingnow ✨ Posso te ajudar com dúvidas sobre planos, prazos ou recomendar a opção ideal pro seu negócio. O que você quer saber?';
+
+  function renderMessage(role, content) {
+    const div = document.createElement('div');
+    div.className = 'lia-msg lia-msg-' + (role === 'user' ? 'user' : 'bot');
+    const bubbleEl = document.createElement('div');
+    bubbleEl.className = 'lia-msg-bubble';
+
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = content.split(urlRegex);
+
+    parts.forEach(part => {
+      if (urlRegex.test(part)) {
+        if (part.includes('wa.me')) {
+          const a = document.createElement('a');
+          a.href = part;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.className = 'lia-link-wpp';
+          a.innerHTML = WPP_SVG + ' Abrir WhatsApp';
+          bubbleEl.appendChild(a);
+        } else {
+          const a = document.createElement('a');
+          a.href = part;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = part;
+          bubbleEl.appendChild(a);
+        }
+      } else if (part) {
+        bubbleEl.appendChild(document.createTextNode(part));
+      }
+    });
+
+    div.appendChild(bubbleEl);
+    messagesEl.appendChild(div);
+    scrollToBottom();
+  }
+
+  function renderTyping() {
+    const div = document.createElement('div');
+    div.className = 'lia-msg lia-msg-bot';
+    div.id = 'liaTyping';
+    div.innerHTML = '<div class="lia-msg-bubble lia-typing"><span></span><span></span><span></span></div>';
+    messagesEl.appendChild(div);
+    scrollToBottom();
+  }
+
+  function removeTyping() {
+    const el = document.getElementById('liaTyping');
+    if (el) el.remove();
+  }
+
+  function scrollToBottom() { messagesEl.scrollTop = messagesEl.scrollHeight; }
+
+  function showLimitWarning() {
+    const div = document.createElement('div');
+    div.className = 'lia-limit-warning';
+    const link = '<a href="' + WHATSAPP_URL + '?text=Ol%C3%A1!%20Conversei%20com%20a%20Lia%20e%20quero%20continuar%20com%20voc%C3%AA" target="_blank" rel="noopener noreferrer" class="lia-link-wpp" style="margin-top: 10px;">' + WPP_SVG + ' Abrir WhatsApp</a>';
+    div.innerHTML = '<strong>Limite de mensagens atingido.</strong><br>Continua direto com o Welber:<br>' + link;
+    messagesEl.appendChild(div);
+    scrollToBottom();
+    input.disabled = true;
+    sendBtn.disabled = true;
+    input.placeholder = 'Limite atingido — fale com o Welber';
+  }
+
+  async function sendMessage() {
+    const trimmed = input.value.trim();
+    if (!trimmed || loading || userMessageCount >= MAX_USER_MESSAGES) return;
+
+    messages.push({ role: 'user', content: trimmed });
+    renderMessage('user', trimmed);
+    userMessageCount++;
+    input.value = '';
+    loading = true;
+    sendBtn.disabled = true;
+    input.disabled = true;
+
+    renderTyping();
+
+    try {
+      const res = await fetch('/api/lia', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: messages })
+      });
+
+      const data = await res.json();
+      removeTyping();
+
+      if (!res.ok) {
+        const errorMsg = data.error || 'Algo deu errado. Tenta de novo ou fala com o Welber: ' + WHATSAPP_URL;
+        messages.push({ role: 'assistant', content: errorMsg });
+        renderMessage('assistant', errorMsg);
+      } else {
+        messages.push({ role: 'assistant', content: data.reply });
+        renderMessage('assistant', data.reply);
+      }
+    } catch (e) {
+      removeTyping();
+      const errorMsg = 'Não consegui conectar agora. Fala direto com o Welber: ' + WHATSAPP_URL;
+      messages.push({ role: 'assistant', content: errorMsg });
+      renderMessage('assistant', errorMsg);
+    } finally {
+      loading = false;
+      if (userMessageCount >= MAX_USER_MESSAGES) {
+        showLimitWarning();
+      } else {
+        sendBtn.disabled = false;
+        input.disabled = false;
+        input.focus();
+      }
+    }
+  }
+
+  bubble.addEventListener('click', function() {
+    bubble.style.display = 'none';
+    windowEl.classList.add('open');
+    if (messages.length === 0) {
+      messages.push({ role: 'assistant', content: greeting });
+      renderMessage('assistant', greeting);
+    }
+    setTimeout(function() { input.focus(); }, 300);
+  });
+
+  closeBtn.addEventListener('click', function() {
+    windowEl.classList.remove('open');
+    bubble.style.display = 'inline-flex';
+    bubbleDot.style.display = 'none';
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+})();
+</script>
+<!-- FIM LIA -->
+
+
 </body>
 </html>
