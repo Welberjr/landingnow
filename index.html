@@ -1939,15 +1939,6 @@ footer::before {
     font-size: 12px !important;
   }
 
-  /* WhatsApp float — menor pra não atrapalhar */
-  .wa-float {
-    width: 50px !important;
-    height: 50px !important;
-    bottom: 16px !important;
-    right: 16px !important;
-  }
-
-  .wa-float svg { width: 24px !important; height: 24px !important; }
 }
 
 /* Telas muito pequenas (até 380px) */
@@ -1959,23 +1950,6 @@ footer::before {
   .float-card { font-size: 11px !important; padding: 9px 12px !important; }
   .container { padding: 0 16px; }
 }
-
-/* WHATSAPP FLOAT */
-.wa-float {
-  position: fixed;
-  bottom: 24px; right: 24px;
-  width: 60px; height: 60px;
-  background: var(--whatsapp);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 32px rgba(37,211,102,0.4);
-  z-index: 99;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-.wa-float:hover { transform: scale(1.08); }
-.wa-float svg { width: 30px; height: 30px; fill: white; }
 
 </style>
 </head>
@@ -2575,9 +2549,7 @@ footer::before {
   </div>
 </footer>
 
-<a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20minha%20landing%20page" class="wa-float" target="_blank">
-  <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-</a>
+<!-- wa-float removido: Lia agora ocupa o canto direito -->
 
 <script>
 // ROI CALCULATOR
@@ -2782,7 +2754,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
   .lia-bubble {
-    position: fixed; bottom: 24px; left: 24px; z-index: 9998;
+    position: fixed; bottom: 24px; right: 24px; z-index: 9998;
     display: inline-flex; align-items: center; gap: 10px;
     padding: 14px 20px 14px 16px;
     background: var(--lia-neon); color: var(--lia-bg);
@@ -2800,7 +2772,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
   @keyframes liaPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.6; } }
 
   .lia-window {
-    position: fixed; bottom: 24px; left: 24px; z-index: 9998;
+    position: fixed; bottom: 24px; right: 24px; z-index: 9998;
     width: 380px; max-width: calc(100vw - 32px);
     height: 580px; max-height: calc(100vh - 48px);
     background: var(--lia-bg-soft); border: 1px solid var(--lia-line);
@@ -2870,7 +2842,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
 
   @media (max-width: 480px) {
     .lia-window { bottom: 0; left: 0; right: 0; width: 100%; max-width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; border: none; }
-    .lia-bubble { bottom: 16px; left: 16px; padding: 12px 18px 12px 14px; font-size: 13px; }
+    .lia-bubble { bottom: 16px; right: 16px; padding: 12px 18px 12px 14px; font-size: 13px; }
   }
 </style>
 
