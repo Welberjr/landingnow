@@ -2784,7 +2784,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
   .lia-window.open { display: flex; animation: liaWindowEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
   @keyframes liaWindowEnter { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-  .lia-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: var(--lia-bg); border-bottom: 1px solid var(--lia-line); }
+  .lia-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: var(--lia-bg); border-bottom: 1px solid var(--lia-line); position: relative; z-index: 5; flex-shrink: 0; }
   .lia-avatar { width: 40px; height: 40px; background: var(--lia-neon); color: var(--lia-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 800; font-size: 18px; box-shadow: 0 0 20px var(--lia-neon-glow); }
   .lia-header-text { flex: 1; line-height: 1.2; color: var(--lia-ink); }
   .lia-header-text strong { display: block; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
@@ -2833,7 +2833,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
   .lia-limit-warning { background: rgba(255, 77, 109, 0.1); border: 1px solid rgba(255, 77, 109, 0.3); border-radius: 12px; padding: 14px; font-size: 13px; color: var(--lia-ink-soft); line-height: 1.5; margin-top: 8px; text-align: center; }
   .lia-limit-warning strong { color: var(--lia-ink); }
 
-  .lia-input-area { display: flex; gap: 8px; padding: 14px; background: var(--lia-bg); border-top: 1px solid var(--lia-line); }
+  .lia-input-area { display: flex; gap: 8px; padding: 14px; background: var(--lia-bg); border-top: 1px solid var(--lia-line); flex-shrink: 0; }
   .lia-input-area input { flex: 1; padding: 11px 14px; background: var(--lia-bg-card); border: 1px solid var(--lia-line); border-radius: 100px; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; color: var(--lia-ink); transition: all 0.2s; }
   .lia-input-area input::placeholder { color: var(--lia-muted); }
   .lia-input-area input:focus { border-color: var(--lia-neon); box-shadow: 0 0 0 3px rgba(200, 255, 61, 0.15); }
@@ -2847,9 +2847,14 @@ document.querySelectorAll('.faq-item').forEach(item => {
   .lia-footer { padding: 8px 14px 12px; font-size: 10px; text-align: center; color: var(--lia-muted); background: var(--lia-bg); border-top: 1px solid var(--lia-line); letter-spacing: 0.02em; }
 
   @media (max-width: 480px) {
-    .lia-window { bottom: 0; left: 0; right: 0; width: 100%; max-width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; border: none; }
+    .lia-window { bottom: 0; left: 0; right: 0; width: 100%; max-width: 100%; height: 100dvh; max-height: 100dvh; border-radius: 0; border: none; }
     .lia-bubble { bottom: 16px; right: 16px; padding: 12px 18px 12px 14px; font-size: 13px; }
+    .lia-header { padding: 14px 16px; position: sticky; top: 0; z-index: 10; }
+    .lia-close { width: 38px; height: 38px; flex-shrink: 0; }
+    .lia-close svg { width: 16px; height: 16px; }
+    .lia-window.open ~ * { /* placeholder */ }
   }
+  body.lia-open-mobile { overflow: hidden; position: fixed; width: 100%; }
 </style>
 
 <div class="lia-root" id="liaRoot">
@@ -3108,20 +3113,42 @@ document.querySelectorAll('.faq-item').forEach(item => {
     }
   }
 
+  function isMobile() { return window.matchMedia('(max-width: 480px)').matches; }
+  let savedScrollY = 0;
+
   bubble.addEventListener('click', function() {
     bubble.style.display = 'none';
     windowEl.classList.add('open');
+    if (isMobile()) {
+      savedScrollY = window.scrollY;
+      document.body.style.top = '-' + savedScrollY + 'px';
+      document.body.classList.add('lia-open-mobile');
+    }
     if (messages.length === 0) {
       messages.push({ role: 'assistant', content: greeting });
       renderMessage('assistant', greeting);
     }
-    setTimeout(function() { input.focus(); }, 300);
+    setTimeout(function() { input.focus({ preventScroll: true }); }, 300);
   });
 
-  closeBtn.addEventListener('click', function() {
+  function closeChat() {
     windowEl.classList.remove('open');
     bubble.style.display = 'inline-flex';
     bubbleDot.style.display = 'none';
+    if (document.body.classList.contains('lia-open-mobile')) {
+      document.body.classList.remove('lia-open-mobile');
+      document.body.style.top = '';
+      window.scrollTo(0, savedScrollY);
+    }
+  }
+
+  closeBtn.addEventListener('click', closeChat);
+
+  // Permite fechar com tecla Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && windowEl.classList.contains('open')) {
+      closeChat();
+    }
   });
 
   sendBtn.addEventListener('click', sendMessage);
