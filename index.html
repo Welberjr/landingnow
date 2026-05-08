@@ -2824,6 +2824,12 @@ document.querySelectorAll('.faq-item').forEach(item => {
   .lia-typing span:nth-child(3) { animation-delay: 0.4s; }
   @keyframes liaTyping { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-6px); opacity: 1; } }
 
+  .lia-lead-card { display: flex; flex-direction: column; gap: 8px; background: linear-gradient(135deg, rgba(37,211,102,0.12) 0%, rgba(37,211,102,0.04) 100%); border: 1px solid rgba(37,211,102,0.35); border-radius: 14px; padding: 14px; margin-top: 4px; animation: liaMsgEnter 0.4s ease-out; }
+  .lia-lead-card-title { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--lia-ink); font-weight: 600; letter-spacing: -0.005em; }
+  .lia-lead-card-title-dot { width: 8px; height: 8px; background: var(--lia-whatsapp); border-radius: 50%; box-shadow: 0 0 8px var(--lia-whatsapp); animation: liaStatus 1.6s infinite; flex-shrink: 0; }
+  .lia-lead-card-sub { font-size: 12px; color: var(--lia-ink-soft); line-height: 1.5; }
+  .lia-lead-card .lia-link-wpp { margin-top: 4px; padding: 11px 16px; font-size: 14px; justify-content: center; }
+
   .lia-limit-warning { background: rgba(255, 77, 109, 0.1); border: 1px solid rgba(255, 77, 109, 0.3); border-radius: 12px; padding: 14px; font-size: 13px; color: var(--lia-ink-soft); line-height: 1.5; margin-top: 8px; text-align: center; }
   .lia-limit-warning strong { color: var(--lia-ink); }
 
@@ -2983,6 +2989,42 @@ document.querySelectorAll('.faq-item').forEach(item => {
     scrollToBottom();
   }
 
+  function renderLeadCard(waLink, leadName) {
+    const div = document.createElement('div');
+    div.className = 'lia-msg lia-msg-bot';
+    div.style.maxWidth = '95%';
+
+    const card = document.createElement('div');
+    card.className = 'lia-lead-card';
+
+    const title = document.createElement('div');
+    title.className = 'lia-lead-card-title';
+    const dot = document.createElement('span');
+    dot.className = 'lia-lead-card-title-dot';
+    title.appendChild(dot);
+    const titleText = document.createElement('span');
+    titleText.textContent = leadName ? ('Pronto, ' + leadName + '! Bora falar com o Welber.') : 'Pronto! Bora falar com o Welber.';
+    title.appendChild(titleText);
+
+    const sub = document.createElement('div');
+    sub.className = 'lia-lead-card-sub';
+    sub.textContent = 'Toca no botao abaixo. Ja vai abrir o WhatsApp com a mensagem pronta, sem precisar reescrever nada.';
+
+    const link = document.createElement('a');
+    link.href = waLink;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'lia-link-wpp';
+    link.innerHTML = WPP_SVG + ' Abrir WhatsApp com mensagem pronta';
+
+    card.appendChild(title);
+    card.appendChild(sub);
+    card.appendChild(link);
+    div.appendChild(card);
+    messagesEl.appendChild(div);
+    scrollToBottom();
+  }
+
   function renderTyping() {
     const div = document.createElement('div');
     div.className = 'lia-msg lia-msg-bot';
@@ -3040,8 +3082,14 @@ document.querySelectorAll('.faq-item').forEach(item => {
         messages.push({ role: 'assistant', content: errorMsg });
         renderMessage('assistant', errorMsg);
       } else {
-        messages.push({ role: 'assistant', content: data.reply });
-        renderMessage('assistant', data.reply);
+        if (data.reply) {
+          messages.push({ role: 'assistant', content: data.reply });
+          renderMessage('assistant', data.reply);
+        }
+        if (data.waLink) {
+          const leadName = (data.lead && data.lead.nome) ? data.lead.nome.split(' ')[0] : '';
+          renderLeadCard(data.waLink, leadName);
+        }
       }
     } catch (e) {
       removeTyping();
