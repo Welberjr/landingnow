@@ -2836,6 +2836,12 @@ document.querySelectorAll('.faq-item').forEach(item => {
   .lia-msg-user .lia-msg-bubble { background: var(--lia-neon); color: var(--lia-bg); border-bottom-right-radius: 4px; font-weight: 500; }
   .lia-msg-bot .lia-msg-bubble { background: var(--lia-bg-card); color: var(--lia-ink); border: 1px solid var(--lia-line); border-bottom-left-radius: 4px; }
   .lia-msg-bot .lia-msg-bubble a { color: var(--lia-neon); text-decoration: underline; }
+  .lia-msg-bot .lia-msg-bubble strong { color: var(--lia-ink); font-weight: 700; letter-spacing: -0.005em; }
+  .lia-plan-chip { display: inline-flex; align-items: center; padding: 2px 9px; margin: 0 2px; background: var(--lia-neon); color: var(--lia-bg); border-radius: 100px; font-size: 11.5px; font-weight: 800; letter-spacing: 0.05em; vertical-align: 1px; box-shadow: 0 2px 8px rgba(200, 255, 61, 0.25); }
+  .lia-plan-chip.start { background: #B8B8B8; box-shadow: 0 2px 8px rgba(184, 184, 184, 0.25); }
+  .lia-plan-chip.pro { background: var(--lia-neon); }
+  .lia-plan-chip.premium { background: linear-gradient(135deg, #C8FF3D 0%, #87E600 100%); }
+  .lia-price { display: inline-block; padding: 1px 7px; margin-left: 2px; background: rgba(200, 255, 61, 0.14); color: var(--lia-neon); border-radius: 6px; font-size: 12.5px; font-weight: 700; letter-spacing: -0.005em; white-space: nowrap; }
   .lia-link-wpp { display: inline-flex; align-items: center; gap: 6px; background: var(--lia-whatsapp); color: white !important; padding: 8px 14px; border-radius: 10px; font-weight: 600; font-size: 13px; text-decoration: none !important; margin-top: 6px; transition: transform 0.2s; }
   .lia-link-wpp:hover { transform: translateY(-1px); }
   .lia-link-wpp svg { width: 14px; height: 14px; fill: currentColor; }
@@ -2920,11 +2926,59 @@ document.querySelectorAll('.faq-item').forEach(item => {
 
   const greeting = 'Oi! Sou a Lia, atendimento virtual da landingnow ✨ Posso te ajudar com dúvidas sobre planos, prazos ou recomendar a opção ideal pro seu negócio. O que você quer saber?';
 
+  function makePlanChip(name) {
+    const span = document.createElement('span');
+    const lower = name.toLowerCase();
+    span.className = 'lia-plan-chip ' + (lower === 'start' ? 'start' : lower === 'pro' ? 'pro' : 'premium');
+    span.textContent = name;
+    return span;
+  }
+
+  function makePriceTag(text) {
+    const span = document.createElement('span');
+    span.className = 'lia-price';
+    span.textContent = text;
+    return span;
+  }
+
+  function appendRichText(parent, text) {
+    if (!text) return;
+    const richRegex = /(?:\b(START|PRO|PREMIUM)\b)|(R\$\s?[\d.]+(?:,\d{2})?)|\*\*([^*]+?)\*\*/g;
+    let lastIdx = 0;
+    let m;
+    while ((m = richRegex.exec(text)) !== null) {
+      if (m.index > lastIdx) {
+        parent.appendChild(document.createTextNode(text.slice(lastIdx, m.index)));
+      }
+      if (m[1]) {
+        parent.appendChild(makePlanChip(m[1]));
+      } else if (m[2]) {
+        parent.appendChild(makePriceTag(m[2]));
+      } else if (m[3]) {
+        const strong = document.createElement('strong');
+        strong.textContent = m[3];
+        parent.appendChild(strong);
+      }
+      lastIdx = richRegex.lastIndex;
+    }
+    if (lastIdx < text.length) {
+      parent.appendChild(document.createTextNode(text.slice(lastIdx)));
+    }
+  }
+
   function renderMessage(role, content) {
     const div = document.createElement('div');
     div.className = 'lia-msg lia-msg-' + (role === 'user' ? 'user' : 'bot');
     const bubbleEl = document.createElement('div');
     bubbleEl.className = 'lia-msg-bubble';
+
+    if (role === 'user') {
+      bubbleEl.appendChild(document.createTextNode(content));
+      div.appendChild(bubbleEl);
+      messagesEl.appendChild(div);
+      scrollToBottom();
+      return;
+    }
 
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const parts = content.split(urlRegex);
@@ -2948,7 +3002,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
           bubbleEl.appendChild(a);
         }
       } else if (part) {
-        bubbleEl.appendChild(document.createTextNode(part));
+        appendRichText(bubbleEl, part);
       }
     });
 
