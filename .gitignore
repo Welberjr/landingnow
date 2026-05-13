@@ -1,1 +1,5 @@
 *.bak
+
+cases-original-png-backup/
+apply-lia-v*.py
+*.bak

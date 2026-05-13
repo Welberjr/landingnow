@@ -8,6 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -1983,6 +1984,7 @@ footer::before {
   </div>
 </nav>
 
+<main id="main">
 <!-- HERO -->
 <section class="hero">
   <div class="container">
@@ -2073,7 +2075,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-auge.png" alt="Auge Detailer">
+          <img src="cases/case-auge.webp" alt="Auge Detailer" width="800" height="6219" decoding="async" fetchpriority="high">
         </div>
         <div class="case-meta">
           <div class="case-tag">Estética automotiva</div>
@@ -2084,7 +2086,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-cafelumiere.png" alt="Café Lumière">
+          <img src="cases/case-cafelumiere.webp" alt="Café Lumière" width="800" height="2415" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Cafeteria</div>
@@ -2095,7 +2097,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-sakura.png" alt="Sakura Prime">
+          <img src="cases/case-sakura.webp" alt="Sakura Prime" width="800" height="2997" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Restaurante</div>
@@ -2106,7 +2108,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-dratarma.png" alt="Dra. Tarma Keullin">
+          <img src="cases/case-dratarma.webp" alt="Dra. Tarma Keullin" width="800" height="1979" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Saúde</div>
@@ -2117,7 +2119,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-mra.png" alt="MedResumos Academy">
+          <img src="cases/case-mra.webp" alt="MedResumos Academy" width="800" height="5271" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Educação médica</div>
@@ -2128,7 +2130,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-afya.png" alt="Afya Atlas">
+          <img src="cases/case-afya.webp" alt="Afya Atlas" width="800" height="5207" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Educação médica</div>
@@ -2139,7 +2141,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-tafelite.png" alt="TAF Elite">
+          <img src="cases/case-tafelite.webp" alt="TAF Elite" width="800" height="2555" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Preparação militar</div>
@@ -2150,7 +2152,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-velar.png" alt="Velar Barber Club">
+          <img src="cases/case-velar.webp" alt="Velar Barber Club" width="800" height="1483" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">SaaS · Barbearias</div>
@@ -2186,13 +2188,13 @@ footer::before {
         <p class="sub">// resultados em tempo real</p>
 
         <div class="field-group">
-          <label>Nome do seu negócio</label>
+          <label for="bizName">Nome do seu negócio</label>
           <input type="text" id="bizName" value="Doce Encanto" maxlength="30">
         </div>
 
         <div class="field-group">
-          <label>Segmento</label>
-          <div class="niche-list" id="nicheList">
+          <label id="nicheLabel">Segmento</label>
+          <div class="niche-list" id="nicheList" role="group" aria-labelledby="nicheLabel">
             <button class="niche-btn active" data-niche="confeitaria">🍰 Confeitaria</button>
             <button class="niche-btn" data-niche="clinica">🩺 Clínica</button>
             <button class="niche-btn" data-niche="estetica">💆 Estética</button>
@@ -2200,17 +2202,17 @@ footer::before {
             <button class="niche-btn" data-niche="automotiva">🚗 Estética Automotiva</button>
             <button class="niche-btn" data-niche="outro">✨ Outro nicho</button>
           </div>
-          <input type="text" id="customNiche" placeholder="Ex: Pet shop, Advocacia, Marketing..." maxlength="40" style="display:none; margin-top: 8px; width: 100%; padding: 13px 16px; border: 1px solid var(--line); border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink);">
+          <input type="text" id="customNiche" aria-label="Especifique outro nicho" placeholder="Ex: Pet shop, Advocacia, Marketing..." maxlength="40" style="display:none; margin-top: 8px; width: 100%; padding: 13px 16px; border: 1px solid var(--line); border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink);">
         </div>
 
         <div class="field-group">
-          <label>Ticket médio (R$)</label>
+          <label for="ticket">Ticket médio (R$)</label>
           <input type="number" id="ticket" value="120" min="10" max="50000">
           <div class="field-hint" id="ticketHint"></div>
         </div>
 
         <div class="field-group">
-          <label>Meta mensal de faturamento (R$)</label>
+          <label for="goal">Meta mensal de faturamento (R$)</label>
           <input type="number" id="goal" value="10000" min="500" max="1000000">
           <div class="field-hint" id="goalHint"></div>
         </div>
@@ -2351,7 +2353,7 @@ footer::before {
   <div class="container">
     <div class="founder-wrapper">
       <div class="founder-image">
-        <img src="welber.jpeg" alt="Welber Júnior, Fundador da landingnow.">
+        <img src="welber.webp" alt="Welber Júnior, Fundador da landingnow." width="600" height="600" decoding="async" loading="lazy">
         <div class="founder-badge">⚡ FOUNDER</div>
         <div class="founder-tag">
           <span class="founder-tag-dot"></span>
@@ -2497,6 +2499,8 @@ footer::before {
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- FOOTER -->
 <footer>
