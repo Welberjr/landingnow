@@ -8,8 +8,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
 <style>
 :root {
@@ -19,7 +19,7 @@
   --line: #2A2A2A;
   --ink: #FAFAFA;
   --ink-soft: #B8B8B8;
-  --muted: #6B6B6B;
+  --muted: #A0A0A0;
   --neon: #C8FF3D;
   --neon-soft: rgba(200, 255, 61, 0.15);
   --neon-glow: rgba(200, 255, 61, 0.4);
@@ -110,6 +110,7 @@ nav {
 .nav-links a {
   color: var(--ink-soft); text-decoration: none;
   font-size: 14px; font-weight: 400;
+  padding: 10px 4px;
   transition: color 0.2s;
 }
 
@@ -117,7 +118,7 @@ nav {
 
 .nav-cta {
   background: var(--neon); color: var(--bg) !important;
-  padding: 10px 20px; border-radius: 100px;
+  padding: 14px 22px !important; border-radius: 100px;
   font-weight: 600 !important;
   transition: all 0.3s;
 }
@@ -235,7 +236,7 @@ nav {
 }
 
 .btn-primary {
-  background: var(--whatsapp); color: white;
+  background: var(--whatsapp); color: var(--bg);
   padding: 17px 28px;
   border-radius: 100px;
   text-decoration: none;
@@ -251,7 +252,7 @@ nav {
   box-shadow: 0 16px 40px rgba(37, 211, 102, 0.5);
 }
 
-.btn-primary svg { width: 18px; height: 18px; fill: white; }
+.btn-primary svg { width: 18px; height: 18px; fill: var(--bg); }
 
 .btn-neon {
   background: var(--neon); color: var(--bg);
@@ -1634,7 +1635,7 @@ footer::before {
   align-items: center;
   gap: 10px;
   background: var(--whatsapp);
-  color: white;
+  color: var(--bg);
   padding: 16px 28px;
   border-radius: 100px;
   text-decoration: none;
@@ -1651,7 +1652,7 @@ footer::before {
 .footer-cta-btn svg {
   width: 18px;
   height: 18px;
-  fill: white;
+  fill: var(--bg);
 }
 
 .footer-grid {
@@ -1670,7 +1671,7 @@ footer::before {
     grid-column: 1 / -1;
     margin-bottom: 12px;
   }
-  .footer-col h4 {
+  .footer-col h3 {
     font-size: 10px !important;
     margin-bottom: 14px !important;
     letter-spacing: 0.1em !important;
@@ -1723,7 +1724,7 @@ footer::before {
   fill: currentColor;
 }
 
-.footer-col h4 {
+.footer-col h3 {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   text-transform: uppercase;
@@ -1733,10 +1734,12 @@ footer::before {
 }
 
 .footer-col a {
-  display: block;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
   color: var(--ink-soft);
   text-decoration: none;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
   font-size: 14px;
   transition: all 0.2s;
 }
@@ -2097,7 +2100,7 @@ footer::before {
     margin-bottom: 16px;
   }
 
-  .footer-col h4 {
+  .footer-col h3 {
     font-size: 10px !important;
     margin-bottom: 12px !important;
     letter-spacing: 0.08em !important;
@@ -2251,7 +2254,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-auge.webp" alt="Auge Detailer" width="800" height="6219" decoding="async" fetchpriority="high">
+          <img src="cases/case-auge.webp" alt="Auge Detailer" width="600" height="4664" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Estética automotiva</div>
@@ -2262,7 +2265,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-cafelumiere.webp" alt="Café Lumière" width="800" height="2415" decoding="async" loading="lazy">
+          <img src="cases/case-cafelumiere.webp" alt="Café Lumière" width="600" height="1811" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Cafeteria</div>
@@ -2273,7 +2276,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-sakura.webp" alt="Sakura Prime" width="800" height="2997" decoding="async" loading="lazy">
+          <img src="cases/case-sakura.webp" alt="Sakura Prime" width="600" height="2248" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Restaurante</div>
@@ -2284,7 +2287,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-dratarma.webp" alt="Dra. Tarma Keullin" width="800" height="1979" decoding="async" loading="lazy">
+          <img src="cases/case-dratarma.webp" alt="Dra. Tarma Keullin" width="600" height="1484" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Saúde</div>
@@ -2295,7 +2298,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-mra.webp" alt="MedResumos Academy" width="800" height="5271" decoding="async" loading="lazy">
+          <img src="cases/case-mra.webp" alt="MedResumos Academy" width="600" height="3953" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Educação médica</div>
@@ -2306,7 +2309,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-afya.webp" alt="Afya Atlas" width="800" height="5207" decoding="async" loading="lazy">
+          <img src="cases/case-afya.webp" alt="Afya Atlas" width="600" height="3905" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Educação médica</div>
@@ -2317,7 +2320,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-tafelite.webp" alt="TAF Elite" width="800" height="2555" decoding="async" loading="lazy">
+          <img src="cases/case-tafelite.webp" alt="TAF Elite" width="600" height="1916" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">Preparação militar</div>
@@ -2328,7 +2331,7 @@ footer::before {
 
       <div class="case-card">
         <div class="case-image">
-          <img src="cases/case-velar.webp" alt="Velar Barber Club" width="800" height="1483" decoding="async" loading="lazy">
+          <img src="cases/case-velar.webp" alt="Velar Barber Club" width="600" height="1112" decoding="async" loading="lazy">
         </div>
         <div class="case-meta">
           <div class="case-tag">SaaS · Barbearias</div>
@@ -2529,7 +2532,7 @@ footer::before {
 </section>
 
 <!-- PLAN DETAILS MODAL -->
-<div class="plan-modal-overlay" id="planModal" aria-hidden="true">
+<div class="plan-modal-overlay" id="planModal" inert>
   <div class="plan-modal" role="dialog" aria-modal="true" aria-labelledby="planModalTitle">
     <button type="button" class="plan-modal-close" id="planModalClose" aria-label="Fechar">&times;</button>
     <div class="plan-modal-name" id="planModalName"></div>
@@ -2740,20 +2743,20 @@ footer::before {
         </div>
       </div>
       <div class="footer-col">
-        <h4>Navegue</h4>
+        <h3>Navegue</h3>
         <a href="#cases">Cases</a>
         <a href="#roi">Calculadora</a>
         <a href="#planos">Planos</a>
         <a href="#fundador">Sobre mim</a>
       </div>
       <div class="footer-col">
-        <h4>Suporte</h4>
+        <h3>Suporte</h3>
         <a href="#faq">Perguntas frequentes</a>
         <a href="#planos">Como funciona</a>
         <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida" target="_blank">Falar comigo</a>
       </div>
       <div class="footer-col">
-        <h4>Contato</h4>
+        <h3>Contato</h3>
         <a href="https://wa.me/5561985970300" target="_blank">(61) 98597-0300</a>
         <a href="https://instagram.com/welber_juni0r" target="_blank">@welber_juni0r</a>
         <a>Brasília, DF</a>
@@ -3523,13 +3526,13 @@ document.querySelectorAll('.faq-item').forEach(item => {
     fill(elExcluded, p.excluded);
     elCta.href = p.cta;
     overlay.classList.add('open');
-    overlay.setAttribute('aria-hidden', 'false');
+    overlay.removeAttribute('inert');
     document.body.classList.add('modal-open');
   }
 
   function closeModal() {
     overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('inert', '');
     document.body.classList.remove('modal-open');
   }
 
