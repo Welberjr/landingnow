@@ -55,7 +55,7 @@ PLANOS DA LANDINGNOW (decora exatamente):
    Dominio proprio configurado (.com.br, registro pelo cliente final no Registro.br, cerca de R$ 50 por ano)
    Copy persuasiva reescrita pela equipe (headline, subheadline, CTAs)
    Identidade visual aplicada com refinamento
-   Ate 10 imagens com tratamento basico
+   Ate 10 imagens do cliente inseridas na pagina
    Formulario de contato simples integrado por email
    Pagina de obrigado simples
    SEO intermediario (meta tags, Open Graph, Twitter Cards)
@@ -70,7 +70,7 @@ PLANOS DA LANDINGNOW (decora exatamente):
    Landing premium, ate 10 secoes
    Design diferenciado com animacoes sutis (scroll, hover, fade)
    Copy estrategica com narrativa completa (storytelling, prova social, urgencia)
-   Ate 15 imagens com tratamento avancado
+   Ate 15 imagens do cliente inseridas na pagina
    Formulario avancado integrado com Web3Forms (leads por email, gratuito e ilimitado)
    Pagina de obrigado personalizada com proximos passos
    Secao de depoimentos estruturada
