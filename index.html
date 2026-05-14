@@ -871,6 +871,8 @@ nav {
   padding: 36px 28px;
   position: relative;
   transition: all 0.4s;
+  display: flex;
+  flex-direction: column;
 }
 
 .price-card:hover {
@@ -979,6 +981,7 @@ nav {
 
 .price-cta {
   display: block;
+  margin-top: auto;
   text-align: center;
   padding: 15px;
   border-radius: 100px;
@@ -1032,7 +1035,7 @@ nav {
   position: absolute;
   top: -12px; left: 50%;
   transform: translateX(-50%);
-  background: var(--ink);
+  background: var(--bg);
   color: var(--neon);
   border: 1px solid var(--neon);
   padding: 6px 14px;
@@ -3462,7 +3465,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
       excluded: [
         'Chatbot de IA integrado na landing',
         'Qualificação automática de leads por IA',
-        'Captura de leads em planilha automática',
+        'Captura automática de leads pela IA',
         'Suporte estendido de 14 dias'
       ]
     },
@@ -3478,7 +3481,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
         'Modelo Claude Haiku 4.5 da Anthropic',
         'Personalidade e treinamento da IA pela equipe',
         'Fluxo de qualificação (triagem antes do humano)',
-        'Captura de leads com registro em planilha',
+        'Captura de leads pela IA, enviados por e-mail',
         '1ª recarga de créditos da IA inclusa',
         '14 dias de suporte grátis (suporte estendido)',
         '3 rodadas de revisão inclusas'

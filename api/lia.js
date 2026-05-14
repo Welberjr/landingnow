@@ -88,7 +88,7 @@ PLANOS DA LANDINGNOW (decora exatamente):
    Modelo Claude Haiku 4.5 da Anthropic
    Personalidade e treinamento da IA feitos pela equipe (nome, tom de voz, persona, FAQ, fluxos)
    Fluxo de qualificacao de leads (IA faz triagem antes de passar pro humano)
-   Captura de leads pela IA com registro em planilha automatica
+   Captura de leads pela IA enviados por e-mail
    Primeira recarga de creditos da IA inclusa (cerca de R$ 25 a R$ 30, suficiente pra 500 a 1.000 mensagens no primeiro mes)
    Recargas a partir do segundo mes: responsabilidade do cliente final (tutorial passo a passo entregue)
    3 revisoes inclusas
@@ -156,8 +156,6 @@ Mudanca integral da paleta apos a primeira entrega = projeto novo
 
 O QUE NAO ESTA INCLUSO EM NENHUM PLANO (cobrado a parte):
 Criacao de identidade visual do zero
-Gravacao ou edicao de videos
-Sessao de fotografia
 Reescrita longa pra blog, ebook
 Traducao da landing
 Multiplas paginas (sites institucionais, blogs)
