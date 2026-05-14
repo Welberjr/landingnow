@@ -851,12 +851,16 @@ nav {
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-top: 48px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
   .pricing-grid { grid-template-columns: 1fr; }
 }
 
@@ -1000,6 +1004,175 @@ nav {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px var(--neon-glow);
 }
+
+/* PLAN DETAILS BUTTON */
+.price-details-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.price-details-btn:hover {
+  border-color: var(--neon);
+  color: var(--ink);
+}
+
+/* NEW PLAN CARD + BADGE */
+.price-card.new-plan { border-color: var(--neon); }
+.new-badge {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--neon);
+  border: 1px solid var(--neon);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+/* PLAN MODAL */
+.plan-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.plan-modal-overlay.open { opacity: 1; pointer-events: auto; }
+.plan-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 40px 36px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(16px);
+  transition: transform 0.25s;
+}
+.plan-modal-overlay.open .plan-modal { transform: translateY(0); }
+.plan-modal-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.plan-modal-close:hover { color: var(--ink); }
+
+.plan-modal-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--neon);
+  margin-bottom: 10px;
+}
+.plan-modal-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+.plan-modal-price {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 26px;
+}
+.plan-modal-price span {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--muted);
+  margin-left: 6px;
+}
+.plan-modal-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+@media (max-width: 560px) {
+  .plan-modal-cols { grid-template-columns: 1fr; gap: 20px; }
+  .plan-modal { padding: 34px 24px; }
+}
+.plan-modal-col-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.plan-modal-col-head--in { color: var(--neon); }
+.plan-modal-col-head--out { color: var(--muted); }
+.plan-modal-col ul { list-style: none; }
+.plan-modal-col li {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  padding-left: 22px;
+  position: relative;
+  margin-bottom: 11px;
+}
+.plan-modal-col li::before {
+  position: absolute;
+  left: 0; top: 0;
+  font-size: 13px;
+}
+.plan-modal-col--in li::before { content: '\2713'; color: var(--neon); }
+.plan-modal-col--out li { opacity: 0.55; }
+.plan-modal-col--out li::before { content: '\00d7'; color: var(--muted); }
+.plan-modal-cta {
+  display: block;
+  text-align: center;
+  padding: 15px;
+  border-radius: 100px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  background: var(--neon);
+  color: var(--bg);
+  transition: all 0.3s;
+}
+.plan-modal-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px var(--neon-glow);
+}
+body.modal-open { overflow: hidden; }
 
 /* CUSTOM PROJECTS */
 .custom-section {
@@ -2270,8 +2443,8 @@ footer::before {
   <div class="container">
     <div class="section-header">
       <div class="section-label">Planos e investimento</div>
-      <h2>Três caminhos, <em class="italic">um resultado.</em></h2>
-      <p>Escolha o plano que combina com o estágio do seu negócio. Pagamento único, sem mensalidade obrigatória.</p>
+      <h2>Quatro caminhos, <em class="italic">um resultado.</em></h2>
+      <p>Escolha o plano que combina com o estágio do seu negócio. Start no pagamento único; Pro, Premium e Premium IA em 2 parcelas de 50%.</p>
     </div>
 
     <div class="pricing-grid">
@@ -2279,58 +2452,99 @@ footer::before {
       <div class="price-card">
         <div class="price-card-name">Plano Start</div>
         <div class="price-card-title">Pra começar com presença online.</div>
-        <div class="price-card-desc">Perfeito pra quem precisa estar na internet de forma profissional, rápido e simples.</div>
+        <div class="price-card-desc">Pra quem precisa estar na internet de forma profissional, rápido e simples.</div>
         <div class="price-amount">R$ 99<span class="price-amount-cents">,90</span></div>
         <div class="price-meta">pagamento único · entrega em 48h</div>
         <ul class="price-features">
-          <li class="price-feature">Landing page de 1 página (até 4 seções)</li>
+          <li class="price-feature">Landing de 1 página (até 4 seções)</li>
           <li class="price-feature">Subdomínio gratuito landingnow.com.br</li>
           <li class="price-feature">Botão direto pro WhatsApp</li>
-          <li class="price-feature">100% otimizada pra mobile</li>
-          <li class="price-feature">Hospedagem gratuita inclusa</li>
+          <li class="price-feature">Hospedagem inclusa (uptime 99,9%)</li>
+          <li class="price-feature">1 rodada de revisão inclusa</li>
         </ul>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%2099%2C90" class="price-cta">Quero o Start →</a>
+        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%2099%2C90" class="price-cta">Quero o Start &rarr;</a>
+        <button type="button" class="price-details-btn" data-plan="start">ver detalhes</button>
       </div>
 
       <div class="price-card featured">
         <div class="featured-badge">Mais escolhido</div>
         <div class="price-card-name">Plano Pro</div>
         <div class="price-card-title">Pra vender de verdade.</div>
-        <div class="price-card-desc">A escolha pra quem leva o negócio a sério e quer página com cara de empresa profissional.</div>
+        <div class="price-card-desc">Pra quem leva o negócio a sério e quer página com cara de empresa profissional.</div>
         <div class="price-amount">R$ 297</div>
-        <div class="price-meta">pagamento único · entrega em 4 dias</div>
+        <div class="price-meta">2x de 50% · entrega em 4 dias</div>
         <ul class="price-features">
-          <li class="price-feature">Landing page completa (até 7 seções)</li>
+          <li class="price-feature">Landing completa (até 7 seções)</li>
           <li class="price-feature">Domínio próprio configurado*</li>
-          <li class="price-feature">Copy persuasiva escrita por nós</li>
-          <li class="price-feature">Galeria de fotos otimizada</li>
-          <li class="price-feature">Formulário de contato integrado</li>
-          <li class="price-feature">1 rodada de revisão inclusa</li>
+          <li class="price-feature">Copy persuasiva reescrita pela equipe</li>
+          <li class="price-feature">Identidade visual aplicada</li>
+          <li class="price-feature">2 rodadas de revisão inclusas</li>
         </ul>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Pro%20de%20R%24%20297" class="price-cta">Quero o Pro →</a>
+        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Pro%20de%20R%24%20297" class="price-cta">Quero o Pro &rarr;</a>
+        <button type="button" class="price-details-btn" data-plan="pro">ver detalhes</button>
       </div>
 
       <div class="price-card">
         <div class="price-card-name">Plano Premium</div>
         <div class="price-card-title">Pra crescer no próximo nível.</div>
-        <div class="price-card-desc">Página completa com identidade visual, integração e estratégia avançada de conversão.</div>
+        <div class="price-card-desc">Página completa com narrativa, animações sutis e SEO avançado.</div>
         <div class="price-amount">R$ 497</div>
-        <div class="price-meta">pagamento único · entrega em 5 dias</div>
+        <div class="price-meta">2x de 50% · entrega em 5 dias</div>
         <ul class="price-features">
           <li class="price-feature">Tudo do plano Pro, e mais:</li>
           <li class="price-feature">Landing premium (até 10 seções)</li>
-          <li class="price-feature">Identidade visual aplicada</li>
-          <li class="price-feature">Integração com Google Sheets</li>
-          <li class="price-feature">Página de obrigado personalizada</li>
-          <li class="price-feature">2 rodadas de revisão inclusas</li>
+          <li class="price-feature">Animações sutis e copy com storytelling</li>
+          <li class="price-feature">SEO avançado + Pixel + Analytics</li>
+          <li class="price-feature">3 rodadas de revisão inclusas</li>
         </ul>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20de%20R%24%20497" class="price-cta">Quero o Premium →</a>
+        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20de%20R%24%20497" class="price-cta">Quero o Premium &rarr;</a>
+        <button type="button" class="price-details-btn" data-plan="premium">ver detalhes</button>
+      </div>
+
+      <div class="price-card new-plan">
+        <div class="new-badge">&#10024; Novo</div>
+        <div class="price-card-name">Plano Premium IA</div>
+        <div class="price-card-title">Pra capturar leads dormindo.</div>
+        <div class="price-card-desc">Landing com chatbot de IA que conversa e qualifica visitantes 24h por dia.</div>
+        <div class="price-amount">R$ 997</div>
+        <div class="price-meta">2x de 50% · entrega em 7 dias</div>
+        <ul class="price-features">
+          <li class="price-feature">Tudo do plano Premium, e mais:</li>
+          <li class="price-feature">IA integrada na landing (chatbot 24h)</li>
+          <li class="price-feature">Modelo Claude Haiku 4.5 da Anthropic</li>
+          <li class="price-feature">Triagem e captura automática de leads</li>
+          <li class="price-feature">Suporte estendido (14 dias)</li>
+        </ul>
+        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20IA%20de%20R%24%20997" class="price-cta">Quero o Premium IA &rarr;</a>
+        <button type="button" class="price-details-btn" data-plan="premium-ia">ver detalhes</button>
       </div>
 
     </div>
-    <p style="margin-top: 32px; font-size: 13px; color: var(--muted); text-align: center;">*Custo do registro de domínio (.com.br via Registro.br) à parte, em torno de R$ 50 por ano.</p>
+    <p style="margin-top: 32px; font-size: 13px; color: var(--muted); text-align: center;">Start: pagamento único. Pro, Premium e Premium IA: 2 parcelas de 50% &mdash; a 1&ordf; libera o início da produção, a 2&ordf; na entrega final. *Registro do domínio .com.br à parte, cerca de R$ 50 por ano via Registro.br.</p>
+    <p style="margin-top: 10px; font-size: 12px; color: var(--muted); text-align: center; opacity: 0.7;">Manutenção mensal opcional a partir de R$ 49/mês &mdash; sem fidelidade, contrata só se quiser.</p>
   </div>
 </section>
+
+<!-- PLAN DETAILS MODAL -->
+<div class="plan-modal-overlay" id="planModal" aria-hidden="true">
+  <div class="plan-modal" role="dialog" aria-modal="true" aria-labelledby="planModalTitle">
+    <button type="button" class="plan-modal-close" id="planModalClose" aria-label="Fechar">&times;</button>
+    <div class="plan-modal-name" id="planModalName"></div>
+    <h3 class="plan-modal-title" id="planModalTitle"></h3>
+    <div class="plan-modal-price" id="planModalPrice"></div>
+    <div class="plan-modal-cols">
+      <div class="plan-modal-col plan-modal-col--in">
+        <div class="plan-modal-col-head plan-modal-col-head--in">Incluso no plano</div>
+        <ul id="planModalIncluded"></ul>
+      </div>
+      <div class="plan-modal-col plan-modal-col--out">
+        <div class="plan-modal-col-head plan-modal-col-head--out">Não incluso</div>
+        <ul id="planModalExcluded"></ul>
+      </div>
+    </div>
+    <a class="plan-modal-cta" id="planModalCta" href="#" target="_blank" rel="noopener">Quero esse plano &rarr;</a>
+  </div>
+</div>
 
 <!-- CUSTOM PROJECTS -->
 <section class="custom-section">
@@ -3167,6 +3381,171 @@ document.querySelectorAll('.faq-item').forEach(item => {
 </script>
 <!-- FIM LIA -->
 
+
+<!-- PLAN DETAILS MODAL JS -->
+<script>
+(function() {
+  var PLANS = {
+    'start': {
+      name: 'Plano Start',
+      title: 'Pra começar com presença online.',
+      price: 'R$ 99,90 <span>pagamento único</span>',
+      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%2099%2C90',
+      included: [
+        'Landing de 1 página, até 4 seções',
+        'Entrega em até 48h após pagamento + briefing',
+        'Subdomínio gratuito (seunegocio.landingnow.com.br)',
+        'Botão direto pro WhatsApp',
+        '100% otimizada pra mobile',
+        'Hospedagem Cloudflare Pages inclusa (uptime 99,9%)',
+        'SEO técnico básico (meta tags, alt, semântica)',
+        'PageSpeed mobile acima de 70',
+        '1 rodada de revisão inclusa',
+        '7 dias de suporte grátis pós-entrega'
+      ],
+      excluded: [
+        'Domínio próprio configurado',
+        'Copy persuasiva reescrita pela equipe',
+        'Formulário de contato integrado',
+        'Animações e identidade visual aplicada',
+        'Chatbot de IA na landing'
+      ]
+    },
+    'pro': {
+      name: 'Plano Pro',
+      title: 'Pra vender de verdade.',
+      price: 'R$ 297 <span>2x de 50%</span>',
+      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Pro%20de%20R%24%20297',
+      included: [
+        'Tudo do plano Start, e mais:',
+        'Landing completa, até 7 seções',
+        'Entrega em até 4 dias úteis',
+        'Domínio próprio configurado (.com.br)',
+        'Copy persuasiva reescrita pela equipe',
+        'Identidade visual aplicada com refinamento',
+        'Até 10 imagens com tratamento básico',
+        'Formulário de contato integrado por email',
+        'Página de obrigado simples',
+        'SEO intermediário (Open Graph, Twitter Cards)',
+        'Google Analytics ou Meta Pixel instalado',
+        'PageSpeed mobile acima de 80',
+        '2 rodadas de revisão inclusas'
+      ],
+      excluded: [
+        'Animações sutis (scroll, hover, fade)',
+        'Copy estratégica com storytelling completo',
+        'Seção de depoimentos e FAQ com accordion',
+        'SEO avançado (schema markup, sitemap)',
+        'Chatbot de IA na landing'
+      ]
+    },
+    'premium': {
+      name: 'Plano Premium',
+      title: 'Pra crescer no próximo nível.',
+      price: 'R$ 497 <span>2x de 50%</span>',
+      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20de%20R%24%20497',
+      included: [
+        'Tudo do plano Pro, e mais:',
+        'Landing premium, até 10 seções',
+        'Entrega em até 5 dias úteis',
+        'Design diferenciado com animações sutis',
+        'Copy estratégica com narrativa completa',
+        'Até 15 imagens com tratamento avançado',
+        'Formulário avançado (Web3Forms, leads ilimitados)',
+        'Página de obrigado personalizada',
+        'Seção de depoimentos + FAQ com accordion',
+        'SEO avançado (schema JSON-LD, sitemap, robots)',
+        'Pixel + Analytics + Google Tag Manager',
+        'PageSpeed mobile acima de 85',
+        '3 rodadas de revisão inclusas'
+      ],
+      excluded: [
+        'Chatbot de IA integrado na landing',
+        'Qualificação automática de leads por IA',
+        'Captura de leads em planilha automática',
+        'Suporte estendido de 14 dias'
+      ]
+    },
+    'premium-ia': {
+      name: 'Plano Premium IA',
+      title: 'Pra capturar leads dormindo.',
+      price: 'R$ 997 <span>2x de 50%</span>',
+      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20IA%20de%20R%24%20997',
+      included: [
+        'Tudo do plano Premium, e mais:',
+        'Entrega em até 7 dias úteis',
+        'IA integrada na landing (chatbot 24h por dia)',
+        'Modelo Claude Haiku 4.5 da Anthropic',
+        'Personalidade e treinamento da IA pela equipe',
+        'Fluxo de qualificação (triagem antes do humano)',
+        'Captura de leads com registro em planilha',
+        '1ª recarga de créditos da IA inclusa',
+        '14 dias de suporte grátis (suporte estendido)',
+        '3 rodadas de revisão inclusas'
+      ],
+      excluded: [
+        'Recargas de crédito da IA a partir do 2º mês',
+        'Projetos sob orçamento (SaaS, login, dashboard)',
+        'Integração de IA customizada fora da landing'
+      ]
+    }
+  };
+
+  var overlay = document.getElementById('planModal');
+  if (!overlay) return;
+  var elName = document.getElementById('planModalName');
+  var elTitle = document.getElementById('planModalTitle');
+  var elPrice = document.getElementById('planModalPrice');
+  var elIncluded = document.getElementById('planModalIncluded');
+  var elExcluded = document.getElementById('planModalExcluded');
+  var elCta = document.getElementById('planModalCta');
+  var elClose = document.getElementById('planModalClose');
+
+  function fill(listEl, items) {
+    listEl.innerHTML = '';
+    items.forEach(function(txt) {
+      var li = document.createElement('li');
+      li.textContent = txt;
+      listEl.appendChild(li);
+    });
+  }
+
+  function openModal(key) {
+    var p = PLANS[key];
+    if (!p) return;
+    elName.textContent = p.name;
+    elTitle.textContent = p.title;
+    elPrice.innerHTML = p.price;
+    fill(elIncluded, p.included);
+    fill(elExcluded, p.excluded);
+    elCta.href = p.cta;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+
+  document.querySelectorAll('.price-details-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      openModal(btn.getAttribute('data-plan'));
+    });
+  });
+
+  elClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  });
+})();
+</script>
+<!-- FIM PLAN DETAILS MODAL JS -->
 
 </body>
 </html>
