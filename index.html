@@ -29,6 +29,24 @@
 <meta name="twitter:description" content="Landing pages profissionais para pequenos negócios. Entrega a partir de 48h.">
 <meta name="twitter:image" content="https://landingnow.com.br/og-image.png">
 
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '746976351217041');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
 <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-800.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/instrumentserif-400-italic.woff2" crossorigin>
@@ -722,6 +740,70 @@
 
 <!-- PLAN DETAILS MODAL JS -->
 <!-- FIM PLAN DETAILS MODAL JS -->
+
+<!-- Meta Pixel - Eventos personalizados (Lead em clique WhatsApp + Scroll milestones) -->
+<script>
+(function(){
+  function whenReady(fn){ if(document.readyState!=='loading')fn(); else document.addEventListener('DOMContentLoaded',fn); }
+  whenReady(function(){
+    // === EVENTO LEAD: clique em qualquer link de WhatsApp ===
+    var planMap = [
+      { match: 'Start',       plan: 'Start',       value: 99.90  },
+      { match: 'Pro%20de',    plan: 'Pro',         value: 297    },
+      { match: 'Premium%20IA',plan: 'Premium IA',  value: 997    },
+      { match: 'Premium',     plan: 'Premium',     value: 497    }
+    ];
+    function detectPlan(href){
+      for(var i=0;i<planMap.length;i++){ if(href.indexOf(planMap[i].match)>-1) return planMap[i]; }
+      return { plan:'Generico', value: 0 };
+    }
+    function detectLocation(el){
+      var sec = el.closest('section');
+      if(sec){ return sec.id || sec.className.split(' ')[0] || 'unknown'; }
+      if(el.closest('header')) return 'header';
+      if(el.closest('footer')) return 'footer';
+      if(el.classList.contains('wa-float')) return 'whatsapp-float';
+      return 'unknown';
+    }
+    var links = document.querySelectorAll('a[href*="wa.me"]');
+    links.forEach(function(a){
+      a.addEventListener('click', function(){
+        try {
+          var p = detectPlan(a.href);
+          var loc = detectLocation(a);
+          if(typeof fbq !== 'undefined'){
+            fbq('track', 'Lead', {
+              content_name: 'Click WhatsApp - ' + p.plan,
+              content_category: loc,
+              value: p.value,
+              currency: 'BRL'
+            });
+          }
+        } catch(e){}
+      }, { passive: true });
+    });
+
+    // === EVENTOS SCROLL: 50% e 80% (so dispara uma vez cada) ===
+    var fired = { s50:false, s80:false };
+    function onScroll(){
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      if(docH<=0) return;
+      var pct = (window.scrollY / docH) * 100;
+      if(!fired.s50 && pct >= 50){
+        fired.s50 = true;
+        if(typeof fbq !== 'undefined') fbq('trackCustom', 'Scroll50');
+      }
+      if(!fired.s80 && pct >= 80){
+        fired.s80 = true;
+        if(typeof fbq !== 'undefined') fbq('trackCustom', 'Scroll80');
+      }
+      if(fired.s50 && fired.s80) window.removeEventListener('scroll', onScroll);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  });
+})();
+</script>
+<!-- End Meta Pixel - Eventos -->
 
 </body>
 </html>
