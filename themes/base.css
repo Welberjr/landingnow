@@ -1,0 +1,237 @@
+/* ============================================================
+   LandingNow - Motor de Temas Sazonais
+   base.css: variaveis CSS neutras quando nenhum tema esta ativo.
+   Cada tema sobrescreve essas variaveis em sua propria classe.
+   IMPORTANTE: as variaveis da marca (--neon, --bg, --ink, --hot)
+   permanecem intactas. Os temas atuam apenas em camadas secundarias.
+   ============================================================ */
+
+:root {
+  /* Cor de apoio do tema (transparente no default) */
+  --theme-accent: transparent;
+  --theme-accent-soft: transparent;
+
+  /* Tom de fundo do tema (aplicado em seções alternadas) */
+  --theme-bg-tint: transparent;
+
+  /* Sombra colorida do tema (aplicada em cards) */
+  --theme-shadow: 0 0 0 transparent;
+
+  /* Borda colorida do tema */
+  --theme-border: transparent;
+
+  /* Estado de exibicao dos elementos decorativos */
+  --theme-deco-display: none;
+  --theme-deco-opacity: 0;
+}
+
+/* Container global de decoracoes do tema (corações flutuantes, neve, etc.) */
+.theme-decorations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  display: var(--theme-deco-display);
+  opacity: var(--theme-deco-opacity);
+  transition: opacity 0.8s ease;
+}
+
+/* Marcador do tema ao lado do logotipo */
+.theme-logo-mark {
+  display: var(--theme-deco-display);
+  margin-left: 2px;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+}
+
+/* Respeita preferencia de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .theme-decorations {
+    display: none !important;
+  }
+}
+
+
+/* ============================================================
+   Seasonal Add-on - bloco de venda do tema sazonal automatico
+   ============================================================ */
+
+.seasonal-addon {
+  margin-top: 48px;
+  padding: 40px 36px;
+  background: linear-gradient(135deg, rgba(200, 255, 61, 0.04) 0%, rgba(255, 77, 122, 0.04) 100%);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.seasonal-addon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(200, 255, 61, 0.06) 0%, transparent 60%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.seasonal-addon-content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+}
+
+.seasonal-addon-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(200, 255, 61, 0.1);
+  border: 1px solid rgba(200, 255, 61, 0.3);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--neon);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  font-family: 'Inter', sans-serif;
+}
+
+.seasonal-addon h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.seasonal-addon h3 em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--neon);
+}
+
+.seasonal-addon p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+  text-align: justify;
+}
+
+.seasonal-addon-occasions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.seasonal-addon-chip {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  color: var(--ink-soft);
+}
+
+.seasonal-addon-action {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  text-align: right;
+}
+
+.seasonal-addon-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.seasonal-addon-price strong {
+  font-family: 'Inter', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.seasonal-addon-price small {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.seasonal-addon-cta {
+  background: var(--whatsapp);
+  color: var(--bg);
+  padding: 14px 24px;
+  border-radius: 100px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+  white-space: nowrap;
+}
+
+.seasonal-addon-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.45);
+}
+
+.seasonal-addon-cta svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--bg);
+}
+
+@media (max-width: 768px) {
+  .seasonal-addon {
+    grid-template-columns: 1fr;
+    padding: 28px 22px;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .seasonal-addon-action {
+    align-items: stretch;
+    text-align: center;
+  }
+  .seasonal-addon-price {
+    align-items: center;
+  }
+  .seasonal-addon-cta {
+    justify-content: center;
+    width: 100%;
+  }
+  .seasonal-addon h3 {
+    text-align: center;
+  }
+  .seasonal-addon p {
+    text-align: justify;
+  }
+}

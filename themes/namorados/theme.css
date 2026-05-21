@@ -1,0 +1,183 @@
+/* ============================================================
+   LandingNow - Tema Dia dos Namorados (25/05 a 12/06)
+   Mantem a paleta da marca (verde neon, preto, branco) intacta.
+   Adiciona apenas camada secundaria em rosa/vermelho discreto.
+   ============================================================ */
+
+body.theme-namorados {
+  --theme-accent: #FF4D7A;
+  --theme-accent-soft: rgba(255, 77, 122, 0.12);
+  --theme-bg-tint: rgba(255, 77, 122, 0.03);
+  --theme-shadow: 0 12px 40px rgba(255, 77, 122, 0.18);
+  --theme-border: rgba(255, 77, 122, 0.25);
+  --theme-deco-display: block;
+  --theme-deco-opacity: 1;
+}
+
+/* ----- LOGO: pequeno coracao ao lado do nome ----- */
+body.theme-namorados .logo-wordmark::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF4D7A'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: ln-heart-pulse 2s ease-in-out infinite;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+@keyframes ln-heart-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.85; }
+}
+
+/* ----- SECOES: leve tom rosa em seções alternadas ----- */
+body.theme-namorados .roi-section,
+body.theme-namorados .pricing-section,
+body.theme-namorados .founder-section {
+  background-image: linear-gradient(180deg, var(--theme-bg-tint) 0%, transparent 100%);
+}
+
+/* ----- CARDS: sombra com tonalidade do tema ----- */
+body.theme-namorados .price-card {
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
+}
+body.theme-namorados .price-card:hover {
+  box-shadow: var(--theme-shadow);
+}
+body.theme-namorados .price-card.featured {
+  box-shadow: var(--theme-shadow), 0 0 0 1px var(--theme-border);
+}
+
+body.theme-namorados .case-card {
+  transition: box-shadow 0.4s ease;
+}
+body.theme-namorados .case-card:hover {
+  box-shadow: var(--theme-shadow);
+}
+
+body.theme-namorados .custom-card {
+  box-shadow: var(--theme-shadow);
+}
+
+body.theme-namorados .float-card {
+  transition: box-shadow 0.4s ease;
+}
+body.theme-namorados .float-card:hover {
+  box-shadow: var(--theme-shadow);
+}
+
+/* ----- DECORACOES FLUTUANTES NO FUNDO ----- */
+.theme-namorados-hearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.theme-namorados-hearts .heart {
+  position: absolute;
+  bottom: -40px;
+  opacity: 0;
+  animation: ln-heart-float 14s linear infinite;
+}
+
+.theme-namorados-hearts .heart svg {
+  width: 100%;
+  height: 100%;
+  fill: #FF4D7A;
+  opacity: 0.55;
+  filter: drop-shadow(0 4px 12px rgba(255, 77, 122, 0.3));
+}
+
+@keyframes ln-heart-float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(-10deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(40px) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+/* Posicionamento e timing dos coracoes (cada um com delay e tamanho proprio) */
+.theme-namorados-hearts .heart:nth-child(1) { left: 8%;  width: 22px; height: 22px; animation-delay: 0s;   animation-duration: 18s; }
+.theme-namorados-hearts .heart:nth-child(2) { left: 22%; width: 16px; height: 16px; animation-delay: 3s;   animation-duration: 14s; }
+.theme-namorados-hearts .heart:nth-child(3) { left: 38%; width: 28px; height: 28px; animation-delay: 6s;   animation-duration: 20s; }
+.theme-namorados-hearts .heart:nth-child(4) { left: 54%; width: 14px; height: 14px; animation-delay: 1.5s; animation-duration: 16s; }
+.theme-namorados-hearts .heart:nth-child(5) { left: 70%; width: 20px; height: 20px; animation-delay: 4.5s; animation-duration: 18s; }
+.theme-namorados-hearts .heart:nth-child(6) { left: 85%; width: 24px; height: 24px; animation-delay: 8s;   animation-duration: 22s; }
+.theme-namorados-hearts .heart:nth-child(7) { left: 14%; width: 18px; height: 18px; animation-delay: 10s;  animation-duration: 16s; }
+.theme-namorados-hearts .heart:nth-child(8) { left: 62%; width: 22px; height: 22px; animation-delay: 12s;  animation-duration: 19s; }
+
+/* ----- SELO DE TEMA ATIVO (canto inferior direito) ----- */
+.theme-namorados-badge {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid var(--theme-border);
+  padding: 8px 14px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  animation: ln-badge-in 0.6s ease 1.2s forwards;
+}
+
+.theme-namorados-badge svg {
+  width: 12px;
+  height: 12px;
+  fill: var(--theme-accent);
+}
+
+@keyframes ln-badge-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .theme-namorados-badge {
+    display: none;
+  }
+  .theme-namorados-hearts .heart:nth-child(n+6) {
+    display: none;
+  }
+}
+
+/* Respeita preferencia de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .theme-namorados-hearts {
+    display: none !important;
+  }
+  body.theme-namorados .logo-wordmark::after {
+    animation: none !important;
+  }
+  .theme-namorados-badge {
+    animation: none !important;
+    opacity: 1;
+  }
+}

@@ -475,7 +475,8 @@ document.querySelectorAll('.faq-item').forEach(item => {
         'Copy persuasiva reescrita pela equipe',
         'Formulário de contato integrado',
         'Animações e identidade visual aplicada',
-        'Chatbot de IA na landing'
+        'Chatbot de IA na landing',
+        'Tema sazonal automatico (+ R$ 347, unico)'
       ]
     },
     'pro': {
@@ -503,7 +504,8 @@ document.querySelectorAll('.faq-item').forEach(item => {
         'Copy estratégica com storytelling completo',
         'Seção de depoimentos e FAQ com accordion',
         'SEO avançado (schema markup, sitemap)',
-        'Chatbot de IA na landing'
+        'Chatbot de IA na landing',
+        'Tema sazonal automatico (+ R$ 347, unico)'
       ]
     },
     'premium': {
@@ -530,7 +532,8 @@ document.querySelectorAll('.faq-item').forEach(item => {
         'Chatbot de IA integrado na landing',
         'Qualificação automática de leads por IA',
         'Captura automática de leads pela IA',
-        'Suporte estendido de 14 dias'
+        'Suporte estendido de 14 dias',
+        'Tema sazonal automatico (+ R$ 347, unico)'
       ]
     },
     'premium-ia': {
@@ -553,7 +556,8 @@ document.querySelectorAll('.faq-item').forEach(item => {
       excluded: [
         'Recargas de crédito da IA a partir do 2º mês',
         'Projetos sob orçamento (SaaS, login, dashboard)',
-        'Integração de IA customizada fora da landing'
+        'Integração de IA customizada fora da landing',
+        'Tema sazonal automatico (+ R$ 347, unico)'
       ]
     }
   };
