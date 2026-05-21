@@ -586,3 +586,44 @@ body.theme-namorados .price-card.new-plan .new-badge {
     height: 16px;
   }
 }
+
+
+/* ============================================================
+   v4 FIX - Card Premium IA: borda rosa + badge integrado
+   Antes o badge ficava "perdido" porque a borda do card era verde
+   e o badge rosa nao conectava visualmente. Agora os dois sao rosa.
+   ============================================================ */
+
+/* Borda do card Premium IA vira rosa no tema */
+body.theme-namorados .price-card.new-plan {
+  border-color: var(--theme-accent) !important;
+  box-shadow:
+    0 0 30px rgba(255, 77, 122, 0.25),
+    0 0 60px rgba(255, 77, 122, 0.12),
+    inset 0 0 30px rgba(255, 77, 122, 0.04) !important;
+}
+
+body.theme-namorados .price-card.new-plan:hover {
+  box-shadow:
+    0 0 40px rgba(255, 77, 122, 0.35),
+    0 0 80px rgba(255, 77, 122, 0.18),
+    inset 0 0 30px rgba(255, 77, 122, 0.06) !important;
+  transform: translateY(-3px);
+}
+
+/* Badge Novo: fundo escuro + borda rosa intensa + glow forte */
+body.theme-namorados .price-card.new-plan .new-badge {
+  background: var(--bg) !important;
+  border: 1.5px solid var(--theme-accent) !important;
+  color: var(--theme-accent) !important;
+  box-shadow:
+    0 0 16px rgba(255, 77, 122, 0.4),
+    0 0 32px rgba(255, 77, 122, 0.2) !important;
+  top: -13px !important;
+  z-index: 3;
+}
+
+/* Cor do "PLANO PREMIUM IA" - eyebrow do card - vira rosa pra harmonizar */
+body.theme-namorados .price-card.new-plan .price-card-name {
+  color: var(--theme-accent) !important;
+}

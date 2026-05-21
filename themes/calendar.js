@@ -94,11 +94,11 @@
       end: new Date(diaMaes.getFullYear(), diaMaes.getMonth(), diaMaes.getDate(), 23, 59, 59)
     });
 
-    // Dia dos Namorados (25/05 a 12/06)
+    // Dia dos Namorados (20/05 a 12/06)
     themes.push({
       slug: 'namorados',
       name: 'Dia dos Namorados',
-      start: new Date(year, 4, 25),
+      start: new Date(year, 4, 20),
       end: new Date(year, 5, 12, 23, 59, 59)
     });
 
