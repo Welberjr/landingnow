@@ -216,6 +216,61 @@
     document.body.appendChild(badge);
   }
 
+
+  // -----------------------------------------------------------
+  // v3 - Reforco na secao pricing
+  // -----------------------------------------------------------
+  const pricingHeader = document.querySelector('.pricing-section .section-header');
+  if (pricingHeader && !pricingHeader.querySelector('.theme-namorados-pricing-tag')) {
+    const tag = document.createElement('div');
+    tag.className = 'theme-namorados-pricing-tag';
+    tag.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Edicao Especial Dia dos Namorados';
+    pricingHeader.appendChild(tag);
+  }
+
+  // Coracao neon gigante decorativo no canto superior direito da pricing
+  const pricingSec = document.querySelector('.pricing-section');
+  if (pricingSec && !pricingSec.querySelector('.theme-namorados-giant-heart')) {
+    const giant = document.createElement('div');
+    giant.className = 'theme-namorados-giant-heart';
+    giant.setAttribute('aria-hidden', 'true');
+    giant.innerHTML = [
+      '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">',
+      '<defs>',
+      '<filter id="ln-heart-glow" x="-50%" y="-50%" width="200%" height="200%">',
+      '<feGaussianBlur stdDeviation="4" result="blur"/>',
+      '<feMerge>',
+      '<feMergeNode in="blur"/>',
+      '<feMergeNode in="blur"/>',
+      '<feMergeNode in="SourceGraphic"/>',
+      '</feMerge>',
+      '</filter>',
+      '</defs>',
+      '<path d="M 200 340 C 110 270, 60 215, 60 155 C 60 105, 105 80, 135 80 C 165 80, 190 100, 200 130 C 210 100, 235 80, 265 80 C 295 80, 340 105, 340 155 C 340 215, 290 270, 200 340 Z" fill="none" stroke="#FF4D7A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#ln-heart-glow)"/>',
+      '<path d="M 230 350 C 320 290, 380 230, 385 145 C 385 110, 360 85, 335 80" fill="none" stroke="#FF4D7A" stroke-width="2" stroke-linecap="round" opacity="0.5" filter="url(#ln-heart-glow)"/>',
+      '<circle cx="80" cy="120" r="2.5" fill="#FF4D7A" opacity="0.7"/>',
+      '<circle cx="350" cy="240" r="2" fill="#FF4D7A" opacity="0.6"/>',
+      '<circle cx="320" cy="320" r="2.5" fill="#FF4D7A" opacity="0.5"/>',
+      '<circle cx="100" cy="280" r="1.5" fill="#FF4D7A" opacity="0.6"/>',
+      '</svg>'
+    ].join('');
+    pricingSec.appendChild(giant);
+  }
+
+  // Trust signal no rodape da pricing
+  const pricingContainer = document.querySelector('.pricing-section .container');
+  if (pricingContainer && !document.querySelector('.theme-namorados-pricing-trust')) {
+    const trust = document.createElement('div');
+    trust.className = 'theme-namorados-pricing-trust';
+    trust.innerHTML =
+      '<span class="pricing-trust-heart">' + HEART_FILL + '</span>' +
+      '<span>Mais do que paginas, criamos experiencias que <strong>conquistam.</strong></span>' +
+      '<span class="pricing-trust-divider"></span>' +
+      '<span>Feito com foco em <strong>conversao.</strong></span>' +
+      '<span class="pricing-trust-heart">' + HEART_FILL + '</span>';
+    pricingContainer.appendChild(trust);
+  }
+
   // -----------------------------------------------------------
   // 20. Cleanup ao trocar de tema
   // -----------------------------------------------------------
