@@ -3,3 +3,7 @@
 cases-original-png-backup/
 apply-lia-v*.py
 *.bak
+
+# Tema sazonal - raws temporarios e scripts auxiliares
+_*.png
+_*.py

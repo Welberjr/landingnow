@@ -1,9 +1,8 @@
 /* ============================================================
-   LandingNow - Tema Festa Junina (13/06 a 30/06) - v1 FULL
-   Tratamento agressivo equivalente ao Namorados:
-   hero refeito, glow laranja quente como fogueira, cards com
-   borda laranja, bandeirinhas decorativas, estrelinhas flutuantes,
-   trust signal, copy tematico em todas as secoes.
+   LandingNow - Tema Festa Junina (13/06 a 30/06) - v2 FULL+IMG
+   Tratamento agressivo com background images fotorrealisticos
+   gerados via ChatGPT Image. Cordao SVG removido (agora vem da
+   imagem). Estrelinhas flutuantes mantidas pra dar profundidade.
    Cor da marca (verde neon) preservada em CTAs e logo.
    ============================================================ */
 
@@ -21,36 +20,101 @@ body.theme-junina {
   --theme-flag-red: #E63946;
   --theme-flag-blue: #1D9BF0;
   --theme-flag-green: #52B788;
-  --theme-flag-pink: #E07AAA;
-  --theme-deco-display: block;
-  --theme-deco-opacity: 1;
+  --theme-straw: #D4A574;
+  --theme-straw-dark: #C49A5C;
 }
 
 /* ============================================================
-   GLOW LATERAL - substitui o glow verde original (cor de fogueira)
+   BACKGROUND DO HERO - imagem fotorrealistica
    ============================================================ */
-body.theme-junina::after {
-  background: radial-gradient(circle, rgba(255, 140, 0, 0.20) 0%, rgba(255, 107, 26, 0.08) 40%, transparent 70%) !important;
-  width: 900px !important;
-  height: 900px !important;
+body.theme-junina .hero {
+  position: relative;
+  background-image: url('/hero-junina.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  isolation: isolate;
+}
+
+/* Overlay escuro pra contraste do texto */
+body.theme-junina .hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.55) 0%, rgba(10, 10, 10, 0.75) 100%),
+    radial-gradient(ellipse at center left, rgba(10, 10, 10, 0.3) 0%, transparent 60%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Glow lateral ainda presente, sutil sobre a imagem */
+body.theme-junina .hero::after {
+  background: radial-gradient(circle, rgba(255, 140, 0, 0.10) 0%, transparent 60%) !important;
+  width: 800px !important;
+  height: 800px !important;
   filter: blur(60px) !important;
 }
 
+@media (max-width: 768px) {
+  body.theme-junina .hero {
+    background-image: url('/hero-junina-mobile.webp');
+  }
+  body.theme-junina .hero::before {
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.88) 100%);
+  }
+}
+
+/* ============================================================
+   BACKGROUND DA PRICING - imagem fotorrealistica
+   ============================================================ */
+body.theme-junina .pricing-section {
+  position: relative;
+  background-image: url('/pricing-junina.webp');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+body.theme-junina .pricing-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.55) 0%, rgba(10, 10, 10, 0.80) 50%, rgba(10, 10, 10, 0.92) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  body.theme-junina .pricing-section {
+    background-image: url('/pricing-junina-mobile.webp');
+  }
+  body.theme-junina .pricing-section::before {
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.92) 100%);
+  }
+}
+
+/* ============================================================
+   GLOW DE FUNDO DE PAGINA - sutil, ja que imagens carregam atmosfera
+   ============================================================ */
 body.theme-junina::before {
   content: '';
   position: fixed;
   bottom: -10%;
   right: -10%;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(255, 140, 0, 0.13) 0%, transparent 60%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 140, 0, 0.08) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
   filter: blur(80px);
 }
 
 /* ============================================================
-   LOGO - bandeirinha amarela balancando ao lado do nome
+   LOGO - bandeirinha amarela balancando ao lado
    ============================================================ */
 body.theme-junina .logo-wordmark::after {
   content: '';
@@ -74,13 +138,15 @@ body.theme-junina .logo-wordmark::after {
 }
 
 /* ============================================================
-   HERO TAG - substitui pulse verde por badge tematico laranja
+   HERO TAG - chapéu de palha como icone
    ============================================================ */
 body.theme-junina .hero-tag {
   border-color: var(--theme-accent) !important;
   color: var(--theme-accent) !important;
-  background: rgba(255, 140, 0, 0.06);
-  box-shadow: 0 0 24px rgba(255, 140, 0, 0.28), inset 0 0 12px rgba(255, 140, 0, 0.08);
+  background: rgba(255, 140, 0, 0.10);
+  box-shadow: 0 0 24px rgba(255, 140, 0, 0.32), inset 0 0 12px rgba(255, 140, 0, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 body.theme-junina .hero-tag .pulse {
@@ -90,22 +156,22 @@ body.theme-junina .hero-tag .pulse {
 body.theme-junina .hero-tag::before {
   content: '';
   display: inline-block;
-  width: 14px;
-  height: 14px;
-  margin-right: 4px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFD23F'><path d='M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z'/></svg>");
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><ellipse cx='12' cy='17' rx='10' ry='2.5' fill='%23D4A574'/><path d='M 7 17 C 7 12, 8 8, 12 8 C 16 8, 17 12, 17 17 Z' fill='%23C49A5C'/><rect x='7' y='14' width='10' height='1.5' fill='%23E63946'/></svg>");
   background-size: contain;
   background-repeat: no-repeat;
-  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.5));
+  vertical-align: middle;
 }
 
 /* ============================================================
-   HERO H1 - palavra acento em gradient verde->laranja e strike laranja
+   HERO H1 - gradient verde->laranja em 'vende' e strike em 'dorme'
    ============================================================ */
 body.theme-junina .hero h1 .accent-word {
   background: linear-gradient(90deg, var(--neon) 0%, var(--theme-accent) 100%) !important;
   color: var(--bg) !important;
-  box-shadow: 0 0 40px rgba(255, 140, 0, 0.38), 0 0 20px rgba(200, 255, 61, 0.25) !important;
+  box-shadow: 0 0 40px rgba(255, 140, 0, 0.42), 0 0 20px rgba(200, 255, 61, 0.28) !important;
 }
 
 body.theme-junina .hero h1 .strikethrough::after {
@@ -123,9 +189,9 @@ body.theme-junina .float-card {
   border: 1.5px solid var(--theme-border) !important;
   box-shadow: 0 0 24px rgba(255, 140, 0, 0.18), inset 0 0 16px rgba(255, 140, 0, 0.03) !important;
   transition: box-shadow 0.35s ease, transform 0.25s ease, border-color 0.35s ease !important;
-  background: rgba(22, 16, 10, 0.5) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(20, 14, 8, 0.65) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 body.theme-junina .float-card:hover {
@@ -135,7 +201,7 @@ body.theme-junina .float-card:hover {
 }
 
 body.theme-junina .float-card-icon {
-  background: rgba(255, 140, 0, 0.12) !important;
+  background: rgba(255, 140, 0, 0.14) !important;
   border: 1.5px solid var(--theme-border) !important;
   color: var(--theme-accent) !important;
   font-size: 18px;
@@ -144,12 +210,12 @@ body.theme-junina .float-card-icon {
 
 body.theme-junina .float-card.featured {
   border-color: var(--neon) !important;
-  background: rgba(200, 255, 61, 0.1) !important;
-  box-shadow: 0 0 28px rgba(200, 255, 61, 0.35), inset 0 0 16px rgba(200, 255, 61, 0.08) !important;
+  background: rgba(200, 255, 61, 0.14) !important;
+  box-shadow: 0 0 28px rgba(200, 255, 61, 0.38), inset 0 0 16px rgba(200, 255, 61, 0.08) !important;
 }
 
 body.theme-junina .float-card.featured .float-card-icon {
-  background: rgba(200, 255, 61, 0.15) !important;
+  background: rgba(200, 255, 61, 0.18) !important;
   border-color: var(--neon) !important;
   color: var(--neon) !important;
   filter: drop-shadow(0 0 8px var(--neon-glow));
@@ -171,7 +237,7 @@ body.theme-junina .float-card .card-sub {
 }
 
 /* ============================================================
-   TRUST SIGNAL - "Mais de 70 marcas..." abaixo do hero
+   TRUST SIGNAL abaixo do hero
    ============================================================ */
 .theme-junina-trust {
   text-align: center;
@@ -219,22 +285,17 @@ body.theme-junina .float-card .card-sub {
 }
 
 /* ============================================================
-   SECOES SECUNDARIAS - tom laranja em sombras de cards
+   SECOES SECUNDARIAS - tom laranja em sombras
    ============================================================ */
 body.theme-junina .price-card {
   transition: box-shadow 0.4s ease, transform 0.3s ease, border-color 0.4s ease;
+  background: rgba(20, 14, 8, 0.55) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 body.theme-junina .price-card:hover {
   box-shadow: var(--theme-shadow);
-}
-
-body.theme-junina .price-card.featured {
-  box-shadow: var(--theme-shadow-strong), 0 0 0 1px var(--theme-border-strong);
-}
-
-body.theme-junina .case-card {
-  transition: box-shadow 0.4s ease, transform 0.3s ease;
 }
 
 body.theme-junina .case-card:hover {
@@ -250,16 +311,8 @@ body.theme-junina .roi-result {
   box-shadow: var(--theme-shadow);
 }
 
-body.theme-junina .step {
-  transition: box-shadow 0.4s ease;
-}
-
 body.theme-junina .step:hover {
   box-shadow: var(--theme-shadow);
-}
-
-body.theme-junina .faq-item {
-  transition: box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 body.theme-junina .faq-item:hover,
@@ -268,7 +321,6 @@ body.theme-junina .faq-item.open {
   border-color: var(--theme-border) !important;
 }
 
-/* Final CTA - glow laranja de fundo */
 body.theme-junina .final-cta {
   background-image: radial-gradient(circle at center, var(--theme-accent-soft) 0%, transparent 70%);
 }
@@ -281,71 +333,7 @@ body.theme-junina .final-cta h2 em {
 }
 
 /* ============================================================
-   CORDAO DE BANDEIRINHAS FIXO NO TOPO DA VIEWPORT
-   ============================================================ */
-.theme-junina-cordao {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 100vw;
-  pointer-events: none;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 2vw;
-}
-
-.theme-junina-cordao .bandeirinha {
-  width: 26px;
-  height: 32px;
-  position: relative;
-  transform-origin: top center;
-  animation: ln-bandeirinha-sway 3.4s ease-in-out infinite;
-}
-
-.theme-junina-cordao .bandeirinha::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 2px;
-  height: 8px;
-  background: rgba(255, 210, 63, 0.7);
-  transform: translateX(-50%);
-}
-
-.theme-junina-cordao .bandeirinha svg {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-@keyframes ln-bandeirinha-sway {
-  0%, 100% { transform: rotate(-4deg); }
-  50% { transform: rotate(4deg); }
-}
-
-.theme-junina-cordao .bandeirinha:nth-child(odd) {
-  animation-delay: -1.7s;
-}
-
-@media (max-width: 768px) {
-  .theme-junina-cordao {
-    top: 56px;
-    padding: 0 1vw;
-  }
-  .theme-junina-cordao .bandeirinha {
-    width: 18px;
-    height: 22px;
-  }
-  /* Mostra so 8 bandeirinhas no mobile */
-  .theme-junina-cordao .bandeirinha:nth-child(n+9) {
-    display: none;
-  }
-}
-
-/* ============================================================
-   ESTRELINHAS AMARELAS FLUTUANTES (substitui coracoes subindo)
+   ESTRELINHAS AMARELAS FLUTUANTES (sobre a imagem)
    ============================================================ */
 .theme-junina-stars {
   position: fixed;
@@ -354,7 +342,7 @@ body.theme-junina .final-cta h2 em {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 1;
+  z-index: 3;
   overflow: hidden;
 }
 
@@ -362,37 +350,29 @@ body.theme-junina .final-cta h2 em {
   position: absolute;
   bottom: -60px;
   opacity: 0;
-  animation: ln-star-float 18s linear infinite;
+  animation: ln-star-float 22s linear infinite;
 }
 
 .theme-junina-stars .star svg {
   width: 100%;
   height: 100%;
   fill: var(--theme-flag-yellow);
-  filter: drop-shadow(0 0 8px rgba(255, 210, 63, 0.5)) drop-shadow(0 0 16px rgba(255, 140, 0, 0.25));
+  filter: drop-shadow(0 0 8px rgba(255, 210, 63, 0.6)) drop-shadow(0 0 16px rgba(255, 140, 0, 0.3));
 }
 
 @keyframes ln-star-float {
-  0% {
-    transform: translateY(0) translateX(0) rotate(0deg) scale(0.85);
-    opacity: 0;
-  }
-  8% { opacity: 0.78; }
-  92% { opacity: 0.78; }
-  100% {
-    transform: translateY(-115vh) translateX(40px) rotate(220deg) scale(1.1);
-    opacity: 0;
-  }
+  0%   { transform: translateY(0) translateX(0) rotate(0deg) scale(0.85); opacity: 0; }
+  8%   { opacity: 0.70; }
+  92%  { opacity: 0.70; }
+  100% { transform: translateY(-115vh) translateX(40px) rotate(220deg) scale(1.1); opacity: 0; }
 }
 
-.theme-junina-stars .star:nth-child(1)  { left: 6%;  width: 22px; height: 22px; animation-delay: 0s;    animation-duration: 20s; }
-.theme-junina-stars .star:nth-child(2)  { left: 18%; width: 16px; height: 16px; animation-delay: 2.5s;  animation-duration: 17s; }
-.theme-junina-stars .star:nth-child(3)  { left: 30%; width: 26px; height: 26px; animation-delay: 5s;    animation-duration: 22s; }
-.theme-junina-stars .star:nth-child(4)  { left: 42%; width: 14px; height: 14px; animation-delay: 1s;    animation-duration: 16s; }
-.theme-junina-stars .star:nth-child(5)  { left: 56%; width: 20px; height: 20px; animation-delay: 3.5s;  animation-duration: 19s; }
-.theme-junina-stars .star:nth-child(6)  { left: 68%; width: 18px; height: 18px; animation-delay: 7s;    animation-duration: 21s; }
-.theme-junina-stars .star:nth-child(7)  { left: 80%; width: 24px; height: 24px; animation-delay: 9.5s;  animation-duration: 22s; }
-.theme-junina-stars .star:nth-child(8)  { left: 92%; width: 16px; height: 16px; animation-delay: 4s;    animation-duration: 18s; }
+.theme-junina-stars .star:nth-child(1) { left: 6%;  width: 18px; height: 18px; animation-delay: 0s;   animation-duration: 22s; }
+.theme-junina-stars .star:nth-child(2) { left: 18%; width: 14px; height: 14px; animation-delay: 2.5s; animation-duration: 19s; }
+.theme-junina-stars .star:nth-child(3) { left: 30%; width: 22px; height: 22px; animation-delay: 5s;   animation-duration: 24s; }
+.theme-junina-stars .star:nth-child(4) { left: 56%; width: 16px; height: 16px; animation-delay: 3.5s; animation-duration: 21s; }
+.theme-junina-stars .star:nth-child(5) { left: 80%; width: 20px; height: 20px; animation-delay: 9.5s; animation-duration: 24s; }
+.theme-junina-stars .star:nth-child(6) { left: 92%; width: 14px; height: 14px; animation-delay: 4s;   animation-duration: 20s; }
 
 /* ============================================================
    SELO DE TEMA - canto inferior direito
@@ -401,7 +381,7 @@ body.theme-junina .final-cta h2 em {
   position: fixed;
   bottom: 16px;
   right: 16px;
-  background: rgba(10, 10, 10, 0.85);
+  background: rgba(10, 10, 10, 0.88);
   border: 1px solid var(--theme-border);
   padding: 8px 14px;
   border-radius: 100px;
@@ -424,40 +404,32 @@ body.theme-junina .final-cta h2 em {
 .theme-junina-badge svg {
   width: 12px;
   height: 12px;
-  fill: var(--theme-flag-yellow);
   filter: drop-shadow(0 0 4px rgba(255, 210, 63, 0.5));
 }
 
 @keyframes ln-badge-in {
   from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 768px) {
-  .theme-junina-badge {
-    display: none;
-  }
-  .theme-junina-stars .star:nth-child(n+6) {
-    display: none;
-  }
+  .theme-junina-badge { display: none; }
+  .theme-junina-stars .star:nth-child(n+5) { display: none; }
   body.theme-junina .hero-cards {
     grid-template-columns: 1fr !important;
     gap: 10px !important;
   }
 }
 
-/* Respeita preferencia de movimento reduzido */
 @media (prefers-reduced-motion: reduce) {
   .theme-junina-stars { display: none !important; }
-  .theme-junina-cordao .bandeirinha { animation: none !important; }
   body.theme-junina .logo-wordmark::after { animation: none !important; }
   .theme-junina-badge { animation: none !important; opacity: 1; }
 }
 
 /* ============================================================
-   REFORCO NA SECAO PRICING
+   PRICING - tag tematica com chapeu de palha
    ============================================================ */
-
 body.theme-junina .pricing-section .section-label {
   display: none !important;
 }
@@ -465,9 +437,9 @@ body.theme-junina .pricing-section .section-label {
 .theme-junina-pricing-tag {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 20px;
-  background: rgba(255, 140, 0, 0.10);
+  gap: 10px;
+  padding: 9px 22px;
+  background: rgba(255, 140, 0, 0.12);
   border: 1.5px solid var(--theme-accent);
   border-radius: 100px;
   font-size: 11px;
@@ -475,63 +447,38 @@ body.theme-junina .pricing-section .section-label {
   color: var(--theme-accent);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  box-shadow: 0 0 24px rgba(255, 140, 0, 0.28), inset 0 0 12px rgba(255, 140, 0, 0.05);
+  box-shadow: 0 0 24px rgba(255, 140, 0, 0.30), inset 0 0 12px rgba(255, 140, 0, 0.06);
   margin-top: 20px;
   font-family: 'Inter', sans-serif;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .theme-junina-pricing-tag svg {
-  width: 14px;
-  height: 14px;
-  fill: var(--theme-flag-yellow);
-  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.5));
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
-body.theme-junina .pricing-section {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Cordao de bandeirinhas gigante decorativo - canto superior direito */
-.theme-junina-giant-cordao {
-  position: absolute;
-  top: 20px;
-  right: -40px;
-  width: 460px;
-  height: 320px;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.55;
-  animation: ln-giant-sway 4s ease-in-out infinite;
-}
-
-.theme-junina-giant-cordao svg {
-  width: 100%;
-  height: 100%;
-}
-
-@keyframes ln-giant-sway {
-  0%, 100% { opacity: 0.55; transform: rotate(-1deg); }
-  50% { opacity: 0.7; transform: rotate(1deg); }
-}
-
-@media (max-width: 980px) {
-  .theme-junina-giant-cordao {
-    width: 300px;
-    height: 220px;
-    top: 14px;
-    right: -50px;
-    opacity: 0.35;
-  }
+/* Subtítulo da pricing */
+.theme-junina-pricing-subtitle {
+  text-align: center;
+  margin: 18px auto 0;
+  max-width: 640px;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 @media (max-width: 768px) {
-  .theme-junina-giant-cordao {
-    display: none;
+  .theme-junina-pricing-subtitle {
+    font-size: 13px;
+    margin-top: 14px;
+    padding: 0 16px;
   }
 }
 
-/* Estrelinha ao lado de cada price-card-title */
+/* Estrelinha apos cada price-card-title */
 body.theme-junina .price-card-title {
   display: flex;
   align-items: center;
@@ -554,10 +501,10 @@ body.theme-junina .price-card-title::after {
 
 @keyframes ln-star-twinkle {
   0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  50% { transform: scale(1.18) rotate(15deg); opacity: 0.85; }
+  50%      { transform: scale(1.18) rotate(15deg); opacity: 0.85; }
 }
 
-/* Card Pro (featured) com glow laranja neon FORTE */
+/* Card Pro (featured) - glow laranja triplo */
 body.theme-junina .price-card.featured {
   border: 1.5px solid var(--theme-accent) !important;
   box-shadow:
@@ -572,7 +519,7 @@ body.theme-junina .price-card.featured {
 body.theme-junina .price-card.featured:hover {
   box-shadow:
     0 0 0 1.5px var(--theme-accent),
-    0 0 60px rgba(255, 140, 0, 0.6),
+    0 0 60px rgba(255, 140, 0, 0.62),
     0 0 100px rgba(255, 140, 0, 0.32),
     inset 0 0 50px rgba(255, 140, 0, 0.06) !important;
   transform: translateY(-3px);
@@ -618,61 +565,72 @@ body.theme-junina .price-card.new-plan .price-card-name {
   color: var(--theme-accent) !important;
 }
 
-/* Trust signal no rodape da pricing */
-.theme-junina-pricing-trust {
+/* ============================================================
+   FOOTER DOS 3 HIGHLIGHTS (fogueira + balao + sanfona)
+   ============================================================ */
+.theme-junina-highlights {
   margin-top: 56px;
-  padding: 18px 36px;
-  background: rgba(255, 140, 0, 0.05);
+  padding: 22px 32px;
+  background: rgba(10, 10, 10, 0.55);
   border: 1px solid var(--theme-border);
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  text-align: center;
-  font-size: 14px;
-  color: var(--ink-soft);
-  flex-wrap: wrap;
-  font-weight: 500;
+  border-radius: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 0 24px rgba(255, 140, 0, 0.14);
 }
 
-.theme-junina-pricing-trust strong {
+.theme-junina-highlights .highlight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.theme-junina-highlights .highlight strong {
   color: var(--theme-accent);
   font-weight: 700;
 }
 
-.theme-junina-pricing-trust .pricing-trust-star {
-  width: 20px;
-  height: 20px;
+.theme-junina-highlights .highlight-icon {
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.theme-junina-pricing-trust .pricing-trust-star svg {
+.theme-junina-highlights .highlight-icon svg {
   width: 100%;
   height: 100%;
-  fill: var(--theme-flag-yellow);
-  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.5));
+  filter: drop-shadow(0 0 8px rgba(255, 140, 0, 0.4));
 }
 
-.theme-junina-pricing-trust .pricing-trust-divider {
-  width: 1px;
-  height: 22px;
-  background: var(--theme-border);
+@media (max-width: 980px) {
+  .theme-junina-highlights {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 24px;
+  }
 }
 
 @media (max-width: 768px) {
-  .theme-junina-pricing-trust {
-    padding: 16px 22px;
-    gap: 14px;
-    font-size: 12px;
-    border-radius: 24px;
+  .theme-junina-highlights {
+    margin-top: 40px;
+    padding: 18px 20px;
+    border-radius: 18px;
   }
-  .theme-junina-pricing-trust .pricing-trust-divider {
-    display: none;
+  .theme-junina-highlights .highlight {
+    font-size: 13px;
+    gap: 12px;
   }
-  .theme-junina-pricing-trust .pricing-trust-star {
-    width: 16px;
-    height: 16px;
+  .theme-junina-highlights .highlight-icon {
+    width: 36px;
+    height: 36px;
   }
 }
