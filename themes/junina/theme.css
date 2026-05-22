@@ -1,0 +1,678 @@
+/* ============================================================
+   LandingNow - Tema Festa Junina (13/06 a 30/06) - v1 FULL
+   Tratamento agressivo equivalente ao Namorados:
+   hero refeito, glow laranja quente como fogueira, cards com
+   borda laranja, bandeirinhas decorativas, estrelinhas flutuantes,
+   trust signal, copy tematico em todas as secoes.
+   Cor da marca (verde neon) preservada em CTAs e logo.
+   ============================================================ */
+
+body.theme-junina {
+  --theme-accent: #FF8C00;
+  --theme-accent-strong: #FF6B1A;
+  --theme-accent-soft: rgba(255, 140, 0, 0.12);
+  --theme-bg-tint: rgba(255, 140, 0, 0.03);
+  --theme-glow: rgba(255, 140, 0, 0.4);
+  --theme-shadow: 0 12px 40px rgba(255, 140, 0, 0.25);
+  --theme-shadow-strong: 0 20px 60px rgba(255, 140, 0, 0.45);
+  --theme-border: rgba(255, 140, 0, 0.35);
+  --theme-border-strong: rgba(255, 140, 0, 0.6);
+  --theme-flag-yellow: #FFD23F;
+  --theme-flag-red: #E63946;
+  --theme-flag-blue: #1D9BF0;
+  --theme-flag-green: #52B788;
+  --theme-flag-pink: #E07AAA;
+  --theme-deco-display: block;
+  --theme-deco-opacity: 1;
+}
+
+/* ============================================================
+   GLOW LATERAL - substitui o glow verde original (cor de fogueira)
+   ============================================================ */
+body.theme-junina::after {
+  background: radial-gradient(circle, rgba(255, 140, 0, 0.20) 0%, rgba(255, 107, 26, 0.08) 40%, transparent 70%) !important;
+  width: 900px !important;
+  height: 900px !important;
+  filter: blur(60px) !important;
+}
+
+body.theme-junina::before {
+  content: '';
+  position: fixed;
+  bottom: -10%;
+  right: -10%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(255, 140, 0, 0.13) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+}
+
+/* ============================================================
+   LOGO - bandeirinha amarela balancando ao lado do nome
+   ============================================================ */
+body.theme-junina .logo-wordmark::after {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 4 L21 4 L12 21 Z' fill='%23FFD23F' stroke='%23FF8C00' stroke-width='1.5'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: ln-flag-sway 2.4s ease-in-out infinite;
+  vertical-align: middle;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px var(--theme-glow));
+  transform-origin: top center;
+}
+
+@keyframes ln-flag-sway {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+
+/* ============================================================
+   HERO TAG - substitui pulse verde por badge tematico laranja
+   ============================================================ */
+body.theme-junina .hero-tag {
+  border-color: var(--theme-accent) !important;
+  color: var(--theme-accent) !important;
+  background: rgba(255, 140, 0, 0.06);
+  box-shadow: 0 0 24px rgba(255, 140, 0, 0.28), inset 0 0 12px rgba(255, 140, 0, 0.08);
+}
+
+body.theme-junina .hero-tag .pulse {
+  display: none !important;
+}
+
+body.theme-junina .hero-tag::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFD23F'><path d='M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.5));
+}
+
+/* ============================================================
+   HERO H1 - palavra acento em gradient verde->laranja e strike laranja
+   ============================================================ */
+body.theme-junina .hero h1 .accent-word {
+  background: linear-gradient(90deg, var(--neon) 0%, var(--theme-accent) 100%) !important;
+  color: var(--bg) !important;
+  box-shadow: 0 0 40px rgba(255, 140, 0, 0.38), 0 0 20px rgba(200, 255, 61, 0.25) !important;
+}
+
+body.theme-junina .hero h1 .strikethrough::after {
+  background: var(--theme-accent) !important;
+}
+
+/* ============================================================
+   HERO CARDS - tratamento glow laranja nos 4 + 1 destaque verde
+   ============================================================ */
+body.theme-junina .hero-cards {
+  gap: 14px;
+}
+
+body.theme-junina .float-card {
+  border: 1.5px solid var(--theme-border) !important;
+  box-shadow: 0 0 24px rgba(255, 140, 0, 0.18), inset 0 0 16px rgba(255, 140, 0, 0.03) !important;
+  transition: box-shadow 0.35s ease, transform 0.25s ease, border-color 0.35s ease !important;
+  background: rgba(22, 16, 10, 0.5) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.theme-junina .float-card:hover {
+  border-color: var(--theme-border-strong) !important;
+  box-shadow: 0 0 36px rgba(255, 140, 0, 0.32), inset 0 0 20px rgba(255, 140, 0, 0.06) !important;
+  transform: translateY(-2px);
+}
+
+body.theme-junina .float-card-icon {
+  background: rgba(255, 140, 0, 0.12) !important;
+  border: 1.5px solid var(--theme-border) !important;
+  color: var(--theme-accent) !important;
+  font-size: 18px;
+  filter: drop-shadow(0 0 8px var(--theme-glow));
+}
+
+body.theme-junina .float-card.featured {
+  border-color: var(--neon) !important;
+  background: rgba(200, 255, 61, 0.1) !important;
+  box-shadow: 0 0 28px rgba(200, 255, 61, 0.35), inset 0 0 16px rgba(200, 255, 61, 0.08) !important;
+}
+
+body.theme-junina .float-card.featured .float-card-icon {
+  background: rgba(200, 255, 61, 0.15) !important;
+  border-color: var(--neon) !important;
+  color: var(--neon) !important;
+  filter: drop-shadow(0 0 8px var(--neon-glow));
+}
+
+body.theme-junina .float-card .card-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 4px;
+}
+
+body.theme-junina .float-card .card-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  display: block;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   TRUST SIGNAL - "Mais de 70 marcas..." abaixo do hero
+   ============================================================ */
+.theme-junina-trust {
+  text-align: center;
+  margin: 40px auto 0;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  max-width: 900px;
+}
+
+.theme-junina-trust strong {
+  color: var(--theme-accent);
+  font-weight: 700;
+}
+
+.theme-junina-trust .trust-star {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.theme-junina-trust .trust-star svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--theme-flag-yellow);
+  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.5));
+}
+
+@media (max-width: 768px) {
+  .theme-junina-trust {
+    font-size: 12px;
+    margin-top: 28px;
+    padding: 12px 16px;
+    gap: 10px;
+  }
+  .theme-junina-trust .trust-star {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* ============================================================
+   SECOES SECUNDARIAS - tom laranja em sombras de cards
+   ============================================================ */
+body.theme-junina .price-card {
+  transition: box-shadow 0.4s ease, transform 0.3s ease, border-color 0.4s ease;
+}
+
+body.theme-junina .price-card:hover {
+  box-shadow: var(--theme-shadow);
+}
+
+body.theme-junina .price-card.featured {
+  box-shadow: var(--theme-shadow-strong), 0 0 0 1px var(--theme-border-strong);
+}
+
+body.theme-junina .case-card {
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+body.theme-junina .case-card:hover {
+  box-shadow: var(--theme-shadow);
+}
+
+body.theme-junina .custom-card {
+  box-shadow: var(--theme-shadow);
+  border-color: var(--theme-border) !important;
+}
+
+body.theme-junina .roi-result {
+  box-shadow: var(--theme-shadow);
+}
+
+body.theme-junina .step {
+  transition: box-shadow 0.4s ease;
+}
+
+body.theme-junina .step:hover {
+  box-shadow: var(--theme-shadow);
+}
+
+body.theme-junina .faq-item {
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+body.theme-junina .faq-item:hover,
+body.theme-junina .faq-item.open {
+  box-shadow: var(--theme-shadow);
+  border-color: var(--theme-border) !important;
+}
+
+/* Final CTA - glow laranja de fundo */
+body.theme-junina .final-cta {
+  background-image: radial-gradient(circle at center, var(--theme-accent-soft) 0%, transparent 70%);
+}
+
+body.theme-junina .final-cta h2 em {
+  background: linear-gradient(90deg, var(--neon) 0%, var(--theme-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   CORDAO DE BANDEIRINHAS FIXO NO TOPO DA VIEWPORT
+   ============================================================ */
+.theme-junina-cordao {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100vw;
+  pointer-events: none;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2vw;
+}
+
+.theme-junina-cordao .bandeirinha {
+  width: 26px;
+  height: 32px;
+  position: relative;
+  transform-origin: top center;
+  animation: ln-bandeirinha-sway 3.4s ease-in-out infinite;
+}
+
+.theme-junina-cordao .bandeirinha::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 8px;
+  background: rgba(255, 210, 63, 0.7);
+  transform: translateX(-50%);
+}
+
+.theme-junina-cordao .bandeirinha svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes ln-bandeirinha-sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.theme-junina-cordao .bandeirinha:nth-child(odd) {
+  animation-delay: -1.7s;
+}
+
+@media (max-width: 768px) {
+  .theme-junina-cordao {
+    top: 56px;
+    padding: 0 1vw;
+  }
+  .theme-junina-cordao .bandeirinha {
+    width: 18px;
+    height: 22px;
+  }
+  /* Mostra so 8 bandeirinhas no mobile */
+  .theme-junina-cordao .bandeirinha:nth-child(n+9) {
+    display: none;
+  }
+}
+
+/* ============================================================
+   ESTRELINHAS AMARELAS FLUTUANTES (substitui coracoes subindo)
+   ============================================================ */
+.theme-junina-stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.theme-junina-stars .star {
+  position: absolute;
+  bottom: -60px;
+  opacity: 0;
+  animation: ln-star-float 18s linear infinite;
+}
+
+.theme-junina-stars .star svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--theme-flag-yellow);
+  filter: drop-shadow(0 0 8px rgba(255, 210, 63, 0.5)) drop-shadow(0 0 16px rgba(255, 140, 0, 0.25));
+}
+
+@keyframes ln-star-float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(0.85);
+    opacity: 0;
+  }
+  8% { opacity: 0.78; }
+  92% { opacity: 0.78; }
+  100% {
+    transform: translateY(-115vh) translateX(40px) rotate(220deg) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.theme-junina-stars .star:nth-child(1)  { left: 6%;  width: 22px; height: 22px; animation-delay: 0s;    animation-duration: 20s; }
+.theme-junina-stars .star:nth-child(2)  { left: 18%; width: 16px; height: 16px; animation-delay: 2.5s;  animation-duration: 17s; }
+.theme-junina-stars .star:nth-child(3)  { left: 30%; width: 26px; height: 26px; animation-delay: 5s;    animation-duration: 22s; }
+.theme-junina-stars .star:nth-child(4)  { left: 42%; width: 14px; height: 14px; animation-delay: 1s;    animation-duration: 16s; }
+.theme-junina-stars .star:nth-child(5)  { left: 56%; width: 20px; height: 20px; animation-delay: 3.5s;  animation-duration: 19s; }
+.theme-junina-stars .star:nth-child(6)  { left: 68%; width: 18px; height: 18px; animation-delay: 7s;    animation-duration: 21s; }
+.theme-junina-stars .star:nth-child(7)  { left: 80%; width: 24px; height: 24px; animation-delay: 9.5s;  animation-duration: 22s; }
+.theme-junina-stars .star:nth-child(8)  { left: 92%; width: 16px; height: 16px; animation-delay: 4s;    animation-duration: 18s; }
+
+/* ============================================================
+   SELO DE TEMA - canto inferior direito
+   ============================================================ */
+.theme-junina-badge {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid var(--theme-border);
+  padding: 8px 14px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  animation: ln-badge-in 0.6s ease 1.2s forwards;
+  box-shadow: 0 0 16px rgba(255, 140, 0, 0.22);
+}
+
+.theme-junina-badge svg {
+  width: 12px;
+  height: 12px;
+  fill: var(--theme-flag-yellow);
+  filter: drop-shadow(0 0 4px rgba(255, 210, 63, 0.5));
+}
+
+@keyframes ln-badge-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .theme-junina-badge {
+    display: none;
+  }
+  .theme-junina-stars .star:nth-child(n+6) {
+    display: none;
+  }
+  body.theme-junina .hero-cards {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+}
+
+/* Respeita preferencia de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .theme-junina-stars { display: none !important; }
+  .theme-junina-cordao .bandeirinha { animation: none !important; }
+  body.theme-junina .logo-wordmark::after { animation: none !important; }
+  .theme-junina-badge { animation: none !important; opacity: 1; }
+}
+
+/* ============================================================
+   REFORCO NA SECAO PRICING
+   ============================================================ */
+
+body.theme-junina .pricing-section .section-label {
+  display: none !important;
+}
+
+.theme-junina-pricing-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  background: rgba(255, 140, 0, 0.10);
+  border: 1.5px solid var(--theme-accent);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--theme-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 0 24px rgba(255, 140, 0, 0.28), inset 0 0 12px rgba(255, 140, 0, 0.05);
+  margin-top: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.theme-junina-pricing-tag svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--theme-flag-yellow);
+  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.5));
+}
+
+body.theme-junina .pricing-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cordao de bandeirinhas gigante decorativo - canto superior direito */
+.theme-junina-giant-cordao {
+  position: absolute;
+  top: 20px;
+  right: -40px;
+  width: 460px;
+  height: 320px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.55;
+  animation: ln-giant-sway 4s ease-in-out infinite;
+}
+
+.theme-junina-giant-cordao svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes ln-giant-sway {
+  0%, 100% { opacity: 0.55; transform: rotate(-1deg); }
+  50% { opacity: 0.7; transform: rotate(1deg); }
+}
+
+@media (max-width: 980px) {
+  .theme-junina-giant-cordao {
+    width: 300px;
+    height: 220px;
+    top: 14px;
+    right: -50px;
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 768px) {
+  .theme-junina-giant-cordao {
+    display: none;
+  }
+}
+
+/* Estrelinha ao lado de cada price-card-title */
+body.theme-junina .price-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+body.theme-junina .price-card-title::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFD23F'><path d='M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.5));
+  animation: ln-star-twinkle 2.4s ease-in-out infinite;
+}
+
+@keyframes ln-star-twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.18) rotate(15deg); opacity: 0.85; }
+}
+
+/* Card Pro (featured) com glow laranja neon FORTE */
+body.theme-junina .price-card.featured {
+  border: 1.5px solid var(--theme-accent) !important;
+  box-shadow:
+    0 0 0 1.5px var(--theme-accent),
+    0 0 40px rgba(255, 140, 0, 0.48),
+    0 0 80px rgba(255, 140, 0, 0.22),
+    inset 0 0 40px rgba(255, 140, 0, 0.04) !important;
+  position: relative;
+  z-index: 2;
+}
+
+body.theme-junina .price-card.featured:hover {
+  box-shadow:
+    0 0 0 1.5px var(--theme-accent),
+    0 0 60px rgba(255, 140, 0, 0.6),
+    0 0 100px rgba(255, 140, 0, 0.32),
+    inset 0 0 50px rgba(255, 140, 0, 0.06) !important;
+  transform: translateY(-3px);
+}
+
+body.theme-junina .price-card.featured .featured-badge {
+  background: var(--theme-accent) !important;
+  color: var(--bg) !important;
+  box-shadow: 0 0 24px var(--theme-glow), 0 0 40px rgba(255, 140, 0, 0.32) !important;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* Card Premium IA - borda laranja + badge integrado */
+body.theme-junina .price-card.new-plan {
+  border-color: var(--theme-accent) !important;
+  box-shadow:
+    0 0 30px rgba(255, 140, 0, 0.25),
+    0 0 60px rgba(255, 140, 0, 0.12),
+    inset 0 0 30px rgba(255, 140, 0, 0.04) !important;
+}
+
+body.theme-junina .price-card.new-plan:hover {
+  box-shadow:
+    0 0 40px rgba(255, 140, 0, 0.35),
+    0 0 80px rgba(255, 140, 0, 0.18),
+    inset 0 0 30px rgba(255, 140, 0, 0.06) !important;
+  transform: translateY(-3px);
+}
+
+body.theme-junina .price-card.new-plan .new-badge {
+  background: var(--bg) !important;
+  border: 1.5px solid var(--theme-accent) !important;
+  color: var(--theme-accent) !important;
+  box-shadow:
+    0 0 16px rgba(255, 140, 0, 0.4),
+    0 0 32px rgba(255, 140, 0, 0.2) !important;
+  top: -13px !important;
+  z-index: 3;
+}
+
+body.theme-junina .price-card.new-plan .price-card-name {
+  color: var(--theme-accent) !important;
+}
+
+/* Trust signal no rodape da pricing */
+.theme-junina-pricing-trust {
+  margin-top: 56px;
+  padding: 18px 36px;
+  background: rgba(255, 140, 0, 0.05);
+  border: 1px solid var(--theme-border);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-soft);
+  flex-wrap: wrap;
+  font-weight: 500;
+  box-shadow: 0 0 24px rgba(255, 140, 0, 0.14);
+}
+
+.theme-junina-pricing-trust strong {
+  color: var(--theme-accent);
+  font-weight: 700;
+}
+
+.theme-junina-pricing-trust .pricing-trust-star {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.theme-junina-pricing-trust .pricing-trust-star svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--theme-flag-yellow);
+  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.5));
+}
+
+.theme-junina-pricing-trust .pricing-trust-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--theme-border);
+}
+
+@media (max-width: 768px) {
+  .theme-junina-pricing-trust {
+    padding: 16px 22px;
+    gap: 14px;
+    font-size: 12px;
+    border-radius: 24px;
+  }
+  .theme-junina-pricing-trust .pricing-trust-divider {
+    display: none;
+  }
+  .theme-junina-pricing-trust .pricing-trust-star {
+    width: 16px;
+    height: 16px;
+  }
+}
