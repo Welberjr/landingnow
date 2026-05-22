@@ -634,3 +634,126 @@ body.theme-junina .price-card.new-plan .price-card-name {
     height: 36px;
   }
 }
+
+
+/* ============================================================
+   v2.1 - BACKGROUNDS NAS SECOES INTERMEDIARIAS
+   bg-sutil-junina.webp: imagem minimalista (~32 KB) usada em 6
+   secoes com background-position variado pra dar leve variacao.
+   final-cta-junina.webp: imagem mais festiva no rodape antes do
+   footer.
+   ============================================================ */
+
+/* Helper: aplica a imagem sutil em uma secao com overlay */
+body.theme-junina .cases-section,
+body.theme-junina .roi-section,
+body.theme-junina .custom-section,
+body.theme-junina .founder-section,
+body.theme-junina .how-section,
+body.theme-junina .faq-section {
+  position: relative;
+  background-image: url('/bg-sutil-junina.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  isolation: isolate;
+}
+
+/* Overlay escuro pra garantir contraste do texto em cada uma */
+body.theme-junina .cases-section::before,
+body.theme-junina .roi-section::before,
+body.theme-junina .custom-section::before,
+body.theme-junina .founder-section::before,
+body.theme-junina .how-section::before,
+body.theme-junina .faq-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.75) 0%, rgba(10, 10, 10, 0.88) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Variacao de background-position pra cada secao mostrar parte
+   diferente da imagem (evita repeticao visual) */
+body.theme-junina .cases-section    { background-position: center top; }
+body.theme-junina .roi-section      { background-position: left center; }
+body.theme-junina .custom-section   { background-position: right center; }
+body.theme-junina .founder-section  { background-position: center center; }
+body.theme-junina .how-section      { background-position: center bottom; }
+body.theme-junina .faq-section      { background-position: left top; }
+
+/* Mobile: usa versao -mobile.webp em todas */
+@media (max-width: 768px) {
+  body.theme-junina .cases-section,
+  body.theme-junina .roi-section,
+  body.theme-junina .custom-section,
+  body.theme-junina .founder-section,
+  body.theme-junina .how-section,
+  body.theme-junina .faq-section {
+    background-image: url('/bg-sutil-junina-mobile.webp');
+  }
+
+  body.theme-junina .cases-section::before,
+  body.theme-junina .roi-section::before,
+  body.theme-junina .custom-section::before,
+  body.theme-junina .founder-section::before,
+  body.theme-junina .how-section::before,
+  body.theme-junina .faq-section::before {
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.82) 0%, rgba(10, 10, 10, 0.92) 100%);
+  }
+}
+
+/* ============================================================
+   FINAL CTA - background festivo (fogueira + lampioes + bandeirinhas)
+   ============================================================ */
+body.theme-junina .final-cta {
+  position: relative;
+  background-image: url('/final-cta-junina.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  isolation: isolate;
+}
+
+body.theme-junina .final-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(10, 10, 10, 0.55) 0%, rgba(10, 10, 10, 0.85) 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Final CTA mantem o gradient text em "conquistar" */
+body.theme-junina .final-cta h2 em {
+  background: linear-gradient(90deg, var(--neon) 0%, var(--theme-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (max-width: 768px) {
+  body.theme-junina .final-cta {
+    background-image: url('/final-cta-junina-mobile.webp');
+  }
+  body.theme-junina .final-cta::before {
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.90) 100%);
+  }
+}
+
+/* Garante que o gradient laranja original ainda apareca por cima
+   da imagem na final CTA (sobreposicao do glow tematico) */
+body.theme-junina .final-cta {
+  background-image:
+    radial-gradient(circle at center, var(--theme-accent-soft) 0%, transparent 70%),
+    url('/final-cta-junina.webp');
+}
+
+@media (max-width: 768px) {
+  body.theme-junina .final-cta {
+    background-image:
+      radial-gradient(circle at center, var(--theme-accent-soft) 0%, transparent 70%),
+      url('/final-cta-junina-mobile.webp');
+  }
+}
