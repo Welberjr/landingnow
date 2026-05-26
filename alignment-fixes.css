@@ -1,0 +1,133 @@
+﻿/* ============================================================
+   LandingNow - Alinhamentos solicitados por Welber 25/05/2026
+   Centraliza section-headers, justifica paragrafos.
+   ============================================================ */
+
+/* Hero lead justificado */
+.hero p.lead { text-align: justify; }
+
+/* Hero checks centralizados */
+.hero-checks { justify-content: center; }
+
+/* Section headers centralizados (cases, roi, pricing) */
+.section-header.section-header-centered {
+  text-align: center;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-header.section-header-centered .section-label {
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-header.section-header-centered h2 {
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-header.section-header-centered p {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: justify;
+  max-width: 720px;
+}
+
+/* ROI narrative justificado e disclaimer centralizado */
+.roi-narrative p { text-align: justify; }
+.roi-disclaimer { text-align: center; }
+
+/* Price cards: centraliza nome, titulo, descricao, valor */
+.price-card { text-align: center; align-items: center; }
+.price-card .price-card-name,
+.price-card .price-card-title,
+.price-card .price-card-desc,
+.price-card .price-amount,
+.price-card .price-meta { text-align: center; width: 100%; }
+.price-card .price-features { width: 100%; text-align: left; }
+.price-card .price-features .price-feature { text-align: left; }
+
+/* Seasonal addon: chips centralizados */
+.seasonal-addon-occasions { justify-content: center; }
+.seasonal-addon-tag { margin-left: auto; margin-right: auto; }
+
+/* Custom section: titulo centraliza, paragrafo justifica */
+.custom-card { text-align: center; }
+.custom-content { text-align: center; }
+.custom-content .label {
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+.custom-content h3 { text-align: center; }
+.custom-content p {
+  text-align: justify;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Founder: titulo centraliza, paragrafos justificam, stats centralizam */
+.founder-content { text-align: center; }
+.founder-content .label {
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+.founder-content h2 {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.founder-content p {
+  text-align: justify;
+  margin-left: auto;
+  margin-right: auto;
+}
+.founder-stats { text-align: center; }
+.founder-stats > div { text-align: center; }
+
+/* How section: titulo centraliza, paragrafos justificam */
+.how-section .section-label {
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.how-section h2 {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.step p { text-align: justify; }
+
+/* FAQ: respostas justificadas e com mais espaco */
+.faq-answer { text-align: justify; }
+.faq-item.open .faq-answer { max-height: 1000px; padding-top: 4px; }
+
+/* Footer: brand centraliza, social centraliza */
+.footer-brand { text-align: center; }
+.footer-brand .logo-wordmark {
+  justify-content: center;
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+.footer-brand p {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.footer-social {
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Mobile: garante alinhamentos */
+@media (max-width: 768px) {
+  .hero p.lead { text-align: justify !important; }
+  .section-header.section-header-centered p { text-align: justify !important; }
+  .roi-narrative p { text-align: justify !important; }
+  .step p { text-align: justify !important; }
+  .faq-answer { text-align: justify !important; }
+  .custom-content p { text-align: justify !important; }
+  .founder-content p { text-align: justify !important; }
+}

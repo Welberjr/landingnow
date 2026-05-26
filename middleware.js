@@ -5,7 +5,7 @@
  * (WhatsApp, Facebook, Instagram, LinkedIn, Telegram) recebem HTML
  * com a preview correta do tema vigente.
  *
- * Visitantes normais recebem o mesmo HTML — o motor de temas JS
+ * Visitantes normais recebem o mesmo HTML. O motor de temas JS
  * cuida da experiencia visual interativa no navegador.
  *
  * @see https://vercel.com/docs/functions/edge-middleware
@@ -86,67 +86,67 @@ const BASE_URL = 'https://landingnow.com.br';
 
 const META_BY_THEME = {
   default: {
-    title: 'landingnow — Páginas que vendem, a partir de 48h',
+    title: 'landingnow | Páginas que vendem, a partir de 48h',
     description: 'Landing pages profissionais para pequenos negócios. Entrega a partir de 48h. Sem complicação técnica.',
     image: `${BASE_URL}/og-image.png`,
   },
   namorados: {
-    title: 'landingnow — Páginas que apaixonam clientes',
+    title: 'landingnow | Páginas que apaixonam clientes',
     description: 'Edição especial Dia dos Namorados. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-namorados.png`,
   },
   junina: {
-    title: 'landingnow — Páginas que arrasta o povo pro arraiá',
+    title: 'landingnow | Páginas que arrasta o povo pro arraiá',
     description: 'Edição especial Festa Junina. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-junina.png`,
   },
   pais: {
-    title: 'landingnow — Páginas que o seu pai aprovaria',
+    title: 'landingnow | Páginas que o seu pai aprovaria',
     description: 'Edição especial Dia dos Pais. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-pais.png`,
   },
   maes: {
-    title: 'landingnow — Páginas que a sua mãe se orgulharia',
+    title: 'landingnow | Páginas que a sua mãe se orgulharia',
     description: 'Edição especial Dia das Mães. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-maes.png`,
   },
   independencia: {
-    title: 'landingnow — Páginas que conquistam o Brasil',
+    title: 'landingnow | Páginas que conquistam o Brasil',
     description: 'Edição especial Semana da Pátria. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-independencia.png`,
   },
   criancas: {
-    title: 'landingnow — Páginas que encantam até criança',
+    title: 'landingnow | Páginas que encantam até criança',
     description: 'Edição especial Dia das Crianças. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-criancas.png`,
   },
   halloween: {
-    title: 'landingnow — Páginas que assombram a concorrência',
+    title: 'landingnow | Páginas que assombram a concorrência',
     description: 'Edição especial Halloween. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-halloween.png`,
   },
   blackfriday: {
-    title: 'landingnow — Páginas que vendem na Black Friday',
+    title: 'landingnow | Páginas que vendem na Black Friday',
     description: 'Edição especial Black Friday. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-blackfriday.png`,
   },
   natal: {
-    title: 'landingnow — Páginas que entregam presente de Natal',
+    title: 'landingnow | Páginas que entregam presente de Natal',
     description: 'Edição especial Natal. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-natal.png`,
   },
   anonovo: {
-    title: 'landingnow — Páginas que começam o ano vendendo',
+    title: 'landingnow | Páginas que começam o ano vendendo',
     description: 'Edição especial Ano Novo. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-anonovo.png`,
   },
   carnaval: {
-    title: 'landingnow — Páginas que caem no samba do cliente',
+    title: 'landingnow | Páginas que caem no samba do cliente',
     description: 'Edição especial Carnaval. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-carnaval.png`,
   },
   pascoa: {
-    title: 'landingnow — Páginas que renascem em conversão',
+    title: 'landingnow | Páginas que renascem em conversão',
     description: 'Edição especial Páscoa. Sua landing pronta em 48h, com tema sazonal automático que muda em cada data comemorativa.',
     image: `${BASE_URL}/og-image-pascoa.png`,
   },

@@ -30,14 +30,14 @@
   // -----------------------------------------------------------
   const heroTag = document.querySelector('.hero-tag');
   if (heroTag) {
-    heroTag.innerHTML = '<span>Edicao especial Dia dos Namorados</span>';
+    heroTag.innerHTML = '<span>Edição especial Dia dos Namorados</span>';
   }
 
   // -----------------------------------------------------------
   // 3. HERO - H1 com palavra "clientes" em destaque e "apaixonarem" riscado
   // -----------------------------------------------------------
   setHTML('.hero h1',
-    'Sua pagina faz seus <span class="accent-word">clientes</span><br>' +
+    'Sua página faz seus <span class="accent-word">clientes</span><br>' +
     'se <span class="strikethrough">apaixonarem.</span>'
   );
 
@@ -45,7 +45,7 @@
   // 4. HERO - lead text (sem travessao)
   // -----------------------------------------------------------
   setHTML('.hero p.lead',
-    'Landing pages profissionais com foco total em conversao direta no <strong style="color:var(--ink)">WhatsApp</strong>. Estrategia, design e dominio proprio configurado, tudo pronto pra voce vender mais todos os dias.'
+    'Landing pages profissionais com foco total em conversão direta no <strong style="color:var(--ink)">WhatsApp</strong>. Estratégia, design e domínio próprio configurado, tudo pronto pra você vender mais todos os dias.'
   );
 
   // -----------------------------------------------------------
@@ -60,7 +60,7 @@
   }
   const secondaryCta = document.querySelector('.hero-ctas .btn-secondary');
   if (secondaryCta) {
-    secondaryCta.textContent = 'Ver o que ta incluso →';
+    secondaryCta.textContent = 'Ver o que tá incluso →';
   }
 
   // -----------------------------------------------------------
@@ -80,28 +80,28 @@
       '  <div class="float-card-icon">♥</div>',
       '  <div>',
       '    <span class="card-title">Design que gera desejo</span>',
-      '    <span class="card-sub">Visual irresistivel que conecta.</span>',
+      '    <span class="card-sub">Visual irresistível que conecta.</span>',
       '  </div>',
       '</div>',
       '<div class="float-card">',
       '  <div class="float-card-icon">📱</div>',
       '  <div>',
       '    <span class="card-title">Otimizada pra mobile</span>',
-      '    <span class="card-sub">Experiencia perfeita em qualquer tela.</span>',
+      '    <span class="card-sub">Experiência perfeita em qualquer tela.</span>',
       '  </div>',
       '</div>',
       '<div class="float-card">',
       '  <div class="float-card-icon">🎯</div>',
       '  <div>',
-      '    <span class="card-title">Conversao que conquista</span>',
-      '    <span class="card-sub">Estrategia focada no que importa: resultados.</span>',
+      '    <span class="card-title">Conversão que conquista</span>',
+      '    <span class="card-sub">Estratégia focada no que importa: resultados.</span>',
       '  </div>',
       '</div>',
       '<div class="float-card featured">',
       '  <div class="float-card-icon">💬</div>',
       '  <div>',
-      '    <span class="card-title">Botao WhatsApp direto</span>',
-      '    <span class="card-sub">Fale com voce em 1 clique.</span>',
+      '    <span class="card-title">Botão WhatsApp direto</span>',
+      '    <span class="card-sub">Fale com você em 1 clique.</span>',
       '  </div>',
       '</div>'
     ].join('\n');
@@ -117,7 +117,7 @@
     trust.className = 'theme-namorados-trust';
     trust.innerHTML =
       '<span class="trust-heart">' + HEART_OUTLINE + '</span>' +
-      '<span>Mais de <strong>70 marcas</strong> ja conquistaram resultados com a gente.</span>' +
+      '<span>Mais de <strong>70 marcas</strong> já conquistaram resultados com a gente.</span>' +
       '<span class="trust-heart">' + HEART_OUTLINE + '</span>';
     container.appendChild(trust);
   }
@@ -127,7 +127,7 @@
   // -----------------------------------------------------------
   const marqueeMessages = [
     'landings que apaixonam clientes',
-    'entrega em ate 5 dias',
+    'entrega em até 5 dias',
     'copy que faz vender',
     '100% mobile',
     'design que conquista'
@@ -144,14 +144,14 @@
   // 9. CASES - titulo, descricao, CTA
   // -----------------------------------------------------------
   setHTML('.cases-section h2', 'Trabalhos que <em class="italic">conquistaram clientes.</em>');
-  setHTML('.cases-section .cases-cta h3', 'Quer ver seu negocio na <em>proxima conquista?</em>');
+  setHTML('.cases-section .cases-cta h3', 'Quer ver seu negócio na <em>próxima conquista?</em>');
   const casesCtaLink = document.querySelector('.cases-section .cases-cta .btn-neon');
   if (casesCtaLink) casesCtaLink.textContent = 'Quero conquistar a minha →';
 
   // -----------------------------------------------------------
   // 10. ROI CALCULATOR - titulo e descricao
   // -----------------------------------------------------------
-  setHTML('.roi-section h2', 'Quantos clientes voce precisa <em class="italic">pra conquistar sua meta?</em>');
+  setHTML('.roi-section h2', 'Quantos clientes você precisa <em class="italic">pra conquistar sua meta?</em>');
 
   // -----------------------------------------------------------
   // 11. PRICING - titulo tematico
@@ -166,7 +166,7 @@
   // 13. FOUNDER - titulo com tempero romantico
   // -----------------------------------------------------------
   setHTML('.founder-section h2',
-    'Voce nao ta contratando uma agencia. Ta contratando <em>uma pessoa apaixonada pelo que faz.</em>'
+    'Você não tá contratando uma agência. Tá contratando <em>uma pessoa apaixonada pelo que faz.</em>'
   );
 
   // -----------------------------------------------------------
@@ -181,7 +181,7 @@
   // 16. FINAL CTA - titulo com gradient automatico via CSS
   // -----------------------------------------------------------
   setHTML('.final-cta h2', 'Bora <em>conquistar</em><br>mais clientes?');
-  setText('.final-cta p', 'Sua proxima pagina, no ar a partir de 48h. A partir de R$ 99,90.');
+  setText('.final-cta p', 'Sua próxima página, no ar a partir de 48h. A partir de R$ 99,90.');
 
   // -----------------------------------------------------------
   // 17. SEASONAL ADDON - copy tematico
@@ -224,7 +224,7 @@
   if (pricingHeader && !pricingHeader.querySelector('.theme-namorados-pricing-tag')) {
     const tag = document.createElement('div');
     tag.className = 'theme-namorados-pricing-tag';
-    tag.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Edicao Especial Dia dos Namorados';
+    tag.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Edição Especial Dia dos Namorados';
     pricingHeader.appendChild(tag);
   }
 
