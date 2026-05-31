@@ -119,7 +119,7 @@
       '<span class="trust-heart">' + HEART_OUTLINE + '</span>' +
       '<span>Mais de <strong>70 marcas</strong> já conquistaram resultados com a gente.</span>' +
       '<span class="trust-heart">' + HEART_OUTLINE + '</span>';
-    container.appendChild(trust);
+    /* trust "70 marcas" removido a pedido do Welber - a barra de numeros assumiu esse espaco */
   }
 
   // -----------------------------------------------------------

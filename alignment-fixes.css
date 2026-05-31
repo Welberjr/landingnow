@@ -316,3 +316,6 @@ body.theme-namorados .hero-tag{display:flex!important;width:-moz-fit-content!imp
 .social-proof .proof-link:hover .proof-number{transform:scale(1.05)}
 body[class*="theme-"] .social-proof .proof-number{color:var(--theme-accent,var(--neon))}
 @media (max-width:768px){.social-proof{padding:34px 0}.social-proof .proof-grid{gap:14px}.social-proof .proof-number{font-size:30px}.social-proof .proof-label{font-size:12px}.social-proof .proof-stars{font-size:15px;letter-spacing:1px}}
+
+/* v5 (Welber 31/05) - estrelas do Google abaixo do 5,0, centralizadas */
+.social-proof .proof-stars{display:block;line-height:1;margin-top:-1px}
