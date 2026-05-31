@@ -295,7 +295,7 @@ body[class*="theme-"] .faq-item{padding-left:26px!important;padding-right:26px!i
 .price-card .price-amount,
 .price-card .price-meta{text-align:center!important;margin-left:auto!important;margin-right:auto!important}
 
-@media (max-width:768px){.marquee{animation-duration:12s!important}}
+@media (max-width:768px){.marquee{animation-duration:9s!important}}
 
 body.theme-namorados .hero-tag{display:flex!important;width:-moz-fit-content!important;width:fit-content!important;margin-left:auto!important;margin-right:auto!important;justify-content:center!important;text-align:center!important}
 @media (max-width:768px){body.theme-namorados .hero h1{text-align:center!important}}
@@ -319,3 +319,6 @@ body[class*="theme-"] .social-proof .proof-number{color:var(--theme-accent,var(-
 
 /* v5 (Welber 31/05) - estrelas do Google abaixo do 5,0, centralizadas */
 .social-proof .proof-stars{display:block;line-height:1;margin-top:-1px}
+
+/* v6 (Welber 31/05) - carrossel de cases desgrudado da borda no mobile */
+@media (max-width:768px){.cases-grid{padding-left:20px!important}}

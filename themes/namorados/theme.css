@@ -376,15 +376,7 @@ body.theme-namorados .final-cta h2 em {
   .theme-namorados-hearts .heart:nth-child(n+7) {
     display: none;
   }
-  body.theme-namorados .hero-cards {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 14px !important;
-    height: auto !important;
-    position: static !important;
-  }
-  body.theme-namorados .float-card { position: static !important; }
-  body.theme-namorados .float-card.featured { order: -1 !important; }
+  body.theme-namorados .hero-cards { display: none !important; }
 }
 
 /* Respeita preferencia de movimento reduzido */

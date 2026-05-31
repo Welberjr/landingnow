@@ -182,7 +182,7 @@
   // -----------------------------------------------------------
   const marqueeMessages = [
     'landings que vendem 24/7',
-    'entrega em até 5 dias',
+    'entrega a partir de 48h',
     'copy que converte',
     '100% mobile',
     'domínio próprio incluso'

@@ -127,7 +127,7 @@
   // -----------------------------------------------------------
   const marqueeMessages = [
     'landings que apaixonam clientes',
-    'entrega em até 5 dias',
+    'entrega a partir de 48h',
     'copy que faz vender',
     '100% mobile',
     'design que conquista'
