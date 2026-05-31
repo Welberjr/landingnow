@@ -218,3 +218,8 @@
 .faq-item{padding:30px 0!important}
 .faq-item.open .faq-answer{margin-top:16px!important;padding-top:12px!important;padding-bottom:20px!important;max-height:1200px!important}
 .faq-wrapper{margin-top:56px!important;padding-bottom:10px}
+
+
+/* ----- FAQ nos temas sazonais: respiro lateral (no tema o item ganha um card/halo e o texto nao pode colar nas bordas) ----- */
+body[class*="theme-"] .faq-item{padding-left:26px!important;padding-right:26px!important}
+@media (max-width:768px){body[class*="theme-"] .faq-item{padding-left:18px!important;padding-right:18px!important}}
