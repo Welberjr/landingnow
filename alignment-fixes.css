@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    LandingNow - Alinhamentos solicitados por Welber 25/05/2026
    Centraliza section-headers, justifica paragrafos.
    ============================================================ */
@@ -131,3 +131,84 @@
   .custom-content p { text-align: justify !important; }
   .founder-content p { text-align: justify !important; }
 }
+
+
+/* ============================================================
+   v2 (Welber) - Secao de DOR moderna + brilho continuo nos cards
+   ============================================================ */
+
+/* ----- Secao de DOR (dor -> virada) ----- */
+.pain-section{padding:52px 0 16px}
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
+.pain-card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg, rgba(26,26,26,.92) 0%, rgba(15,15,15,.92) 100%);
+  border:1px solid var(--line);border-radius:22px;
+  padding:34px 28px 28px;
+  transition:transform .35s cubic-bezier(.4,0,.2,1),border-color .35s,box-shadow .35s;
+}
+.pain-card::before{
+  content:"";position:absolute;top:-45%;right:-30%;width:240px;height:240px;
+  background:radial-gradient(circle, var(--neon-soft) 0%, transparent 70%);
+  opacity:.45;pointer-events:none;transition:opacity .35s;
+}
+.pain-num{
+  position:absolute;top:12px;right:22px;
+  font-family:'Inter',sans-serif;font-weight:800;font-size:64px;line-height:1;
+  color:transparent;-webkit-text-stroke:1.5px rgba(200,255,61,.16);
+  letter-spacing:-0.04em;pointer-events:none;-webkit-user-select:none;user-select:none;
+}
+.pain-icon{
+  position:relative;width:58px;height:58px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  background:linear-gradient(135deg, rgba(200,255,61,.16), rgba(200,255,61,.04));
+  border:1px solid rgba(200,255,61,.28);
+  box-shadow:0 0 24px rgba(200,255,61,.12);
+  margin-bottom:20px;
+}
+.pain-card h3{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-0.01em;margin-bottom:10px}
+.pain-card > p{font-size:14.5px;color:var(--muted);line-height:1.55;margin-bottom:18px;text-align:left}
+.pain-fix{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 15px;border-radius:12px;
+  background:var(--neon-soft);border:1px solid rgba(200,255,61,.25);
+  font-size:13px;font-weight:600;color:var(--neon);line-height:1.35;
+}
+.pain-fix::before{content:"→";font-weight:800}
+.pain-card:hover{transform:translateY(-6px);border-color:rgba(200,255,61,.4);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.pain-card:hover::before{opacity:.85}
+@media (max-width:900px){
+  .pain-grid{grid-template-columns:1fr;gap:16px;margin-top:36px;max-width:460px;margin-left:auto;margin-right:auto}
+  .pain-card{padding:30px 24px 26px;text-align:center}
+  .pain-num{font-size:52px;top:14px;right:20px}
+  .pain-icon{margin-left:auto;margin-right:auto;width:54px;height:54px;font-size:26px}
+  .pain-card > p{text-align:center}
+  .pain-fix{margin-left:auto;margin-right:auto}
+}
+
+/* ----- Brilho continuo girando na borda dos cards do portfolio ----- */
+@property --cn-angle{syntax:'<angle>';initial-value:0deg;inherits:false}
+.case-card::after{
+  content:"";
+  --cn-angle:0deg;
+  position:absolute;
+  inset:0;
+  border-radius:20px;
+  padding:1.6px;
+  background:conic-gradient(from var(--cn-angle),
+    rgba(200,255,61,0) 0deg,
+    rgba(200,255,61,0) 150deg,
+    rgba(157,221,0,.65) 250deg,
+    rgba(200,255,61,1) 300deg,
+    rgba(200,255,61,0) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+          mask-composite:exclude;
+  pointer-events:none;
+  z-index:3;
+  opacity:.7;
+  animation:caseGlowSpin 6s linear infinite;
+}
+@keyframes caseGlowSpin{to{--cn-angle:360deg}}
+.case-card:hover::after{opacity:1}
+@media (prefers-reduced-motion:reduce){.case-card::after{animation:none}}
