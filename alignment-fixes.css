@@ -141,7 +141,7 @@
 .pain-section{padding:52px 0 16px}
 .pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
 .pain-card{
-  position:relative;overflow:hidden;
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
   background:linear-gradient(160deg, rgba(26,26,26,.92) 0%, rgba(15,15,15,.92) 100%);
   border:1px solid var(--line);border-radius:22px;
   padding:34px 28px 28px;
@@ -167,9 +167,9 @@
   margin-bottom:20px;
 }
 .pain-card h3{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-0.01em;margin-bottom:10px}
-.pain-card > p{font-size:14.5px;color:var(--muted);line-height:1.55;margin-bottom:18px;text-align:left}
+.pain-card > p{font-size:14.5px;color:var(--muted);line-height:1.55;margin-bottom:18px;text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 .pain-fix{
-  display:inline-flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:auto;
   padding:10px 15px;border-radius:12px;
   background:var(--neon-soft);border:1px solid rgba(200,255,61,.25);
   font-size:13px;font-weight:600;color:var(--neon);line-height:1.35;
@@ -183,7 +183,7 @@
   .pain-num{font-size:52px;top:14px;right:20px}
   .pain-icon{margin-left:auto;margin-right:auto;width:54px;height:54px;font-size:26px}
   .pain-card > p{text-align:center}
-  .pain-fix{margin-left:auto;margin-right:auto}
+  .pain-fix{align-self:center;margin-left:auto;margin-right:auto}
 }
 
 /* ----- Brilho continuo girando na borda dos cards do portfolio ----- */
@@ -212,3 +212,9 @@
 @keyframes caseGlowSpin{to{--cn-angle:360deg}}
 .case-card:hover::after{opacity:1}
 @media (prefers-reduced-motion:reduce){.case-card::after{animation:none}}
+
+
+/* ----- FAQ: mais respiro entre perguntas e dentro das respostas ----- */
+.faq-item{padding:30px 0!important}
+.faq-item.open .faq-answer{margin-top:16px!important;padding-top:12px!important;padding-bottom:20px!important;max-height:1200px!important}
+.faq-wrapper{margin-top:56px!important;padding-bottom:10px}
