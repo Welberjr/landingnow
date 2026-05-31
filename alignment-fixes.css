@@ -299,3 +299,20 @@ body[class*="theme-"] .faq-item{padding-left:26px!important;padding-right:26px!i
 
 body.theme-namorados .hero-tag{display:flex!important;width:-moz-fit-content!important;width:fit-content!important;margin-left:auto!important;margin-right:auto!important;justify-content:center!important;text-align:center!important}
 @media (max-width:768px){body.theme-namorados .hero h1{text-align:center!important}}
+
+
+/* ============================================================
+   v4 (Welber 31/05) - selos do hero ocultos no desktop + prova social
+   ============================================================ */
+@media (min-width:981px){.hero-checks{display:none!important}}
+
+.social-proof{padding:46px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.social-proof .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto}
+.social-proof .proof-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;text-decoration:none}
+.social-proof .proof-number{font-size:44px;font-weight:800;color:var(--neon);line-height:1.05;letter-spacing:-0.02em}
+.social-proof .proof-label{font-size:14px;color:var(--muted)}
+.social-proof .proof-stars{font-size:20px;color:#FFC83D;letter-spacing:2px}
+.social-proof .proof-link .proof-number{transition:transform .2s}
+.social-proof .proof-link:hover .proof-number{transform:scale(1.05)}
+body[class*="theme-"] .social-proof .proof-number{color:var(--theme-accent,var(--neon))}
+@media (max-width:768px){.social-proof{padding:34px 0}.social-proof .proof-grid{gap:14px}.social-proof .proof-number{font-size:30px}.social-proof .proof-label{font-size:12px}.social-proof .proof-stars{font-size:15px;letter-spacing:1px}}

@@ -377,9 +377,14 @@ body.theme-namorados .final-cta h2 em {
     display: none;
   }
   body.theme-namorados .hero-cards {
+    display: grid !important;
     grid-template-columns: 1fr !important;
-    gap: 10px !important;
+    gap: 14px !important;
+    height: auto !important;
+    position: static !important;
   }
+  body.theme-namorados .float-card { position: static !important; }
+  body.theme-namorados .float-card.featured { order: -1 !important; }
 }
 
 /* Respeita preferencia de movimento reduzido */
