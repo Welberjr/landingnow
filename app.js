@@ -173,11 +173,16 @@ document.querySelectorAll('.faq-item').forEach(item => {
       }
     });
   }, {
-    threshold: 0.12,
-    rootMargin: '0px 0px -40px 0px'
+    threshold: 0,
+    rootMargin: '0px 0px 60px 0px'
   });
 
   elements.forEach(el => observer.observe(el));
+
+  // Rede de seguranca: revela tudo apos 2.5s caso o observer nao dispare (ex.: secoes altas no mobile)
+  setTimeout(function () {
+    elements.forEach(function (el) { el.classList.add('is-visible'); });
+  }, 2500);
 })();
 ;
 (function() {
@@ -345,7 +350,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
     scrollToBottom();
     input.disabled = true;
     sendBtn.disabled = true;
-    input.placeholder = 'Limite atingido — fale com o Welber';
+    input.placeholder = 'Limite atingido, fale com o Welber';
   }
 
   async function sendMessage() {

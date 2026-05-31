@@ -295,7 +295,7 @@ body[class*="theme-"] .faq-item{padding-left:26px!important;padding-right:26px!i
 .price-card .price-amount,
 .price-card .price-meta{text-align:center!important;margin-left:auto!important;margin-right:auto!important}
 
-@media (max-width:768px){.marquee{animation-duration:9s!important}}
+@media (max-width:768px){.marquee{animation-duration:7s!important}}
 
 body.theme-namorados .hero-tag{display:flex!important;width:-moz-fit-content!important;width:fit-content!important;margin-left:auto!important;margin-right:auto!important;justify-content:center!important;text-align:center!important}
 @media (max-width:768px){body.theme-namorados .hero h1{text-align:center!important}}
@@ -322,3 +322,25 @@ body[class*="theme-"] .social-proof .proof-number{color:var(--theme-accent,var(-
 
 /* v6 (Welber 31/05) - carrossel de cases desgrudado da borda no mobile */
 @media (max-width:768px){.cases-grid{padding-left:20px!important}}
+
+/* ============================================================
+   v7 (Welber 31/05) - prova social refinada + datas organizadas
+   ============================================================ */
+.social-proof .proof-label{white-space:nowrap}
+.social-proof .proof-stars{display:flex;align-items:center;justify-content:center;gap:5px}
+.social-proof .g-icon{width:15px;height:15px;flex-shrink:0}
+@media (max-width:768px){
+  .hero{padding-bottom:20px!important}
+  .social-proof{padding-top:18px!important}
+  .social-proof .proof-grid{gap:10px}
+  .social-proof .proof-label{font-size:10px}
+}
+
+.seasonal-addon-tag{display:flex!important;width:-moz-fit-content!important;width:fit-content!important;margin-left:auto!important;margin-right:auto!important}
+
+.seasonal-addon-occasions{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
+.seasonal-addon-chip{font-size:11.5px!important;font-weight:600!important;padding:6px 8px!important;text-align:center;background:rgba(255,255,255,0.03)!important;border:1px solid rgba(200,255,61,0.28)!important;color:var(--ink)!important;transition:transform .25s ease,background .25s ease,border-color .25s ease}
+.seasonal-addon-chip:hover{transform:translateY(-1px);background:rgba(200,255,61,0.1)!important}
+body[class*="theme-"] .seasonal-addon-chip{border-color:var(--theme-accent)!important}
+body[class*="theme-"] .seasonal-addon-chip:hover{background:rgba(255,77,122,0.12)!important}
+@media (max-width:768px){.seasonal-addon-occasions{grid-template-columns:repeat(2,1fr)!important;gap:7px!important}.seasonal-addon-chip{font-size:11px!important;padding:6px 6px!important}}
