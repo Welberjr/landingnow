@@ -92,22 +92,22 @@
   // -----------------------------------------------------------
   const heroTag = document.querySelector('.hero-tag');
   if (heroTag) {
-    heroTag.innerHTML = '<span>Edicao especial Festa Junina</span>';
+    heroTag.innerHTML = '<span>Edição Especial Festa Junina</span>';
   }
 
   // -----------------------------------------------------------
   // 2. HERO - H1: vende em destaque, dorme riscado
   // -----------------------------------------------------------
   setHTML('.hero h1',
-    'Sua pagina que <span class="accent-word">vende</span><br>' +
-    'enquanto voce <span class="strikethrough">dorme.</span>'
+    'Sua página que <span class="accent-word">vende</span><br>' +
+    'enquanto você <span class="strikethrough">dorme.</span>'
   );
 
   // -----------------------------------------------------------
   // 3. HERO - lead text
   // -----------------------------------------------------------
   setHTML('.hero p.lead',
-    'Landing pages profissionais com foco total em conversao direta no <strong style="color:var(--ink)">WhatsApp</strong>. Estrategia, design e dominio proprio configurado, tudo pronto pra voce comecar a faturar.'
+    'Landing pages profissionais com foco total em conversão direta no <strong style="color:var(--ink)">WhatsApp</strong>. Estratégia, design e domínio próprio configurado, tudo pronto pra você começar a faturar.'
   );
 
   // -----------------------------------------------------------
@@ -118,7 +118,7 @@
     const svg = primaryCta.querySelector('svg');
     primaryCta.innerHTML = '';
     if (svg) primaryCta.appendChild(svg);
-    primaryCta.appendChild(document.createTextNode(' Quero minha pagina agora'));
+    primaryCta.appendChild(document.createTextNode(' Quero minha página agora'));
   }
   const secondaryCta = document.querySelector('.hero-ctas .btn-secondary');
   if (secondaryCta) {
@@ -142,21 +142,21 @@
       '  <div class="float-card-icon">📱</div>',
       '  <div>',
       '    <span class="card-title">Otimizada pra mobile</span>',
-      '    <span class="card-sub">Experiencia perfeita em qualquer tela.</span>',
+      '    <span class="card-sub">Experiência perfeita em qualquer tela.</span>',
       '  </div>',
       '</div>',
       '<div class="float-card featured">',
       '  <div class="float-card-icon">💬</div>',
       '  <div>',
-      '    <span class="card-title">Botao WhatsApp direto</span>',
-      '    <span class="card-sub">Fale com voce em 1 clique.</span>',
+      '    <span class="card-title">Botão WhatsApp direto</span>',
+      '    <span class="card-sub">Fale com você em 1 clique.</span>',
       '  </div>',
       '</div>',
       '<div class="float-card">',
       '  <div class="float-card-icon">🎯</div>',
       '  <div>',
-      '    <span class="card-title">Foco em conversao</span>',
-      '    <span class="card-sub">Estrategia voltada pra resultado.</span>',
+      '    <span class="card-title">Foco em conversão</span>',
+      '    <span class="card-sub">Estratégia voltada pra resultado.</span>',
       '  </div>',
       '</div>'
     ].join('\n');
@@ -172,7 +172,7 @@
     trust.className = 'theme-junina-trust';
     trust.innerHTML =
       '<span class="trust-star">' + STAR + '</span>' +
-      '<span>Mais de <strong>70 marcas</strong> ja conquistaram resultados com a gente.</span>' +
+      '<span>Mais de <strong>70 marcas</strong> já conquistaram resultados com a gente.</span>' +
       '<span class="trust-star">' + STAR + '</span>';
     container.appendChild(trust);
   }
@@ -182,10 +182,10 @@
   // -----------------------------------------------------------
   const marqueeMessages = [
     'landings que vendem 24/7',
-    'entrega em ate 5 dias',
+    'entrega em até 5 dias',
     'copy que converte',
     '100% mobile',
-    'dominio proprio incluso'
+    'domínio próprio incluso'
   ];
   const marquee = document.querySelector('.marquee');
   if (marquee) {
@@ -199,14 +199,14 @@
   // 8. CASES - titulo, descricao, CTA
   // -----------------------------------------------------------
   setHTML('.cases-section h2', 'Trabalhos que <em class="italic">conquistaram clientes.</em>');
-  setHTML('.cases-section .cases-cta h3', 'Quer ver seu negocio na <em>proxima conquista?</em>');
+  setHTML('.cases-section .cases-cta h3', 'Quer ver seu negócio na <em>próxima conquista?</em>');
   const casesCtaLink = document.querySelector('.cases-section .cases-cta .btn-neon');
   if (casesCtaLink) casesCtaLink.textContent = 'Quero a minha conquista →';
 
   // -----------------------------------------------------------
   // 9. ROI CALCULATOR
   // -----------------------------------------------------------
-  setHTML('.roi-section h2', 'Quantos clientes voce precisa <em class="italic">pra alcancar sua meta?</em>');
+  setHTML('.roi-section h2', 'Quantos clientes você precisa <em class="italic">pra alcancar sua meta?</em>');
 
   // -----------------------------------------------------------
   // 10. PRICING - titulo tematico
@@ -217,14 +217,14 @@
   // 11. FOUNDER
   // -----------------------------------------------------------
   setHTML('.founder-section h2',
-    'Voce nao ta contratando uma agencia. Ta contratando <em>quem coloca a mao na massa.</em>'
+    'Você não tá contratando uma agência. Ta contratando <em>quem coloca a mao na massa.</em>'
   );
 
   // -----------------------------------------------------------
   // 12. FINAL CTA
   // -----------------------------------------------------------
   setHTML('.final-cta h2', 'Bora <em>conquistar</em><br>mais clientes?');
-  setText('.final-cta p', 'Sua proxima pagina, no ar a partir de 48h. A partir de R$ 99,90.');
+  setText('.final-cta p', 'Sua próxima página, no ar a partir de 48h. A partir de R$ 99,90.');
 
   // -----------------------------------------------------------
   // 13. SEASONAL ADDON
@@ -266,14 +266,14 @@
   if (pricingHeader && !pricingHeader.querySelector('.theme-junina-pricing-tag')) {
     const tag = document.createElement('div');
     tag.className = 'theme-junina-pricing-tag';
-    tag.innerHTML = STRAW_HAT + ' Edicao Especial Festa Junina';
+    tag.innerHTML = STRAW_HAT + ' Edição Especial Festa Junina';
     pricingHeader.appendChild(tag);
 
     // Subtitulo abaixo do h2
     if (!pricingHeader.querySelector('.theme-junina-pricing-subtitle')) {
       const sub = document.createElement('p');
       sub.className = 'theme-junina-pricing-subtitle';
-      sub.textContent = 'Escolha o plano que combina com o estagio do seu negocio. Start no pagamento unico; Pro, Premium e Premium IA em 2 parcelas de 50%.';
+      sub.textContent = 'Escolha o plano que combina com o estágio do seu negócio. Start no pagamento único; Pro, Premium e Premium IA em 2 parcelas de 50%.';
       pricingHeader.appendChild(sub);
     }
   }
@@ -288,15 +288,15 @@
     highlights.innerHTML = [
       '<div class="highlight">',
       '  <div class="highlight-icon">' + ICON_BONFIRE + '</div>',
-      '  <div>Paginas que vendem enquanto voce <strong>aproveita o arraia.</strong></div>',
+      '  <div>Páginas que vendem enquanto você <strong>aproveita o arraia.</strong></div>',
       '</div>',
       '<div class="highlight">',
       '  <div class="highlight-icon">' + ICON_BALLOON + '</div>',
-      '  <div>Performance que <strong>nao</strong> tira ferias.</div>',
+      '  <div>Performance que <strong>não</strong> tira ferias.</div>',
       '</div>',
       '<div class="highlight">',
       '  <div class="highlight-icon">' + ICON_ACCORDION + '</div>',
-      '  <div>Resultados que fazem qualquer negocio <strong>dancar quadrilha.</strong></div>',
+      '  <div>Resultados que fazem qualquer negócio <strong>dancar quadrilha.</strong></div>',
       '</div>'
     ].join('\n');
     pricingContainer.appendChild(highlights);

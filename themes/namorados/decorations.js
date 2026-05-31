@@ -30,7 +30,7 @@
   // -----------------------------------------------------------
   const heroTag = document.querySelector('.hero-tag');
   if (heroTag) {
-    heroTag.innerHTML = '<span>Edição especial Dia dos Namorados</span>';
+    heroTag.innerHTML = '<span>Edição Especial Dia dos Namorados</span>';
   }
 
   // -----------------------------------------------------------
@@ -264,9 +264,9 @@
     trust.className = 'theme-namorados-pricing-trust';
     trust.innerHTML =
       '<span class="pricing-trust-heart">' + HEART_FILL + '</span>' +
-      '<span>Mais do que paginas, criamos experiencias que <strong>conquistam.</strong></span>' +
+      '<span>Mais do que páginas, criamos experiências que <strong>conquistam.</strong></span>' +
       '<span class="pricing-trust-divider"></span>' +
-      '<span>Feito com foco em <strong>conversao.</strong></span>' +
+      '<span>Feito com foco em <strong>conversão.</strong></span>' +
       '<span class="pricing-trust-heart">' + HEART_FILL + '</span>';
     pricingContainer.appendChild(trust);
   }

@@ -280,3 +280,22 @@
 /* ----- FAQ nos temas sazonais: respiro lateral (no tema o item ganha um card/halo e o texto nao pode colar nas bordas) ----- */
 body[class*="theme-"] .faq-item{padding-left:26px!important;padding-right:26px!important}
 @media (max-width:768px){body[class*="theme-"] .faq-item{padding-left:18px!important;padding-right:18px!important}}
+
+
+/* ============================================================
+   v3 (Welber 31/05) - resultados centralizados, planos centralizados,
+   faixa mobile mais rapida, tag namorados centralizada
+   ============================================================ */
+.pain-result{display:flex;width:-moz-fit-content;width:fit-content;margin-left:auto;margin-right:auto}
+
+.price-card{align-items:center!important}
+.price-card .price-card-name,
+.price-card .price-card-title,
+.price-card .price-card-desc,
+.price-card .price-amount,
+.price-card .price-meta{text-align:center!important;margin-left:auto!important;margin-right:auto!important}
+
+@media (max-width:768px){.marquee{animation-duration:12s!important}}
+
+body.theme-namorados .hero-tag{display:flex!important;width:-moz-fit-content!important;width:fit-content!important;margin-left:auto!important;margin-right:auto!important;justify-content:center!important;text-align:center!important}
+@media (max-width:768px){body.theme-namorados .hero h1{text-align:center!important}}
