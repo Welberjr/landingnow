@@ -344,3 +344,18 @@ body[class*="theme-"] .social-proof .proof-number{color:var(--theme-accent,var(-
 body[class*="theme-"] .seasonal-addon-chip{border-color:var(--theme-accent)!important}
 body[class*="theme-"] .seasonal-addon-chip:hover{background:rgba(255,77,122,0.12)!important}
 @media (max-width:768px){.seasonal-addon-occasions{grid-template-columns:repeat(2,1fr)!important;gap:7px!important}.seasonal-addon-chip{font-size:11px!important;padding:6px 6px!important}}
+
+/* ============================================================
+   v8 (Welber 31/05) - texto NUNCA some no mobile + custom justify
+   Causa do "sumindo": .reveal comeca opacity:0 e depende do observer.
+   No mobile forcamos visivel sempre (independente de timing).
+   ============================================================ */
+@media (max-width:768px){
+  .reveal, .reveal.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+.custom-card p{ -webkit-hyphens:auto; hyphens:auto; overflow-wrap:break-word; }

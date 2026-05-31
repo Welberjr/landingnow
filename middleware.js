@@ -153,6 +153,13 @@ const META_BY_THEME = {
 };
 
 // ============================================================
+// Hero H1 por tema (injeta server-side pra acelerar o LCP)
+// ============================================================
+const HERO_H1_BY_THEME = {
+  namorados: 'Sua p\u00e1gina faz seus <span class="accent-word">clientes</span><br>se <span class="strikethrough">apaixonarem.</span>',
+};
+
+// ============================================================
 // Helper: substitui meta tag preservando outros atributos
 // ============================================================
 function replaceMetaContent(html, attrName, attrValue, newContent) {
@@ -207,6 +214,12 @@ export default async function middleware(request) {
 
   // Substitui title da aba
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${meta.title}</title>`);
+
+  // Reescreve o H1 do hero server-side pro tema ativo (acelera o LCP)
+  const heroH1 = HERO_H1_BY_THEME[slug];
+  if (heroH1) {
+    html = html.replace(/<h1>[\s\S]*?<\/h1>/i, `<h1>${heroH1}</h1>`);
+  }
 
   return new Response(html, {
     status: 200,
