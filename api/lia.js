@@ -325,7 +325,7 @@ function extrairLead(reply) {
 
     const replyLimpo = reply.replace(regex, '').trim();
     const mensagem = montarMensagemWhatsApp(lead);
-    const waLink = `https://wa.me/5561985970300?text=${encodeURIComponent(mensagem)}`;
+    const waLink = `https://api.whatsapp.com/send?phone=5561985970300&text=${encodeURIComponent(mensagem)}`;
 
     return { reply: replyLimpo, lead, waLink };
   } catch (e) {
