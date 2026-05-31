@@ -461,7 +461,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
     'start': {
       name: 'Plano Start',
       title: 'Pra começar com presença online.',
-      price: 'R$ 99,90 <span>pagamento único</span>',
+      price: 'R$ 99,90 <span>Pix · 50% início, 50% entrega</span>',
       cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%2099%2C90',
       included: [
         'Landing de 1 página, até 4 seções',
@@ -487,7 +487,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
     'pro': {
       name: 'Plano Pro',
       title: 'Pra vender de verdade.',
-      price: 'R$ 297 <span>2x de 50%</span>',
+      price: 'R$ 297 <span>Pix · 50% início, 50% entrega</span>',
       cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Pro%20de%20R%24%20297',
       included: [
         'Tudo do plano Start, e mais:',
@@ -516,7 +516,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
     'premium': {
       name: 'Plano Premium',
       title: 'Pra crescer no próximo nível.',
-      price: 'R$ 497 <span>2x de 50%</span>',
+      price: 'R$ 497 <span>Pix · 50% início, 50% entrega</span>',
       cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20de%20R%24%20497',
       included: [
         'Tudo do plano Pro, e mais:',
@@ -544,7 +544,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
     'premium-ia': {
       name: 'Plano Premium IA',
       title: 'Pra capturar leads dormindo.',
-      price: 'R$ 997 <span>2x de 50%</span>',
+      price: 'R$ 997 <span>Pix · 50% início, 50% entrega</span>',
       cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20IA%20de%20R%24%20997',
       included: [
         'Tudo do plano Premium, e mais:',

@@ -273,7 +273,7 @@
     if (!pricingHeader.querySelector('.theme-junina-pricing-subtitle')) {
       const sub = document.createElement('p');
       sub.className = 'theme-junina-pricing-subtitle';
-      sub.textContent = 'Escolha o plano que combina com o estágio do seu negócio. Start no pagamento único; Pro, Premium e Premium IA em 2 parcelas de 50%.';
+      sub.textContent = 'Escolha o plano que combina com o estágio do seu negócio. O pagamento é via Pix, com 50% pra iniciar e 50% na entrega.';
       pricingHeader.appendChild(sub);
     }
   }
