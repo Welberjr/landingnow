@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel · landingnow</title>
+<meta name="theme-color" content="#0A0A0A">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0A;--bg-soft:#131313;--bg-card:#1A1A1A;--line:#2A2A2A;
+    --ink:#FAFAFA;--ink-soft:#B8B8B8;--muted:#8A8A8A;
+    --neon:#C8FF3D;--neon-soft:rgba(200,255,61,0.15);--neon-glow:rgba(200,255,61,0.4);
+    --hot:#FF4D6D;--whatsapp:#25D366;--radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;position:relative;overflow-x:hidden}
+  body::after{content:'';position:fixed;top:-15%;right:-10%;width:680px;height:680px;z-index:0;pointer-events:none;background:radial-gradient(circle,rgba(200,255,61,0.07) 0%,transparent 60%);filter:blur(90px)}
+  .wrap{position:relative;z-index:2;width:100%;max-width:1100px;margin:0 auto;padding:0 22px}
+  .logo-wordmark{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+  .logo-img{width:30px;height:30px;border-radius:7px;object-fit:contain;display:block}
+  .logo-text{font-size:19px;font-weight:700;letter-spacing:-.02em}
+  .logo-text span{color:var(--neon)}
+
+  /* LOGIN */
+  #tela-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .login-card{width:100%;max-width:400px;background:var(--bg-card);border:1px solid var(--line);border-radius:20px;padding:36px 30px;text-align:center}
+  .login-card .logo-wordmark{justify-content:center;margin-bottom:26px}
+  .login-card h1{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+  .login-card .sub{color:var(--muted);font-size:14px;margin-bottom:26px}
+  .campo{display:flex;flex-direction:column;gap:7px;text-align:left;margin-bottom:16px}
+  .campo label{font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .campo input{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:13px 15px;color:var(--ink);font-family:'Inter';font-size:15px;transition:border-color .2s,box-shadow .2s}
+  .campo input:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px var(--neon-soft)}
+  .btn-neon{width:100%;border:none;cursor:pointer;font-family:'Inter';font-weight:700;font-size:16px;color:var(--bg);background:var(--neon);padding:15px;border-radius:100px;box-shadow:0 12px 30px -10px var(--neon-glow);transition:transform .2s,box-shadow .2s;margin-top:6px}
+  .btn-neon:hover{transform:translateY(-2px)}
+  .btn-neon:disabled{opacity:.55;cursor:wait;transform:none}
+  .login-erro{color:var(--hot);font-size:13.5px;font-weight:600;margin-top:14px;min-height:18px}
+
+  /* PAINEL */
+  #tela-painel{display:none}
+  .topo{border-bottom:1px solid var(--line);padding:18px 0;position:sticky;top:0;background:rgba(10,10,10,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:50}
+  .topo-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .btn-sair{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:'Inter';font-weight:600;font-size:13px;padding:9px 16px;border-radius:100px;cursor:pointer;transition:all .2s}
+  .btn-sair:hover{border-color:var(--hot);color:var(--hot)}
+
+  .resumo{display:flex;gap:14px;flex-wrap:wrap;padding:26px 0 6px}
+  .kpi{flex:1;min-width:150px;background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .kpi .n{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1}
+  .kpi .l{font-size:12.5px;color:var(--muted);margin-top:6px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+  .kpi.novos .n{color:var(--neon)}
+  .kpi.entregues .n{color:var(--whatsapp)}
+
+  .ferramentas{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:22px 0 10px;position:sticky;top:71px;background:var(--bg);z-index:40}
+  .busca{flex:1;min-width:200px;position:relative}
+  .busca input{width:100%;background:var(--bg-soft);border:1px solid var(--line);border-radius:100px;padding:12px 16px 12px 42px;color:var(--ink);font-family:'Inter';font-size:14.5px}
+  .busca input:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px var(--neon-soft)}
+  .busca svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);width:16px;height:16px}
+  .filtros{display:flex;gap:8px}
+  .filtro{background:var(--bg-soft);border:1px solid var(--line);color:var(--ink-soft);font-family:'Inter';font-weight:600;font-size:13px;padding:10px 16px;border-radius:100px;cursor:pointer;transition:all .2s}
+  .filtro.ativo{background:var(--neon);color:var(--bg);border-color:var(--neon)}
+  .btn-atualizar{background:transparent;border:1px solid var(--line);color:var(--ink-soft);border-radius:100px;width:40px;height:40px;cursor:pointer;display:grid;place-items:center;transition:all .2s}
+  .btn-atualizar:hover{border-color:var(--neon);color:var(--neon)}
+
+  .lista{padding:10px 0 60px}
+  .grupo{margin-bottom:30px}
+  .grupo-cab{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .grupo-cab h2{font-size:18px;font-weight:800;letter-spacing:-.01em}
+  .grupo-cab .qtd{font-size:12px;color:var(--muted);background:var(--bg-card);border:1px solid var(--line);padding:3px 10px;border-radius:100px;font-weight:600}
+
+  .brief{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+  .brief.entregue{opacity:.82}
+  .brief-cab{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+  .brief-cab:hover{background:rgba(255,255,255,.02)}
+  .brief-cab .seta{color:var(--muted);transition:transform .25s;flex-shrink:0}
+  .brief.aberto .brief-cab .seta{transform:rotate(90deg)}
+  .brief-cab .tit{flex:1;min-width:0}
+  .brief-cab .tit .linha1{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .brief-cab .tit .nome{font-weight:700;font-size:15.5px}
+  .brief-cab .tit .linha2{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:100px;white-space:nowrap}
+  .badge.plano{background:var(--neon-soft);color:var(--neon);border:1px solid rgba(200,255,61,.3)}
+  .badge.novo{background:rgba(255,77,109,.15);color:var(--hot);border:1px solid rgba(255,77,109,.35)}
+  .badge.entregue{background:rgba(37,211,102,.15);color:var(--whatsapp);border:1px solid rgba(37,211,102,.35)}
+
+  .brief-corpo{display:none;padding:4px 20px 20px;border-top:1px solid var(--line)}
+  .brief.aberto .brief-corpo{display:block}
+  .secao-dados{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  .dado{display:flex;flex-direction:column;gap:3px}
+  .dado.full{grid-column:1/-1}
+  .dado .rot{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+  .dado .val{font-size:14.5px;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+  .dado .val a{color:var(--neon);text-decoration:none}
+  .dado .val a:hover{text-decoration:underline}
+  .tags-val{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .tag-val{font-size:12.5px;background:var(--bg-soft);border:1px solid var(--line);padding:4px 11px;border-radius:100px;color:var(--ink-soft)}
+  .galeria{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+  .galeria a{display:block;width:96px;height:96px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--bg-soft)}
+  .galeria.logo a{width:auto;min-width:96px;padding:8px;display:grid;place-items:center}
+  .galeria img{width:100%;height:100%;object-fit:cover;display:block}
+  .galeria.logo img{object-fit:contain;max-height:80px}
+  .acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+  .btn-acao{border:none;cursor:pointer;font-family:'Inter';font-weight:700;font-size:14px;padding:12px 20px;border-radius:100px;display:inline-flex;align-items:center;gap:8px;transition:transform .2s,box-shadow .2s}
+  .btn-entregar{background:var(--neon);color:var(--bg);box-shadow:0 10px 26px -10px var(--neon-glow)}
+  .btn-entregar:hover{transform:translateY(-2px)}
+  .btn-reabrir{background:transparent;color:var(--ink-soft);border:1px solid var(--line)}
+  .btn-reabrir:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .btn-wpp{background:var(--whatsapp);color:var(--bg);text-decoration:none}
+  .btn-wpp:hover{transform:translateY(-2px)}
+  .btn-wpp svg{width:17px;height:17px;fill:var(--bg)}
+
+  .vazio{text-align:center;padding:70px 20px;color:var(--muted)}
+  .vazio svg{width:46px;height:46px;color:var(--line);margin-bottom:16px}
+  .vazio h3{font-size:18px;font-weight:700;color:var(--ink-soft);margin-bottom:6px}
+  .carregando{text-align:center;padding:60px;color:var(--muted)}
+  .spin{display:inline-block;width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--neon);border-radius:50%;animation:girar .8s linear infinite}
+  @keyframes girar{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-card);border:1px solid var(--neon);color:var(--ink);padding:14px 24px;border-radius:100px;font-size:14px;font-weight:600;opacity:0;transition:all .3s;z-index:100;pointer-events:none}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:600px){.secao-dados{grid-template-columns:1fr}.resumo{gap:10px}.kpi{min-width:calc(50% - 5px)}.ferramentas{position:static}}
+</style>
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="tela-login">
+    <div class="login-card">
+      <a class="logo-wordmark"><img class="logo-img" alt="landingnow"><span class="logo-text">landingnow<span>.</span></span></a>
+      <h1>Painel de briefings</h1>
+      <p class="sub">Acesso restrito. Entre com seu e-mail e senha.</p>
+      <form id="form-login">
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" autocomplete="username" placeholder="voce@landingnow.com.br" required>
+        </div>
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" autocomplete="current-password" placeholder="Sua senha" required>
+        </div>
+        <button type="submit" class="btn-neon" id="btn-login">Entrar</button>
+        <div class="login-erro" id="login-erro"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="tela-painel">
+    <div class="topo">
+      <div class="wrap topo-inner">
+        <a class="logo-wordmark"><img class="logo-img" alt="landingnow"><span class="logo-text">landingnow<span>.</span></span></a>
+        <button class="btn-sair" id="btn-sair">Sair</button>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="resumo" id="resumo"></div>
+      <div class="ferramentas">
+        <div class="busca">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input type="text" id="busca" placeholder="Buscar por cliente, segmento, cidade...">
+        </div>
+        <div class="filtros">
+          <button class="filtro ativo" data-f="todos">Todos</button>
+          <button class="filtro" data-f="novo">Novos</button>
+          <button class="filtro" data-f="entregue">Entregues</button>
+        </div>
+        <button class="btn-atualizar" id="btn-atualizar" title="Atualizar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        </button>
+      </div>
+      <div class="lista" id="lista">
+        <div class="carregando"><div class="spin"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+const SB_URL="https://hubxacojvgoepowsgbas.supabase.co";
+const SB_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1YnhhY29qdmdvZXBvd3NnYmFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxOTEwNjMsImV4cCI6MjA5Mzc2NzA2M30.MdjhqdZDywBVwh-V54CoacsB-sBHsQPVwH8i6NzP2eU";
+const LOGO_SRC="/apple-touch-icon.png";
+const PREFIXO_IMG=SB_URL+"/storage/v1/object/public/briefings/";
+
+let token=null, dados=[], filtroAtual='todos';
+
+/* sessao: tenta sessionStorage, cai pra memoria */
+function salvarToken(t){token=t;try{sessionStorage.setItem('ln_tk',t);}catch(e){}}
+function lerToken(){if(token)return token;try{return sessionStorage.getItem('ln_tk');}catch(e){return null;}}
+function limparToken(){token=null;try{sessionStorage.removeItem('ln_tk');}catch(e){}}
+
+/* escapa texto vindo do banco (anti-XSS) */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function imgOk(u){return typeof u==='string'&&u.indexOf(PREFIXO_IMG)===0;}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2600);}
+
+/* ====== LOGIN ====== */
+document.getElementById('form-login').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const btn=document.getElementById('btn-login'),erro=document.getElementById('login-erro');
+  erro.textContent='';btn.disabled=true;const t=btn.textContent;btn.textContent='Entrando...';
+  try{
+    const r=await fetch(SB_URL+'/auth/v1/token?grant_type=password',{
+      method:'POST',headers:{'apikey':SB_ANON,'Content-Type':'application/json'},
+      body:JSON.stringify({email:document.getElementById('email').value.trim(),password:document.getElementById('senha').value})
+    });
+    const j=await r.json();
+    if(!r.ok||!j.access_token){throw new Error(j.error_description||j.msg||'E-mail ou senha incorretos.');}
+    salvarToken(j.access_token);
+    abrirPainel();
+  }catch(err){erro.textContent=err.message||'Não foi possível entrar.';}
+  finally{btn.disabled=false;btn.textContent=t;}
+});
+
+function abrirPainel(){
+  document.getElementById('tela-login').style.display='none';
+  document.getElementById('tela-painel').style.display='block';
+  carregar();
+}
+document.getElementById('btn-sair').addEventListener('click',()=>{
+  limparToken();dados=[];
+  document.getElementById('tela-painel').style.display='none';
+  document.getElementById('tela-login').style.display='flex';
+  document.getElementById('senha').value='';
+});
+
+/* ====== CARREGAR BRIEFINGS ====== */
+async function carregar(){
+  const lista=document.getElementById('lista');
+  lista.innerHTML='<div class="carregando"><div class="spin"></div></div>';
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/briefings?select=*&order=created_at.desc',{
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+lerToken()}
+    });
+    if(r.status===401){limparToken();document.getElementById('btn-sair').click();return;}
+    if(!r.ok)throw new Error('Erro '+r.status);
+    dados=await r.json();
+    render();
+  }catch(err){
+    lista.innerHTML='<div class="vazio"><h3>Não foi possível carregar</h3><p>'+esc(err.message||'')+'</p></div>';
+  }
+}
+document.getElementById('btn-atualizar').addEventListener('click',carregar);
+document.getElementById('busca').addEventListener('input',render);
+document.querySelectorAll('.filtro').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('ativo'));
+  b.classList.add('ativo');filtroAtual=b.dataset.f;render();
+}));
+
+/* ====== RENDER ====== */
+function fmtData(iso){if(!iso)return'';const d=new Date(iso);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+function soDigitos(s){return String(s||'').replace(/\D/g,'');}
+
+function render(){
+  const lista=document.getElementById('lista');
+  const termo=document.getElementById('busca').value.trim().toLowerCase();
+  const novos=dados.filter(b=>b.status==='novo').length;
+  const entregues=dados.filter(b=>b.status==='entregue').length;
+  document.getElementById('resumo').innerHTML=
+    '<div class="kpi"><div class="n">'+dados.length+'</div><div class="l">Briefings no total</div></div>'+
+    '<div class="kpi novos"><div class="n">'+novos+'</div><div class="l">Aguardando</div></div>'+
+    '<div class="kpi entregues"><div class="n">'+entregues+'</div><div class="l">Entregues</div></div>';
+
+  let filtrados=dados.filter(b=>filtroAtual==='todos'?true:b.status===filtroAtual);
+  if(termo){
+    filtrados=filtrados.filter(b=>[b.nome_negocio,b.o_que_vende,b.cidade_regiao,b.nome_responsavel].join(' ').toLowerCase().includes(termo));
+  }
+  if(filtrados.length===0){
+    lista.innerHTML='<div class="vazio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><h3>Nenhum briefing por aqui</h3><p>'+(dados.length===0?'Quando um cliente enviar o briefing, ele aparece aqui.':'Tente outro filtro ou busca.')+'</p></div>';
+    return;
+  }
+  // agrupar por cliente (nome do negocio)
+  const grupos={};
+  filtrados.forEach(b=>{const k=(b.nome_negocio||'Sem nome').trim();(grupos[k]=grupos[k]||[]).push(b);});
+  let html='';
+  Object.keys(grupos).forEach(cliente=>{
+    const arr=grupos[cliente];
+    html+='<div class="grupo"><div class="grupo-cab"><h2>'+esc(cliente)+'</h2><span class="qtd">'+arr.length+(arr.length>1?' briefings':' briefing')+'</span></div>';
+    arr.forEach(b=>{html+=cardBrief(b);});
+    html+='</div>';
+  });
+  lista.innerHTML=html;
+  // liga eventos
+  lista.querySelectorAll('.brief-cab').forEach(c=>c.addEventListener('click',()=>c.parentElement.classList.toggle('aberto')));
+  lista.querySelectorAll('[data-entregar]').forEach(btn=>btn.addEventListener('click',ev=>{ev.stopPropagation();marcar(btn.dataset.entregar,'entregue');}));
+  lista.querySelectorAll('[data-reabrir]').forEach(btn=>btn.addEventListener('click',ev=>{ev.stopPropagation();marcar(btn.dataset.reabrir,'novo');}));
+}
+
+function linhaDado(rot,val,full){
+  if(!val)return'';
+  return '<div class="dado'+(full?' full':'')+'"><span class="rot">'+rot+'</span><span class="val">'+esc(val)+'</span></div>';
+}
+function cardBrief(b){
+  const entregue=b.status==='entregue';
+  const wpp=soDigitos(b.whatsapp);
+  const waHref=wpp?('https://wa.me/55'+wpp):'';
+  // dados
+  let dd='';
+  let contato='';
+  if(b.whatsapp)contato+='WhatsApp: '+(waHref?'<a href="'+esc(waHref)+'" target="_blank" rel="noopener">'+esc(b.whatsapp)+'</a>':esc(b.whatsapp));
+  if(b.instagram)contato+=(contato?'<br>':'')+'Instagram: '+esc(b.instagram);
+  if(b.google_meu_negocio)contato+=(contato?'<br>':'')+'Google: '+esc(b.google_meu_negocio);
+  if(contato)dd+='<div class="dado full"><span class="rot">Contato</span><span class="val">'+contato+'</span></div>';
+  dd+=linhaDado('Cidade e região',b.cidade_regiao);
+  dd+=linhaDado('Responsável',b.nome_responsavel);
+  dd+=linhaDado('O que vende',b.o_que_vende,true);
+  dd+=linhaDado('Cliente ideal e dor',b.cliente_ideal,true);
+  dd+=linhaDado('Diferencial',b.diferencial,true);
+  if(Array.isArray(b.objetivos)&&b.objetivos.length){
+    dd+='<div class="dado full"><span class="rot">Objetivos da página</span><div class="tags-val">'+b.objetivos.map(o=>'<span class="tag-val">'+esc(o)+'</span>').join('')+'</div></div>';
+  }
+  dd+=linhaDado('Domínio desejado',b.dominio_desejado);
+  dd+=linhaDado('Horário de atendimento',b.horario_atendimento);
+  dd+=linhaDado('Referências de estilo',b.referencias,true);
+  dd+=linhaDado('Dúvidas frequentes (FAQ)',b.perguntas_faq,true);
+  dd+=linhaDado('Depoimentos em texto',b.depoimentos_texto,true);
+  dd+=linhaDado('Observações',b.observacoes,true);
+
+  // logo
+  if(imgOk(b.logo_url)){
+    dd+='<div class="dado full"><span class="rot">Logo</span><div class="galeria logo"><a href="'+esc(b.logo_url)+'" target="_blank" rel="noopener"><img src="'+esc(b.logo_url)+'" alt="logo"></a></div></div>';
+  }
+  // fotos
+  const fotos=(Array.isArray(b.fotos)?b.fotos:[]).filter(imgOk);
+  if(fotos.length){
+    dd+='<div class="dado full"><span class="rot">Fotos do negócio ('+fotos.length+')</span><div class="galeria">'+fotos.map(u=>'<a href="'+esc(u)+'" target="_blank" rel="noopener"><img src="'+esc(u)+'" alt="foto"></a>').join('')+'</div></div>';
+  }
+  // prints
+  const prints=(Array.isArray(b.depoimentos_prints)?b.depoimentos_prints:[]).filter(imgOk);
+  if(prints.length){
+    dd+='<div class="dado full"><span class="rot">Prints de depoimentos ('+prints.length+')</span><div class="galeria">'+prints.map(u=>'<a href="'+esc(u)+'" target="_blank" rel="noopener"><img src="'+esc(u)+'" alt="print"></a>').join('')+'</div></div>';
+  }
+
+  const acoes='<div class="acoes">'+
+    (entregue
+      ? '<button class="btn-acao btn-reabrir" data-reabrir="'+b.id+'">Reabrir</button>'
+      : '<button class="btn-acao btn-entregar" data-entregar="'+b.id+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M20 6L9 17l-5-5"/></svg>Marcar como entregue</button>')+
+    (waHref?'<a class="btn-acao btn-wpp" href="'+esc(waHref)+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>WhatsApp</a>':'')+
+    '</div>';
+
+  const statusBadge=entregue
+    ? '<span class="badge entregue">Entregue</span>'
+    : '<span class="badge novo">Novo</span>';
+  const dataLinha=entregue&&b.entregue_em?('Entregue em '+fmtData(b.entregue_em)):('Recebido em '+fmtData(b.created_at));
+
+  return '<div class="brief'+(entregue?' entregue':'')+'">'+
+    '<div class="brief-cab">'+
+      '<svg class="seta" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>'+
+      '<div class="tit"><div class="linha1"><span class="nome">'+esc(b.nome_negocio||'Sem nome')+'</span>'+(b.plano?'<span class="badge plano">'+esc(b.plano)+'</span>':'')+statusBadge+'</div>'+
+      '<div class="linha2">'+dataLinha+'</div></div>'+
+    '</div>'+
+    '<div class="brief-corpo"><div class="secao-dados">'+dd+'</div>'+acoes+'</div>'+
+  '</div>';
+}
+
+/* ====== MARCAR ENTREGUE / REABRIR ====== */
+async function marcar(id,novoStatus){
+  const corpo=novoStatus==='entregue'?{status:'entregue',entregue_em:new Date().toISOString()}:{status:'novo',entregue_em:null};
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/briefings?id=eq.'+encodeURIComponent(id),{
+      method:'PATCH',
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+lerToken(),'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(corpo)
+    });
+    if(r.status===401){limparToken();document.getElementById('btn-sair').click();return;}
+    if(!r.ok)throw new Error('Erro '+r.status);
+    const item=dados.find(x=>x.id===id);if(item){item.status=novoStatus;item.entregue_em=corpo.entregue_em;}
+    render();
+    toast(novoStatus==='entregue'?'Marcado como entregue':'Briefing reaberto');
+  }catch(err){toast('Não foi possível atualizar');}
+}
+
+/* ====== INICIO ====== */
+document.querySelectorAll('.logo-img').forEach(i=>i.src=LOGO_SRC);
+if(lerToken()){abrirPainel();}
+</script>
+</body>
+</html>

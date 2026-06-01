@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing · landingnow</title>
+<meta name="theme-color" content="#0A0A0A">
+<meta name="description" content="Preencha seu briefing e comece sua landing page com a landingnow.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0A;--bg-soft:#131313;--bg-card:#1A1A1A;--line:#2A2A2A;
+    --ink:#FAFAFA;--ink-soft:#B8B8B8;--muted:#8A8A8A;
+    --neon:#C8FF3D;--neon-soft:rgba(200,255,61,0.15);--neon-glow:rgba(200,255,61,0.4);
+    --hot:#FF4D6D;--whatsapp:#25D366;--radius:16px;--maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative;min-height:100vh}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  body::after{content:'';position:fixed;top:-15%;right:-10%;width:760px;height:760px;z-index:0;pointer-events:none;background:radial-gradient(circle,rgba(200,255,61,0.09) 0%,transparent 60%);filter:blur(80px)}
+  .glow-hot{position:fixed;bottom:-20%;left:-12%;width:620px;height:620px;z-index:0;pointer-events:none;background:radial-gradient(circle,rgba(255,77,109,0.07) 0%,transparent 60%);filter:blur(90px)}
+  .wrap{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  header{padding:22px 0 4px;position:relative;z-index:3}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .logo-wordmark{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);cursor:pointer}
+  .logo-img{width:30px;height:30px;flex-shrink:0;object-fit:contain;display:block;border-radius:7px}
+  .logo-text{font-size:19px;font-weight:700;letter-spacing:-.02em}
+  .logo-text span{color:var(--neon)}
+  .badge-top{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--neon);border:1.5px solid var(--neon);border-radius:100px;padding:8px 16px;display:inline-flex;align-items:center;gap:8px}
+  .badge-top .pulse{width:6px;height:6px;background:var(--neon);border-radius:50%;box-shadow:0 0 12px var(--neon);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+
+  section{display:none;animation:rise .5s ease both}
+  section.ativa{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* PLANOS */
+  .hero{padding:48px 0 14px;text-align:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 18px;border:1.5px solid var(--neon);border-radius:100px;font-size:12px;font-weight:600;color:var(--neon);margin-bottom:26px;letter-spacing:.1em;text-transform:uppercase}
+  .eyebrow .pulse{width:6px;height:6px;background:var(--neon);border-radius:50%;box-shadow:0 0 12px var(--neon);animation:pulse 2s infinite}
+  h1{font-weight:800;letter-spacing:-.035em;line-height:1.0;font-size:clamp(36px,6.4vw,68px);max-width:15ch;margin:0 auto 20px}
+  h1 .serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--bg);background:var(--neon);padding:0 16px;border-radius:5px;display:inline-block;line-height:.92;box-shadow:0 0 32px var(--neon-glow);margin:0 2px}
+  .sub{color:var(--ink-soft);font-size:clamp(15px,2.2vw,18px);max-width:52ch;margin:0 auto}
+
+  .planos{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:42px 0 8px;align-items:stretch}
+  .card{position:relative;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:28px 22px 24px;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.2,.7,.3,1),border-color .35s,box-shadow .35s;opacity:0;transform:translateY(18px);animation:cardIn .6s ease forwards}
+  @keyframes cardIn{to{opacity:1;transform:none}}
+  .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.13s}.card:nth-child(3){animation-delay:.21s}.card:nth-child(4){animation-delay:.29s}
+  .card:hover{transform:translateY(-8px);border-color:var(--neon);box-shadow:0 0 50px rgba(200,255,61,.12)}
+  @property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+  .card.destaque::before{content:"";position:absolute;inset:0;border-radius:var(--radius);padding:1.6px;background:conic-gradient(from var(--ang,0deg),transparent 18%,var(--neon),transparent 42%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 4.5s linear infinite;pointer-events:none}
+  @keyframes spin{to{--ang:360deg}}
+  .card.destaque{background:linear-gradient(180deg,rgba(200,255,61,.06),var(--bg-card) 36%)}
+  .tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;background:var(--neon);color:var(--bg);padding:6px 15px;border-radius:100px;box-shadow:0 8px 20px -6px var(--neon-glow)}
+  .tag.novo{background:transparent;color:var(--neon);border:1.5px solid var(--neon);box-shadow:none}
+  .p-nome{font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .p-tagline{font-size:14px;color:var(--ink-soft);min-height:42px;margin-bottom:16px;line-height:1.45}
+  .p-preco{font-weight:800;font-size:38px;letter-spacing:-.03em;line-height:1}
+  .p-cond{font-size:12px;color:var(--muted);margin:8px 0 20px;line-height:1.5}
+  .p-lista{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:24px;flex:1}
+  .p-lista li{display:flex;gap:10px;font-size:13.5px;color:var(--ink-soft);text-align:left;line-height:1.4}
+  .p-lista li svg{flex-shrink:0;margin-top:2px;color:var(--neon)}
+  .p-lista li.titulo{color:var(--ink);font-weight:700}
+  .btn-plano{width:100%;border:none;cursor:pointer;font-family:'Inter';font-weight:600;font-size:15px;padding:14px;border-radius:100px;background:transparent;color:var(--ink);border:1.5px solid var(--line);transition:all .25s}
+  .btn-plano:hover{border-color:var(--neon);color:var(--neon)}
+  .card.destaque .btn-plano{background:var(--neon);color:var(--bg);border-color:var(--neon);font-weight:700}
+  .card.destaque .btn-plano:hover{transform:translateY(-2px);box-shadow:0 10px 28px var(--neon-glow);color:var(--bg)}
+
+  /* FORMULARIO */
+  .form-head{padding:38px 0 6px}
+  .voltar{background:none;border:none;color:var(--ink-soft);font-family:'Inter';font-weight:500;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;margin-bottom:22px;transition:color .2s}
+  .voltar:hover{color:var(--neon)}
+  .chip-plano{display:flex;flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between;background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:16px 22px}
+  .chip-plano .info{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .chip-plano .pill{font-weight:800;font-size:18px;letter-spacing:-.01em}
+  .chip-plano .pill span{color:var(--neon)}
+  .chip-plano .meta{font-size:13px;color:var(--muted)}
+  .chip-plano .preco-chip{font-weight:800;font-size:22px}
+
+  .form-titulo{font-weight:800;font-size:clamp(26px,4.4vw,38px);letter-spacing:-.03em;margin:32px 0 8px;line-height:1.05;text-align:center}
+  .form-titulo .serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--neon)}
+  .form-intro{color:var(--ink-soft);font-size:15px;margin:0 auto 30px;max-width:60ch;text-align:center}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .campo{display:flex;flex-direction:column;gap:8px}
+  .campo.full{grid-column:1/-1}
+  label{font-size:13.5px;font-weight:600;color:var(--ink)}
+  label .req{color:var(--neon)}
+  .hint{font-size:12px;color:var(--muted);font-weight:400;margin-top:-2px;line-height:1.45}
+  input[type=text],input[type=tel],input[type=email],textarea{width:100%;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:13px 15px;color:var(--ink);font-family:'Inter';font-size:15px;transition:border-color .2s,box-shadow .2s}
+  textarea{resize:vertical;min-height:92px;line-height:1.6}
+  input::placeholder,textarea::placeholder{color:#5c5c63}
+  input:focus,textarea:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px var(--neon-soft)}
+
+  .campo.destaque-campo{grid-column:1/-1;background:linear-gradient(180deg,var(--neon-soft),transparent);border:1px dashed var(--line);border-radius:14px;padding:18px}
+  .campo.destaque-campo label{display:flex;align-items:center;gap:8px;font-size:15px}
+  .campo.destaque-campo label svg{color:var(--neon)}
+
+  /* chips de multipla escolha */
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{position:relative;cursor:pointer;user-select:none}
+  .chip input{position:absolute;opacity:0;pointer-events:none}
+  .chip span{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border:1.5px solid var(--line);border-radius:100px;font-size:14px;font-weight:500;color:var(--ink-soft);background:var(--bg-soft);transition:all .2s}
+  .chip span::before{content:"";width:15px;height:15px;border-radius:5px;border:1.5px solid var(--muted);flex-shrink:0;transition:all .2s}
+  .chip input:checked + span{border-color:var(--neon);color:var(--ink);background:var(--neon-soft)}
+  .chip input:checked + span::before{background:var(--neon);border-color:var(--neon);box-shadow:inset 0 0 0 3px var(--bg-card)}
+  .chip:hover span{border-color:var(--ink-soft)}
+
+  /* uploads */
+  .dropzone{position:relative;border:1.5px dashed var(--line);border-radius:14px;background:var(--bg-soft);padding:24px 20px;text-align:center;cursor:pointer;transition:border-color .25s,background .25s}
+  .dropzone:hover,.dropzone.drag{border-color:var(--neon);background:var(--neon-soft)}
+  .dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .dz-ico{width:38px;height:38px;margin:0 auto 8px;color:var(--neon)}
+  .dz-titulo{font-weight:700;font-size:14.5px}
+  .dz-sub{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .previews{display:flex;gap:12px;overflow-x:auto;padding:10px 2px 2px;scrollbar-width:thin}
+  .previews:empty{display:none}
+  .thumb{position:relative;flex:0 0 auto;width:88px;height:88px;border-radius:12px;overflow:hidden;border:1.5px solid var(--line);background:var(--bg-card)}
+  .thumb img{width:100%;height:100%;object-fit:contain;display:block}
+  .thumb.cover img{object-fit:cover}
+  .thumb button{position:absolute;top:4px;right:4px;width:22px;height:22px;border:none;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;cursor:pointer;font-size:13px;line-height:1;display:grid;place-items:center}
+
+  .grupo-cond{display:none}
+  .grupo-cond.on{display:flex}
+
+  .erro-msg{grid-column:1/-1;color:var(--hot);font-size:13.5px;font-weight:600;display:none}
+  .erro-msg.on{display:block}
+  .barra-progresso{grid-column:1/-1;display:none;flex-direction:column;gap:8px}
+  .barra-progresso.on{display:flex}
+  .barra-trilho{height:8px;background:var(--bg-card);border-radius:100px;overflow:hidden}
+  .barra-preench{height:100%;width:0;background:var(--neon);border-radius:100px;transition:width .3s}
+  .barra-texto{font-size:13px;color:var(--ink-soft);text-align:center}
+
+  .btn-enviar{grid-column:1/-1;margin-top:8px;width:100%;border:none;cursor:pointer;font-family:'Inter';font-weight:700;font-size:17px;color:var(--bg);background:var(--neon);padding:18px;border-radius:100px;box-shadow:0 14px 36px -10px var(--neon-glow);transition:transform .2s,box-shadow .2s}
+  .btn-enviar:hover{transform:translateY(-2px);box-shadow:0 18px 44px -10px var(--neon-glow)}
+  .btn-enviar:disabled{opacity:.55;cursor:wait;transform:none}
+  .seguro{grid-column:1/-1;text-align:center;font-size:12.5px;color:var(--muted);margin-top:2px}
+
+  /* OBRIGADO */
+  .obrigado{text-align:center;padding:66px 0 40px;max-width:640px;margin:0 auto}
+  .check{width:84px;height:84px;margin:0 auto 26px;border-radius:50%;display:grid;place-items:center;background:var(--neon);box-shadow:0 0 0 10px var(--neon-soft),0 18px 46px -12px var(--neon-glow);animation:pop .6s cubic-bezier(.2,1.3,.4,1) both}
+  @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+  .check svg{width:40px;height:40px;color:var(--bg);stroke-dasharray:48;stroke-dashoffset:48;animation:draw .5s .35s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .obrigado h2{font-weight:800;font-size:clamp(30px,5vw,46px);letter-spacing:-.03em;margin-bottom:14px;line-height:1.05}
+  .obrigado h2 .serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--neon)}
+  .obrigado p{color:var(--ink-soft);font-size:16px;margin-bottom:8px}
+  .prazo-box{margin:30px auto;background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:26px;display:inline-flex;flex-direction:column;gap:6px;min-width:290px}
+  .prazo-box .rotulo{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .prazo-box .valor{font-weight:800;font-size:36px;color:var(--neon);letter-spacing:-.02em}
+  .prazo-box .plano-conf{font-size:14px;color:var(--ink-soft)}
+  .btn-wa{display:inline-flex;align-items:center;gap:10px;background:var(--whatsapp);color:var(--bg);text-decoration:none;font-weight:700;font-size:15px;padding:16px 28px;border-radius:100px;transition:transform .2s,box-shadow .2s;box-shadow:0 10px 28px rgba(37,211,102,.3)}
+  .btn-wa:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(37,211,102,.45)}
+  .btn-wa svg{width:20px;height:20px;fill:var(--bg)}
+  .link-voltar{display:block;margin-top:20px;color:var(--muted);font-size:14px;text-decoration:none}
+  .link-voltar:hover{color:var(--neon)}
+
+  footer{position:relative;z-index:2;border-top:1px solid var(--line);margin-top:66px;padding:32px 0}
+  .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px}
+  .foot .marca{display:flex;flex-direction:column;gap:8px;max-width:340px}
+  .foot .marca .logo-wordmark{cursor:default}
+  .foot .marca p{font-size:13px;color:var(--muted);text-align:left;line-height:1.5}
+  .foot .contato{display:flex;flex-wrap:wrap;align-items:center;gap:22px;font-size:14px}
+  .foot .contato a{color:var(--ink-soft);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:color .2s}
+  .foot .contato a:hover{color:var(--neon)}
+  .foot .contato a svg{color:var(--neon)}
+  .foot .copy{width:100%;border-top:1px solid var(--line);padding-top:16px;margin-top:8px;font-size:12.5px;color:var(--muted);text-align:center}
+
+  @media (max-width:920px){.planos{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){
+    .planos{grid-template-columns:1fr;gap:28px;padding-top:32px}
+    .grid{grid-template-columns:1fr}
+    h1{text-align:center}
+    .p-tagline{min-height:0}
+    .badge-top{display:none}
+    .foot .marca p,.foot .marca{text-align:center;align-items:center}
+    .foot{justify-content:center;text-align:center}
+    .foot .contato{justify-content:center}
+  }
+</style>
+</head>
+<body>
+  <div class="glow-hot"></div>
+
+  <header>
+    <div class="wrap topbar">
+      <a class="logo-wordmark" onclick="irParaPlanos();return false;">
+        <img class="logo-img" alt="landingnow">
+        <span class="logo-text">landingnow<span>.</span></span>
+      </a>
+      <span class="badge-top"><span class="pulse"></span>Briefing do cliente</span>
+    </div>
+  </header>
+
+  <!-- ETAPA 1: PLANOS -->
+  <section id="etapa-planos" class="ativa">
+    <div class="wrap hero">
+      <span class="eyebrow"><span class="pulse"></span>Vamos começar</span>
+      <h1>Escolha seu plano e crie <span class="serif">a sua página.</span></h1>
+      <p class="sub">Selecione o plano que combina com o seu momento. Em seguida você preenche um briefing rápido e a gente coloca tudo no ar.</p>
+    </div>
+    <div class="wrap"><div class="planos" id="grid-planos"></div></div>
+  </section>
+
+  <!-- ETAPA 2: FORMULARIO -->
+  <section id="etapa-form">
+    <div class="wrap form-head">
+      <button class="voltar" onclick="irParaPlanos()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Trocar de plano
+      </button>
+      <div class="chip-plano">
+        <div class="info">
+          <span class="pill">Plano <span id="chip-nome">Start</span></span>
+          <span class="meta" id="chip-meta">Entrega em 48 horas</span>
+        </div>
+        <span class="preco-chip" id="chip-preco">R$ 99,90</span>
+      </div>
+      <h2 class="form-titulo">Conte sobre o <span class="serif">seu negócio</span></h2>
+      <p class="form-intro">São poucas informações, mas são as que realmente importam pra criar uma página que vende. Quanto mais claro o seu diferencial e o seu objetivo, melhor fica o resultado.</p>
+    </div>
+
+    <div class="wrap">
+      <form id="form-brief" novalidate>
+        <div class="grid">
+          <div class="campo">
+            <label for="f-negocio">Nome do negócio ou empresa <span class="req">*</span></label>
+            <input type="text" id="f-negocio" placeholder="Ex: Studio Vitória Estética Avançada" required>
+          </div>
+          <div class="campo">
+            <label for="f-responsavel">Seu nome <span class="req">*</span></label>
+            <input type="text" id="f-responsavel" placeholder="Quem está preenchendo" required>
+          </div>
+          <div class="campo">
+            <label for="f-whats">WhatsApp <span class="req">*</span></label>
+            <input type="tel" id="f-whats" placeholder="(00) 00000-0000" required>
+          </div>
+          <div class="campo">
+            <label for="f-cidade">Cidade e região que você atende <span class="req">*</span></label>
+            <input type="text" id="f-cidade" placeholder="Ex: Águas Claras e todo o DF" required>
+          </div>
+          <div class="campo">
+            <label for="f-insta">Instagram</label>
+            <input type="text" id="f-insta" placeholder="@seunegocio">
+          </div>
+          <div class="campo">
+            <label for="f-google">Google Meu Negócio</label>
+            <input type="text" id="f-google" placeholder="Link ou nome no Google Maps">
+          </div>
+          <div class="campo full">
+            <label for="f-oferece">O que você vende ou oferece <span class="req">*</span></label>
+            <input type="text" id="f-oferece" placeholder="Ex: harmonização facial, limpeza de pele e tratamentos estéticos premium" required>
+          </div>
+
+          <div class="campo destaque-campo">
+            <label for="f-cliente">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+              Quem é seu cliente ideal e qual a principal dor dele? <span class="req">*</span>
+            </label>
+            <span class="hint">Descreva como se falasse de uma pessoa real. Ex: mulheres de 30 a 50 anos que valorizam o autocuidado e querem um atendimento exclusivo, com resultado natural e confiança de quem entende do assunto.</span>
+            <textarea id="f-cliente" placeholder="Fale do seu cliente e do problema que você resolve pra ele." required></textarea>
+          </div>
+
+          <div class="campo destaque-campo">
+            <label for="f-dif">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.6 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg>
+              Por que o cliente deve escolher você e não o concorrente? <span class="req">*</span>
+            </label>
+            <span class="hint">Liste seus diferenciais. Ex: atendimento, garantia, preço justo, experiência, localização, agilidade.</span>
+            <textarea id="f-dif" placeholder="O que te torna diferente da concorrência." required></textarea>
+          </div>
+
+          <div class="campo full">
+            <label>Qual o objetivo principal da página? <span class="req">*</span></label>
+            <span class="hint">Pode marcar mais de uma opção.</span>
+            <div class="chips" id="chips-objetivo">
+              <label class="chip"><input type="checkbox" value="Receber mensagens no WhatsApp"><span>Receber mensagens no WhatsApp</span></label>
+              <label class="chip"><input type="checkbox" value="Capturar e-mails ou contatos"><span>Capturar e-mails ou contatos</span></label>
+              <label class="chip"><input type="checkbox" value="Agendar consultas ou visitas"><span>Agendar consultas ou visitas</span></label>
+              <label class="chip"><input type="checkbox" value="Vender diretamente"><span>Vender diretamente</span></label>
+              <label class="chip"><input type="checkbox" value="Divulgar a marca"><span>Divulgar a marca</span></label>
+            </div>
+          </div>
+
+          <div class="campo full">
+            <label>Você tem depoimentos ou provas de resultado?</label>
+            <span class="hint">Marque o que tiver. Se tiver prints, você pode enviar as imagens logo abaixo.</span>
+            <div class="chips" id="chips-prova">
+              <label class="chip"><input type="checkbox" id="prova-texto" value="texto"><span>Tenho depoimentos em texto</span></label>
+              <label class="chip"><input type="checkbox" id="prova-prints" value="prints"><span>Tenho prints ou imagens</span></label>
+            </div>
+          </div>
+          <div class="campo full grupo-cond" id="grupo-depo-texto">
+            <label for="f-depo-texto">Cole aqui seus depoimentos em texto</label>
+            <textarea id="f-depo-texto" placeholder="Cole os depoimentos dos seus clientes, um por linha." disabled></textarea>
+          </div>
+          <div class="campo full grupo-cond" id="grupo-prints" style="flex-direction:column">
+            <label>Envie seus prints de depoimentos</label>
+            <span class="hint">Até 8 imagens. Prints de WhatsApp, avaliações, comentários.</span>
+            <div class="dropzone" id="drop-prints">
+              <input type="file" id="f-prints" accept="image/*" multiple disabled>
+              <svg class="dz-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+              <div class="dz-titulo">Enviar prints de depoimentos</div>
+              <div class="dz-sub">Toque para selecionar, até 8 imagens.</div>
+            </div>
+            <div class="previews" id="prev-prints"></div>
+          </div>
+
+          <!-- condicionais por plano -->
+          <div class="campo full grupo-cond" id="grupo-dominio">
+            <label for="f-dominio">Domínio que você deseja <span class="req">*</span></label>
+            <input type="text" id="f-dominio" placeholder="Ex: seunegocio.com.br" disabled>
+            <span class="hint">Se ainda não tem, sugira o nome desejado. O registro fica por sua conta no Registro.br, cerca de R$ 50 por ano.</span>
+          </div>
+          <div class="campo full grupo-cond" id="grupo-referencias">
+            <label for="f-ref">Sites ou marcas que você admira</label>
+            <input type="text" id="f-ref" placeholder="Cole links ou cite marcas com o visual que você curte" disabled>
+            <span class="hint">Opcional, mas ajuda a acertar o estilo da sua página.</span>
+          </div>
+          <div class="campo full grupo-cond" id="grupo-perguntas">
+            <label for="f-faq">Quais as dúvidas mais comuns dos seus clientes? <span class="req">*</span></label>
+            <textarea id="f-faq" placeholder="Ex: preço, horário de funcionamento, formas de pagamento, como agendar." disabled></textarea>
+            <span class="hint">Essas respostas alimentam o atendente de IA da sua página.</span>
+          </div>
+          <div class="campo grupo-cond" id="grupo-horario">
+            <label for="f-horario">Horário de atendimento</label>
+            <input type="text" id="f-horario" placeholder="Ex: seg a sáb, das 9h às 19h" disabled>
+          </div>
+
+          <!-- LOGO -->
+          <div class="campo full" style="flex-direction:column">
+            <label>Sua logo</label>
+            <span class="hint">Se você tem a logo do seu negócio, envie aqui. Aceita PNG, JPG ou SVG. Se não tiver, deixe em branco.</span>
+            <div class="dropzone" id="drop-logo">
+              <input type="file" id="f-logo" accept="image/*">
+              <svg class="dz-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+              <div class="dz-titulo">Enviar a minha logo</div>
+              <div class="dz-sub">1 arquivo. PNG com fundo transparente fica ainda melhor.</div>
+            </div>
+            <div class="previews" id="prev-logo"></div>
+          </div>
+
+          <!-- FOTOS -->
+          <div class="campo full" style="flex-direction:column">
+            <label>Fotos do seu negócio</label>
+            <span class="hint" id="fotos-hint">Fotos do espaço, produtos, equipe ou trabalhos realizados.</span>
+            <div class="dropzone" id="drop-fotos">
+              <input type="file" id="f-fotos" accept="image/*" multiple>
+              <svg class="dz-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+              <div class="dz-titulo" id="dz-fotos-titulo">Enviar até 4 fotos do seu negócio</div>
+              <div class="dz-sub">Toque para selecionar. As imagens são otimizadas automaticamente.</div>
+            </div>
+            <div class="previews" id="prev-fotos"></div>
+          </div>
+
+          <div class="campo full">
+            <label for="f-obs">Observações</label>
+            <textarea id="f-obs" placeholder="Promoção, bônus, urgência ou algo mais que a gente precise saber. Opcional."></textarea>
+          </div>
+
+          <div class="erro-msg" id="erro-msg"></div>
+          <div class="barra-progresso" id="barra-progresso">
+            <div class="barra-trilho"><div class="barra-preench" id="barra-preench"></div></div>
+            <div class="barra-texto" id="barra-texto">Enviando...</div>
+          </div>
+
+          <button type="submit" class="btn-enviar" id="btn-enviar">Enviar meu briefing</button>
+          <p class="seguro">Suas informações vão direto para a equipe da landingnow.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ETAPA 3: OBRIGADO -->
+  <section id="etapa-obrigado">
+    <div class="wrap obrigado">
+      <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2>Briefing recebido, <span class="serif">obrigado!</span></h2>
+      <p>Recebemos todas as suas informações com sucesso.</p>
+      <p>Agora é com a gente: vamos preparar a sua página com todo o cuidado.</p>
+      <div class="prazo-box">
+        <span class="rotulo">Prazo de entrega</span>
+        <span class="valor" id="ob-prazo">48 horas</span>
+        <span class="plano-conf">Plano <strong id="ob-plano">Start</strong> selecionado</span>
+      </div>
+      <p style="margin-bottom:22px">Em breve entramos em contato pelo WhatsApp para alinhar os últimos detalhes.</p>
+      <a class="btn-wa" id="ob-wa" href="https://wa.me/5561985970300" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.01c-.24.68-1.42 1.31-1.95 1.36-.5.05-1.13.07-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.37-.14-.2-1.18-1.57-1.18-3 0-1.43.75-2.13 1.01-2.42.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.82 2.02.89 2.17.07.14.12.31.02.51-.09.2-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.27.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.21 1.37.27.14.43.12.59-.07.16-.2.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.6.76 1.87.9.27.14.46.2.53.31.07.12.07.68-.17 1.36z"/></svg>
+        Falar no WhatsApp
+      </a>
+      <a class="link-voltar" onclick="irParaPlanos();return false;" href="#">Voltar ao início</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <div class="marca">
+        <span class="logo-wordmark"><img class="logo-img" alt="landingnow"><span class="logo-text">landingnow<span>.</span></span></span>
+        <p>Páginas profissionais que vendem, feitas sob medida pra pequenos negócios em todo o Brasil.</p>
+      </div>
+      <div class="contato">
+        <a href="https://wa.me/5561985970300" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>(61) 98597-0300</a>
+        <a href="https://www.instagram.com/landingnow.br/" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>@landingnow.br</a>
+        <span style="color:var(--muted)">Brasília, DF</span>
+      </div>
+      <div class="copy">© 2026 landingnow. Todos os direitos reservados.</div>
+    </div>
+  </footer>
+
+<script>
+/* ====== CONFIG SUPABASE (chave publica anon, segura no frontend) ====== */
+const SB_URL = "https://hubxacojvgoepowsgbas.supabase.co";
+const SB_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1YnhhY29qdmdvZXBvd3NnYmFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxOTEwNjMsImV4cCI6MjA5Mzc2NzA2M30.MdjhqdZDywBVwh-V54CoacsB-sBHsQPVwH8i6NzP2eU";
+const SB_BUCKET = "briefings";
+const LOGO_SRC = "/apple-touch-icon.png";
+
+/* ====== PLANOS ====== */
+const PLANOS = {
+  start:{nome:'Start',preco:'R$ 99,90',prazo:'48 horas',tagline:'Pra começar com presença online.',
+    inclui:['Landing de 1 página (até 4 seções)','Subdomínio gratuito landingnow.com.br','Botão direto pro WhatsApp','Hospedagem inclusa (uptime 99,9%)','1 rodada de revisão inclusa'],
+    maxFotos:4,dominio:false,referencias:false,chatbot:false,badge:''},
+  pro:{nome:'Pro',preco:'R$ 297',prazo:'4 dias úteis',tagline:'Pra vender de verdade.',
+    inclui:['Landing completa (até 7 seções)','Domínio próprio configurado','Copy persuasiva reescrita pela equipe','Identidade visual aplicada','2 rodadas de revisão inclusas'],
+    maxFotos:6,dominio:true,referencias:false,chatbot:false,badge:'Mais escolhido'},
+  premium:{nome:'Premium',preco:'R$ 497',prazo:'5 dias úteis',tagline:'Pra crescer no próximo nível.',
+    inclui:[{t:'Tudo do plano Pro, e mais:',titulo:true},'Landing premium (até 10 seções)','Animações sutis e copy com storytelling','SEO avançado, Pixel e Analytics','3 rodadas de revisão inclusas'],
+    maxFotos:10,dominio:true,referencias:true,chatbot:false,badge:''},
+  premiumia:{nome:'Premium IA',preco:'R$ 997',prazo:'7 dias úteis',tagline:'Pra capturar leads dormindo.',
+    inclui:[{t:'Tudo do plano Premium, e mais:',titulo:true},'IA integrada na landing (chatbot 24h)','Modelo Claude Haiku 4.5 da Anthropic','Triagem e captura automática de leads','Suporte estendido (14 dias)'],
+    maxFotos:10,dominio:true,referencias:true,chatbot:true,badge:'Novo'}
+};
+let planoAtual='start';
+
+function iconeCheck(){return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';}
+function renderPlanos(){
+  const grid=document.getElementById('grid-planos');grid.innerHTML='';
+  Object.keys(PLANOS).forEach(key=>{
+    const p=PLANOS[key],destaque=key==='pro';
+    let tag=p.badge==='Mais escolhido'?'<span class="tag">Mais escolhido</span>':(p.badge==='Novo'?'<span class="tag novo">Novo</span>':'');
+    const itens=p.inclui.map(it=>typeof it==='object'?'<li class="titulo">'+iconeCheck()+'<span>'+it.t+'</span></li>':'<li>'+iconeCheck()+'<span>'+it+'</span></li>').join('');
+    const card=document.createElement('div');card.className='card'+(destaque?' destaque':'');
+    card.innerHTML=tag+'<div class="p-nome">Plano '+p.nome+'</div><div class="p-tagline">'+p.tagline+'</div><div class="p-preco">'+p.preco+'</div><div class="p-cond">Pix, 50% início e 50% entrega, em '+p.prazo.replace(' úteis','')+'</div><ul class="p-lista">'+itens+'</ul><button class="btn-plano" type="button">Selecionar '+p.nome+'</button>';
+    card.querySelector('.btn-plano').addEventListener('click',()=>selecionarPlano(key));
+    grid.appendChild(card);
+  });
+}
+function mostrarEtapa(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('ativa'));document.getElementById(id).classList.add('ativa');window.scrollTo({top:0,behavior:'smooth'});}
+function irParaPlanos(){mostrarEtapa('etapa-planos');history.replaceState(null,'',location.pathname);}
+function setCond(idGrupo,ligar,campoId,obrig){const g=document.getElementById(idGrupo);g.classList.toggle('on',ligar);if(campoId){const c=document.getElementById(campoId);c.disabled=!ligar;c.required=obrig?ligar:false;}}
+
+function selecionarPlano(key){
+  planoAtual=key;const p=PLANOS[key];
+  document.getElementById('chip-nome').textContent=p.nome;
+  document.getElementById('chip-preco').textContent=p.preco;
+  document.getElementById('chip-meta').textContent='Entrega em '+p.prazo;
+  document.getElementById('dz-fotos-titulo').textContent='Enviar até '+p.maxFotos+' fotos do seu negócio';
+  setCond('grupo-dominio',p.dominio,'f-dominio',true);
+  setCond('grupo-referencias',p.referencias,'f-ref',false);
+  setCond('grupo-perguntas',p.chatbot,'f-faq',true);
+  setCond('grupo-horario',p.chatbot,'f-horario',false);
+  fotos.limpar();
+  esconderErro();
+  mostrarEtapa('etapa-form');
+}
+
+/* ====== GERENCIADOR DE UPLOAD GENERICO ====== */
+function criarUploader(inputId,dropId,prevId,getMax,modo){
+  const input=document.getElementById(inputId),drop=document.getElementById(dropId),prev=document.getElementById(prevId);
+  let arquivos=[];
+  input.addEventListener('change',()=>add(Array.from(input.files)));
+  ['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();if(!input.disabled)drop.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag');}));
+  drop.addEventListener('drop',e=>{if(!input.disabled&&e.dataTransfer&&e.dataTransfer.files)add(Array.from(e.dataTransfer.files));});
+  function add(lista){
+    const max=getMax();lista=lista.filter(f=>f.type.startsWith('image/'));
+    for(const f of lista){if(arquivos.length>=max){mostrarErro('Limite de '+max+(max>1?' imagens':' imagem')+' neste campo. As demais não foram adicionadas.');break;}arquivos.push(f);}
+    if(arquivos.length<=max)esconderErro();
+    render();
+  }
+  function render(){
+    prev.innerHTML='';
+    arquivos.forEach((f,i)=>{
+      const url=URL.createObjectURL(f);
+      const d=document.createElement('div');d.className='thumb'+(modo==='cover'?' cover':'');
+      d.innerHTML='<img src="'+url+'" alt=""><button type="button" aria-label="Remover">×</button>';
+      d.querySelector('button').addEventListener('click',()=>{arquivos.splice(i,1);esconderErro();render();});
+      prev.appendChild(d);
+    });
+  }
+  return {get:()=>arquivos,limpar:()=>{arquivos=[];render();},count:()=>arquivos.length};
+}
+const fotos=criarUploader('f-fotos','drop-fotos','prev-fotos',()=>PLANOS[planoAtual].maxFotos,'cover');
+const prints=criarUploader('f-prints','drop-prints','prev-prints',()=>8,'cover');
+const logo=criarUploader('f-logo','drop-logo','prev-logo',()=>1,'contain');
+
+/* chips de prova social revelam campos */
+document.getElementById('prova-texto').addEventListener('change',e=>setCond('grupo-depo-texto',e.target.checked,'f-depo-texto',false));
+document.getElementById('prova-prints').addEventListener('change',e=>{const on=e.target.checked;document.getElementById('grupo-prints').classList.toggle('on',on);document.getElementById('f-prints').disabled=!on;if(!on)prints.limpar();});
+
+/* ====== otimizacao de imagem ====== */
+function lerArquivo(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file);});}
+function carregarImg(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;});}
+async function otimizarFoto(file,maxLado=1600,q=0.82){
+  try{
+    if(!file.type.startsWith('image/'))return file;
+    const img=await carregarImg(await lerArquivo(file));
+    let w=img.naturalWidth,h=img.naturalHeight;
+    if(w>maxLado||h>maxLado){if(w>=h){h=Math.round(h*maxLado/w);w=maxLado;}else{w=Math.round(w*maxLado/h);h=maxLado;}}
+    const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',q));
+    return blob?new File([blob],(file.name||'img').replace(/\.[^.]+$/,'')+'.jpg',{type:'image/jpeg'}):file;
+  }catch(e){return file;}
+}
+async function prepararLogo(file){
+  // mantem PNG/SVG (transparencia). So reduz PNG grande.
+  try{
+    if(file.type==='image/svg+xml')return file;
+    if(file.size<=900000)return file;
+    const img=await carregarImg(await lerArquivo(file));
+    let w=img.naturalWidth,h=img.naturalHeight,m=1024;
+    if(w>m||h>m){if(w>=h){h=Math.round(h*m/w);w=m;}else{w=Math.round(w*m/h);h=m;}}
+    const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+    const blob=await new Promise(r=>c.toBlob(r,'image/png'));
+    return blob?new File([blob],'logo.png',{type:'image/png'}):file;
+  }catch(e){return file;}
+}
+
+/* ====== upload e insert no Supabase ====== */
+function extensao(file){const t=file.type;if(t==='image/png')return'png';if(t==='image/webp')return'webp';if(t==='image/svg+xml')return'svg';return'jpg';}
+async function subirArquivo(pasta,nome,file){
+  const path=pasta+'/'+nome+'.'+extensao(file);
+  const resp=await fetch(SB_URL+'/storage/v1/object/'+SB_BUCKET+'/'+path,{
+    method:'POST',
+    headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},
+    body:file
+  });
+  if(!resp.ok)throw new Error('Falha no upload ('+resp.status+')');
+  return SB_URL+'/storage/v1/object/public/'+SB_BUCKET+'/'+path;
+}
+
+const form=document.getElementById('form-brief');
+const btnEnviar=document.getElementById('btn-enviar');
+function progresso(pct,txt){const b=document.getElementById('barra-progresso');b.classList.add('on');document.getElementById('barra-preench').style.width=pct+'%';if(txt)document.getElementById('barra-texto').textContent=txt;}
+function fimProgresso(){document.getElementById('barra-progresso').classList.remove('on');document.getElementById('barra-preench').style.width='0';}
+function mostrarErro(t){const e=document.getElementById('erro-msg');e.textContent=t;e.classList.add('on');}
+function esconderErro(){document.getElementById('erro-msg').classList.remove('on');}
+function val(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+
+form.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  if(form.dataset.enviando)return;
+  esconderErro();
+
+  // valida obrigatorios de texto visiveis
+  for(const c of form.querySelectorAll('input[required]:not(:disabled),textarea[required]:not(:disabled)')){
+    if(!c.value.trim()){mostrarErro('Preencha os campos obrigatórios marcados com *.');c.focus();return;}
+  }
+  // objetivo: ao menos 1
+  const objetivos=Array.from(document.querySelectorAll('#chips-objetivo input:checked')).map(i=>i.value);
+  if(objetivos.length===0){mostrarErro('Escolha pelo menos um objetivo para a página.');document.getElementById('chips-objetivo').scrollIntoView({block:'center',behavior:'smooth'});return;}
+
+  form.dataset.enviando='1';btnEnviar.disabled=true;
+  const txtBtn=btnEnviar.textContent;btnEnviar.textContent='Enviando...';
+
+  try{
+    const pasta=(Date.now().toString(36)+Math.random().toString(36).slice(2,8));
+    progresso(8,'Preparando seus arquivos...');
+
+    // logo
+    let logo_url=null;
+    if(logo.count()){progresso(18,'Enviando sua logo...');logo_url=await subirArquivo(pasta,'logo',await prepararLogo(logo.get()[0]));}
+
+    // fotos
+    const fotos_urls=[];
+    const fs=fotos.get();
+    for(let i=0;i<fs.length;i++){progresso(25+Math.round(40*(i/Math.max(fs.length,1))),'Enviando fotos ('+(i+1)+' de '+fs.length+')...');fotos_urls.push(await subirArquivo(pasta,'foto-'+(i+1),await otimizarFoto(fs[i])));}
+
+    // prints
+    const prints_urls=[];
+    if(document.getElementById('prova-prints').checked){
+      const ps=prints.get();
+      for(let i=0;i<ps.length;i++){progresso(68+Math.round(20*(i/Math.max(ps.length,1))),'Enviando prints ('+(i+1)+' de '+ps.length+')...');prints_urls.push(await subirArquivo(pasta,'print-'+(i+1),await otimizarFoto(ps[i],1500,0.85)));}
+    }
+
+    progresso(92,'Finalizando...');
+    const prova=Array.from(document.querySelectorAll('#chips-prova input:checked')).map(i=>i.value);
+    const corpo={
+      plano:PLANOS[planoAtual].nome,
+      nome_negocio:val('f-negocio'),
+      nome_responsavel:val('f-responsavel'),
+      whatsapp:val('f-whats'),
+      cidade_regiao:val('f-cidade'),
+      instagram:val('f-insta'),
+      google_meu_negocio:val('f-google'),
+      o_que_vende:val('f-oferece'),
+      cliente_ideal:val('f-cliente'),
+      diferencial:val('f-dif'),
+      objetivos:objetivos,
+      prova_social:prova,
+      depoimentos_texto:val('f-depo-texto'),
+      dominio_desejado:val('f-dominio'),
+      referencias:val('f-ref'),
+      perguntas_faq:val('f-faq'),
+      horario_atendimento:val('f-horario'),
+      observacoes:val('f-obs'),
+      logo_url:logo_url,
+      fotos:fotos_urls,
+      depoimentos_prints:prints_urls
+    };
+    const resp=await fetch(SB_URL+'/rest/v1/briefings',{
+      method:'POST',
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(corpo)
+    });
+    if(!resp.ok){const t=await resp.text();throw new Error('Erro ao salvar ('+resp.status+'): '+t);}
+
+    progresso(100,'Pronto!');
+    const p=PLANOS[planoAtual];
+    document.getElementById('ob-prazo').textContent=p.prazo;
+    document.getElementById('ob-plano').textContent=p.nome;
+    document.getElementById('ob-wa').href='https://wa.me/5561985970300?text='+encodeURIComponent('Olá! Acabei de enviar meu briefing do plano '+p.nome+'.');
+    setTimeout(()=>{fimProgresso();mostrarEtapa('etapa-obrigado');},500);
+  }catch(err){
+    fimProgresso();
+    mostrarErro('Não foi possível enviar agora. '+(err&&err.message?err.message:'Tente novamente em instantes.'));
+    btnEnviar.disabled=false;btnEnviar.textContent=txtBtn;form.dataset.enviando='';
+  }
+});
+
+/* ====== INICIO ====== */
+document.querySelectorAll('.logo-img').forEach(i=>i.src=LOGO_SRC);
+renderPlanos();
+</script>
+</body>
+</html>
