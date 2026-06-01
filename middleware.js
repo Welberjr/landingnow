@@ -1,4 +1,4 @@
-/**
+﻿/**
  * middleware.js - LandingNow
  * Edge Middleware que troca meta tags Open Graph e Twitter baseado
  * no tema sazonal ativo na data atual. Crawlers de social media
@@ -225,7 +225,7 @@ export default async function middleware(request) {
     status: 200,
     headers: {
       'content-type': 'text/html; charset=utf-8',
-      'cache-control': 'public, max-age=0, must-revalidate',
+      'cache-control': 'no-store, no-cache, must-revalidate, max-age=0',
       'x-landingnow-theme': slug,
     },
   });
