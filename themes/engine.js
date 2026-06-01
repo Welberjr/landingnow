@@ -61,10 +61,10 @@
     document.body.classList.add('theme-' + theme.slug);
 
     // Carrega CSS do tema sob demanda
-    loadCSS('/themes/' + theme.slug + '/theme.css?v=8');
+    loadCSS('/themes/' + theme.slug + '/theme.css?v=10');
 
     // Carrega JS de decoracoes do tema (opcional, pode nao existir)
-    loadScript('/themes/' + theme.slug + '/decorations.js?v=8').catch(function () {
+    loadScript('/themes/' + theme.slug + '/decorations.js?v=10').catch(function () {
       // Tema sem decoracoes JS, sem problema
     });
 
