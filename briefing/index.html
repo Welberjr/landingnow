@@ -543,7 +543,7 @@ async function subirArquivo(pasta,nome,file){
   const buf=await file.arrayBuffer();
   const resp=await fetch(SB_URL+'/storage/v1/object/'+SB_BUCKET+'/'+path,{
     method:'POST',
-    headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Content-Type':mime,'x-upsert':'true','Cache-Control':'3600'},
+    headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Content-Type':mime},
     body:buf
   });
   if(!resp.ok){const d=await resp.text().catch(()=>'');throw new Error('Falha no upload ('+resp.status+'): '+d);}
