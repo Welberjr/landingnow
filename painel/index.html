@@ -13,7 +13,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-body::after{content:'';position:fixed;top:-15%;right:-10%;width:700px;height:700px;z-index:0;pointer-events:none;background:radial-gradient(circle,rgba(200,255,61,.06) 0%,transparent 60%);filter:blur(90px)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+body::after{content:'';position:fixed;top:-20%;left:-10%;width:800px;height:800px;z-index:0;pointer-events:none;background:radial-gradient(circle,rgba(200,255,61,.10) 0%,transparent 60%);filter:blur(80px)}
 .wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 20px}
 #tl{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .lc{width:100%;max-width:400px;background:var(--bg-c);border:1px solid var(--ln);border-radius:20px;padding:36px 30px;text-align:center}
@@ -70,6 +71,8 @@ body::after{content:'';position:fixed;top:-15%;right:-10%;width:700px;height:700
 .bpa{background:rgba(37,211,102,.12);color:var(--vd);border:1px solid rgba(37,211,102,.2)}
 .br2{background:rgba(251,191,36,.1);color:var(--am);border:1px solid rgba(251,191,36,.2)}
 .bre{background:rgba(255,77,109,.15);color:var(--hot);border:1px solid rgba(255,77,109,.3)}
+.baw{background:rgba(200,255,61,.12);border:1px solid rgba(200,255,61,.25);color:var(--neon);padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700}
+.baa{background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.2);color:var(--az);padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700}
 .sa{font-size:16px;color:var(--mut);transition:transform .25s;flex-shrink:0}
 .ca.op .sa{transform:rotate(180deg)}
 .cbd{display:none;padding:0 18px 18px;border-top:1px solid var(--ln)}
@@ -297,6 +300,7 @@ body::after{content:'';position:fixed;top:-15%;right:-10%;width:700px;height:700
         <div class="db"><h3>Parceiros mais rentaveis</h3><div class="bbar" id="dpa"></div></div>
         <div class="db"><h3>Briefings por mes (ultimos 6)</h3><div id="dme"></div></div>
       </div>
+      <div class="db" style="margin-bottom:14px"><h3>Producao por membro</h3><div id="dprod" class="bbar" style="margin-top:4px"></div></div>
     </div>
   </div>
 </div>
@@ -419,11 +423,15 @@ async function carregarBriefings(){
 function renderKPIs(){
   const tot=BRIEFS.length,nov=BRIEFS.filter(b=>b.status==='novo').length;
   let ar=0,rc=0;BRIEFS.forEach(b=>{const v=pl(b.plano).v;if(b.status_pagamento==='pago')rc+=v;else ar+=v;});
+  const wel=BRIEFS.filter(b=>b.atribuido_a==='welber').length;
+  const ana=BRIEFS.filter(b=>b.atribuido_a==='ana_carolina').length;
   document.getElementById('kpis').innerHTML=`
     <div class="kc"><div class="kl">Total de briefings</div><div class="kv">${tot}</div></div>
     <div class="kc"><div class="kl">Aguardando entrega</div><div class="kv" style="color:var(--hot)">${nov}</div></div>
     <div class="kc"><div class="kl">A Receber</div><div class="kv" style="color:var(--am)">${fm(ar)}</div></div>
-    <div class="kc"><div class="kl">Recebido</div><div class="kv" style="color:var(--vd)">${fm(rc)}</div></div>`;
+    <div class="kc"><div class="kl">Recebido</div><div class="kv" style="color:var(--vd)">${fm(rc)}</div></div>
+    <div class="kc"><div class="kl">Welber</div><div class="kv" style="color:var(--neon)">${wel}</div></div>
+    <div class="kc"><div class="kl">Ana Carolina</div><div class="kv" style="color:var(--az)">${ana}</div></div>`;
 }
 function passaFiltro(b){
   if(FILT==='novo'&&b.status!=='novo')return false;
@@ -475,6 +483,7 @@ function criarCard(b){
     else if(pz.diff<=1)pzHtml='<div class="pz warn">Entrega hoje/amanha</div>';
     else pzHtml='<div class="pz ok">Prazo: '+fd(pz.prazo.toISOString())+' ('+pz.diff+'d)</div>';
   }
+  const atribBadge=b.atribuido_a==='welber'?'<span class="bd baw">Welber</span>':b.atribuido_a==='ana_carolina'?'<span class="bd baa">Ana</span>':'';
   const div=document.createElement('div');div.className='ca';div.dataset.id=b.id;
   div.innerHTML=`
   <div class="ch">
@@ -488,6 +497,7 @@ function criarCard(b){
       <span class="bd ${ent?'be':'bn2'}">${ent?'Entregue':'Novo'}</span>
       <span class="bd ${pago?'bpa':'br2'}">${pago?'Pago':'A receber'}</span>
       ${us>=mx?'<span class="bd bre">Rev. esgotada</span>':''}
+      ${atribBadge}
     </div>
     <span class="sa">v</span>
   </div>
@@ -509,6 +519,17 @@ function criarCard(b){
           <div class="fl">URL entregue</div>
           <div class="ue"><input id="ur-${b.id}" value="${esc(b.url_entregue||'')}" placeholder="https://cliente.pages.dev"><button class="sob" id="ubtn-${b.id}">Salvar</button></div>
         </div>
+      </div>
+    </div>
+    <div class="sc">
+      <div class="sl">Responsavel pela entrega</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:6px;background:var(--bg-s);border-radius:11px;padding:10px 14px">
+        <select id="at-${b.id}" style="background:var(--bg-c);border:1px solid var(--ln);border-radius:9px;padding:7px 11px;color:var(--ink);font-family:'Inter';font-size:13px;flex:1">
+          <option value="">Nao definido</option>
+          <option value="welber"${b.atribuido_a==='welber'?' selected':''}>Welber</option>
+          <option value="ana_carolina"${b.atribuido_a==='ana_carolina'?' selected':''}>Ana Carolina</option>
+        </select>
+        <button class="sob" id="atbtn-${b.id}">Atribuir</button>
       </div>
     </div>
     <div class="sc">
@@ -578,6 +599,7 @@ function criarCard(b){
   div.querySelector('#nbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarNicho(b,div);};
   div.querySelector('#ubtn-'+b.id).onclick=e=>{e.stopPropagation();salvarURL(b,div);};
   div.querySelector('#pcbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarParceiro2(b,div);};
+  div.querySelector('#atbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarAtrib(b,div);};
   div.querySelectorAll('[data-a]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();acao(btn.dataset.a,b,div);}));
   return div;
 }
@@ -627,10 +649,19 @@ async function salvarParceiro2(b,card){
   await patch(b.id,{parceiro_id:v}).catch(()=>{toast('Erro','er');return;});
   b.parceiro_id=v;update(b);toast('Parceiro vinculado!');
 }
+async function salvarAtrib(b,card){
+  const v=card.querySelector('#at-'+b.id).value||null;
+  await patch(b.id,{atribuido_a:v}).catch(()=>{toast('Erro','er');return;});
+  b.atribuido_a=v;update(b);
+  const lbl=v==='welber'?'Welber':v==='ana_carolina'?'Ana Carolina':'Nao definido';
+  toast('Atribuido a: '+lbl+'!');
+  renderKPIs();renderBriefs();
+}
 function copiarClaude(b){
   const p=pl(b.plano),nicho=b.nicho||detectNicho(b);
   const obj=Array.isArray(b.objetivos)?b.objetivos.join(', '):'';
-  const txt='# Briefing: '+b.nome_negocio+'\n\n## Dados do cliente\n- Negocio: '+(b.nome_negocio||'?')+'\n- Responsavel: '+(b.nome_responsavel||'?')+'\n- WhatsApp: '+(b.whatsapp||'?')+'\n- Cidade: '+(b.cidade_regiao||'?')+'\n- Instagram: '+(b.instagram||'?')+'\n- Plano: '+p.n+' ('+fm(p.v)+')\n- Nicho: '+nicho+(b.dominio_desejado?'\n- Dominio: '+b.dominio_desejado:'')+'\n\n## O que o negocio vende\n'+(b.o_que_vende||'?')+'\n\n## Cliente ideal\n'+(b.cliente_ideal||'?')+'\n\n## Diferencial\n'+(b.diferencial||'?')+'\n\n## Objetivos\n'+(obj||'?')+(b.referencias?'\n\n## Referencias\n'+b.referencias:'')+(b.depoimentos_texto?'\n\n## Depoimentos\n'+b.depoimentos_texto:'')+(b.perguntas_faq?'\n\n## FAQ\n'+b.perguntas_faq:'')+(b.horario_atendimento?'\n\n## Horario\n'+b.horario_atendimento:'')+(b.observacoes?'\n\n## Obs. do cliente\n'+b.observacoes:'')+'\n\n---\n\nCrie uma landing page completa em HTML autossuficiente com assets em base64 para '+b.nome_negocio+' (nicho: '+nicho+').\n\nPadroes obrigatorios LandingNow:\n- Sem travessoes nos textos\n- Textos justificados, titulos centralizados no mobile\n- 100% responsivo (mobile first)\n- Estetica moderna com cores vivas, alto contraste, cards chamativos\n- Rodape horizontal com informacoes\n- NUNCA escrever "feito por landingnow"\n- Deploy: wrangler pages deploy . --project-name=nome-projeto --commit-dirty=true';
+  const resp=b.atribuido_a==='welber'?'Welber':b.atribuido_a==='ana_carolina'?'Ana Carolina':'A definir';
+  const txt='# Briefing: '+b.nome_negocio+'\n\n## Dados do cliente\n- Negocio: '+(b.nome_negocio||'?')+'\n- Responsavel: '+(b.nome_responsavel||'?')+'\n- WhatsApp: '+(b.whatsapp||'?')+'\n- Cidade: '+(b.cidade_regiao||'?')+'\n- Instagram: '+(b.instagram||'?')+'\n- Plano: '+p.n+' ('+fm(p.v)+')\n- Nicho: '+nicho+'\n- Responsavel pela entrega: '+resp+(b.dominio_desejado?'\n- Dominio: '+b.dominio_desejado:'')+'\n\n## O que o negocio vende\n'+(b.o_que_vende||'?')+'\n\n## Cliente ideal\n'+(b.cliente_ideal||'?')+'\n\n## Diferencial\n'+(b.diferencial||'?')+'\n\n## Objetivos\n'+(obj||'?')+(b.referencias?'\n\n## Referencias\n'+b.referencias:'')+(b.depoimentos_texto?'\n\n## Depoimentos\n'+b.depoimentos_texto:'')+(b.perguntas_faq?'\n\n## FAQ\n'+b.perguntas_faq:'')+(b.horario_atendimento?'\n\n## Horario\n'+b.horario_atendimento:'')+(b.observacoes?'\n\n## Obs. do cliente\n'+b.observacoes:'')+'\n\n---\n\nCrie uma landing page completa em HTML autossuficiente com assets em base64 para '+b.nome_negocio+' (nicho: '+nicho+').\n\nPadroes obrigatorios LandingNow:\n- Sem travessoes nos textos\n- Textos justificados, titulos centralizados no mobile\n- 100% responsivo (mobile first)\n- Estetica moderna com cores vivas, alto contraste, cards chamativos\n- Rodape horizontal com informacoes\n- NUNCA escrever "feito por landingnow"\n- Deploy: wrangler pages deploy . --project-name=nome-projeto --commit-dirty=true';
   navigator.clipboard.writeText(txt).then(()=>toast('Copiado para a area de transferencia!')).catch(()=>{
     const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Copiado!');
   });
@@ -670,7 +701,7 @@ document.getElementById('mdc').onclick=async()=>{
 };
 document.getElementById('mcc').onclick=()=>{delId=null;document.getElementById('mld').classList.remove('on');};
 document.getElementById('bcsv').onclick=()=>{
-  const cols=['nome_negocio','nome_responsavel','whatsapp','cidade_regiao','plano','nicho','status','status_pagamento','created_at','entregue_em','pago_em','url_entregue'];
+  const cols=['nome_negocio','nome_responsavel','whatsapp','cidade_regiao','plano','nicho','atribuido_a','status','status_pagamento','created_at','entregue_em','pago_em','url_entregue'];
   const rows=[cols.join(';'),...BRIEFS.map(b=>cols.map(c=>'"'+(b[c]||'').toString().replace(/"/g,'""')+'"').join(';'))];
   const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='briefings-landingnow.csv';a.click();
@@ -772,6 +803,16 @@ function renderDash(){
   BRIEFS.forEach(b=>{const d=new Date(b.created_at),k=d.toLocaleString('pt-BR',{month:'short',year:'2-digit'});if(meses[k]!==undefined)meses[k]++;});
   const mMax=Math.max(...Object.values(meses),1);
   document.getElementById('dme').innerHTML='<div style="display:flex;align-items:flex-end;gap:6px;height:80px">'+Object.entries(meses).map(([m,v])=>'<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:10px;color:var(--neon);font-weight:700">'+(v||'')+'</span><div style="width:100%;background:var(--neon);border-radius:4px 4px 0 0;height:'+(Math.round(v/mMax*60)+4)+'px;min-height:4px"></div><span style="font-size:9px;color:var(--mut)">'+m+'</span></div>').join('')+'</div>';
+  // Producao por membro
+  const wel=bs.filter(b=>b.atribuido_a==='welber').length;
+  const ana=bs.filter(b=>b.atribuido_a==='ana_carolina').length;
+  const nd=bs.filter(b=>!b.atribuido_a).length;
+  const el=document.getElementById('dprod');if(el){
+    const tot2=Math.max(wel+ana+nd,1);
+    el.innerHTML='<div class="br3"><span class="bl" style="color:var(--neon);min-width:120px">Welber</span><div class="bx"><div class="bf3" style="width:'+Math.round(wel/tot2*100)+'%"></div></div><span class="bval">'+wel+' paginas</span></div>'+
+      '<div class="br3"><span class="bl" style="color:var(--az);min-width:120px">Ana Carolina</span><div class="bx"><div class="bf3" style="width:'+Math.round(ana/tot2*100)+'%;background:var(--az)"></div></div><span class="bval">'+ana+' paginas</span></div>'+
+      (nd?'<div class="br3"><span class="bl" style="min-width:120px">Sem atribuicao</span><div class="bx"><div class="bf3" style="width:'+Math.round(nd/tot2*100)+'%;background:var(--mut)"></div></div><span class="bval">'+nd+'</span></div>':'');
+  }
 }
 document.getElementById('dper').onchange=renderDash;
 </script>
