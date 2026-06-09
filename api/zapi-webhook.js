@@ -1,8 +1,7 @@
 // ============================================================================
-// LIA via WhatsApp - Z-API Webhook  |  v7
-// Memoria (Supabase) + transcricao de audio (Groq) + anti-duplicacao por
-// messageId + demora humana via delayTyping/delayMessage do Z-API (a funcao
-// nao trava mais, entao nao ha reenvio). Prompt conversacional.
+// LIA via WhatsApp - Z-API Webhook  |  v8
+// Memoria (Supabase) + transcricao de audio (Groq) + anti-duplicacao +
+// demora humana via Z-API + tratamento so pelo PRIMEIRO nome do cliente.
 // Criado em 08/06/2026
 // ============================================================================
 
@@ -12,9 +11,15 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MAX_HISTORICO_SALVO = 40;
 const MAX_HISTORICO_CONTEXTO = 20;
 
+// Extrai apenas o primeiro nome (ex: "Welber Junior" -> "Welber")
+function primeiroNomeDe(nome) {
+  if (!nome) return null;
+  const limpo = String(nome).trim().split(/\s+/)[0];
+  return limpo || null;
+}
+
 // ---------------------------------------------------------------------------
-// Anti-duplicacao: marca o messageId no banco. Se ja existia, e mensagem
-// repetida (reenvio do Z-API) e deve ser ignorada.
+// Anti-duplicacao
 // ---------------------------------------------------------------------------
 async function ehDuplicada(messageId) {
   if (!SUPABASE_URL || !SUPABASE_ANON || !messageId) return false;
@@ -29,9 +34,8 @@ async function ehDuplicada(messageId) {
       },
       body: JSON.stringify({ message_id: messageId }),
     });
-    if (!r.ok) return false; // em caso de erro, nao bloqueia o atendimento
+    if (!r.ok) return false;
     const data = await r.json();
-    // vazio = o registro ja existia = mensagem repetida
     return Array.isArray(data) && data.length === 0;
   } catch (e) {
     console.error('[dedup] erro:', e);
@@ -152,10 +156,7 @@ function sanitizarTexto(texto) {
 }
 
 // ---------------------------------------------------------------------------
-// Tempo humano: a resposta demora de 5s (curta) a ~20s (longa) para chegar.
-// Isso e feito pelo Z-API (status "Digitando..."), sem travar a funcao.
-// delayTyping vai no maximo a 15s; o excedente vira delayMessage (espera antes
-// de comecar a digitar).
+// Demora humana (gerenciada pelo Z-API, nao trava a funcao)
 // ---------------------------------------------------------------------------
 function delaysHumanos(texto) {
   const total = Math.min(20, Math.max(5, Math.round(texto.length / 11)));
@@ -195,6 +196,9 @@ Regras firmes:
 - Nao despeje varias informacoes de uma so vez. Conversa e troca: fala pouco, escuta, continua.
 - Evite paragrafos longos e explicacoes compridas. Va no ponto, com simpatia.
 - Responda em uma unica mensagem curta. Nao quebre a resposta em varios pedacos.
+
+TRATAMENTO PELO NOME:
+Use sempre apenas o PRIMEIRO nome da pessoa. Nunca use nome e sobrenome juntos. Por exemplo, se o nome aparecer como Welber Junior, voce chama so de Welber.
 
 SEU JEITO (TOM):
 Humana, acolhedora, calorosa e ao mesmo tempo profissional. Demonstra interesse de verdade pelo negocio da pessoa. Escuta antes de falar. Usa emojis de leve, so quando combina, sem exagero.
@@ -242,7 +246,7 @@ Nunca use travessao nem hifen no meio da frase.
 Nunca use asteriscos, sublinhado ou markdown.
 Planos sempre em CAIXA ALTA: START, PRO, PREMIUM, PREMIUM IA.
 Uma unica mensagem curta, no maximo 2 ou 3 linhas. Uma pergunta por vez. Tom de pessoa real no WhatsApp.
-Use o nome da pessoa quando souber.
+Use sempre apenas o primeiro nome da pessoa.
 `;
 
 // ---------------------------------------------------------------------------
@@ -253,7 +257,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v7' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v8' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
@@ -262,7 +266,6 @@ module.exports = async function handler(req, res) {
 
     if (body.fromMe === true) return res.status(200).json({ ignored: 'fromMe' });
 
-    // Anti-duplicacao: ignora reenvio da mesma mensagem
     const messageId = body.messageId || body.id;
     if (await ehDuplicada(messageId)) {
       return res.status(200).json({ ignored: 'duplicate' });
@@ -295,7 +298,7 @@ module.exports = async function handler(req, res) {
 
     // 1. Le o historico persistido
     const { mensagens: historico, nome: nomeSalvo } = await lerConversa(phone);
-    const nome = nomeSalvo || senderName;
+    const primeiroNome = primeiroNomeDe(nomeSalvo || senderName);
 
     // 2. Anexa a mensagem nova do cliente
     historico.push({ role: 'user', content: userMessage });
@@ -309,8 +312,8 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ error: 'api-key-missing' });
     }
 
-    const systemFinal = nome
-      ? `${SYSTEM_PROMPT}\n\nO nome do cliente com quem voce esta falando agora e: ${nome}. Use o nome de forma natural.`
+    const systemFinal = primeiroNome
+      ? `${SYSTEM_PROMPT}\n\nO nome do cliente com quem voce esta falando agora e: ${primeiroNome}. Use sempre apenas esse primeiro nome.`
       : SYSTEM_PROMPT;
 
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
@@ -338,11 +341,11 @@ module.exports = async function handler(req, res) {
     const rawReply = data?.content?.[0]?.text || 'Pode repetir, por favor? Acho que me perdi aqui.';
     const reply = sanitizarTexto(rawReply);
 
-    // 4. Salva no historico
+    // 4. Salva no historico (guardando so o primeiro nome)
     historico.push({ role: 'assistant', content: reply });
-    await salvarConversa(phone, historico, nome);
+    await salvarConversa(phone, historico, primeiroNome);
 
-    // 5. Envia UMA mensagem, com demora humana gerenciada pelo Z-API
+    // 5. Envia UMA mensagem com demora humana
     const { typing, message: dmsg } = delaysHumanos(reply);
     await enviarWhatsapp(phone, reply, typing, dmsg);
 
