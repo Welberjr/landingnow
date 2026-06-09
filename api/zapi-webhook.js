@@ -1,13 +1,46 @@
 // ============================================================================
-// LIA via WhatsApp - Z-API Webhook  |  v4
-// Memoria de contexto persistente via Supabase + prompt de vendas humana.
+// LIA via WhatsApp - Z-API Webhook  |  v5
+// Memoria persistente (Supabase) + prompt de vendas humana + transcricao de
+// audio (Groq Whisper). Cliente pode mandar texto OU audio.
 // Criado em 08/06/2026
 // ============================================================================
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON = process.env.SUPABASE_ANON_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MAX_HISTORICO_SALVO = 40;     // mensagens guardadas no banco
 const MAX_HISTORICO_CONTEXTO = 20;  // mensagens enviadas como contexto ao modelo
+
+// ---------------------------------------------------------------------------
+// Transcricao de audio via Groq (Whisper)
+// ---------------------------------------------------------------------------
+async function transcreverAudio(audioUrl, mimeType) {
+  if (!GROQ_API_KEY) { console.error('[groq] GROQ_API_KEY ausente'); return null; }
+  try {
+    const audioRes = await fetch(audioUrl);
+    if (!audioRes.ok) { console.error('[groq] download do audio falhou:', audioRes.status); return null; }
+    const arrayBuffer = await audioRes.arrayBuffer();
+    const blob = new Blob([arrayBuffer], { type: mimeType || 'audio/ogg' });
+
+    const form = new FormData();
+    form.append('file', blob, 'audio.ogg');
+    form.append('model', 'whisper-large-v3-turbo');
+    form.append('language', 'pt');
+    form.append('response_format', 'json');
+
+    const r = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${GROQ_API_KEY}` },
+      body: form,
+    });
+    if (!r.ok) { console.error('[groq] transcricao falhou:', r.status, await r.text()); return null; }
+    const data = await r.json();
+    return (data.text || '').trim() || null;
+  } catch (e) {
+    console.error('[groq] erro na transcricao:', e);
+    return null;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Persistencia no Supabase (via REST, sem dependencias)
@@ -89,6 +122,19 @@ function sanitizarTexto(texto) {
     .replace(/,(\s*,)+/g, ',')
     .replace(/\s+([,.!?])/g, '$1')
     .trim();
+}
+
+// Envia uma mensagem de texto pelo WhatsApp via Z-API
+async function enviarWhatsapp(phone, message) {
+  const zapiBase = `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_INSTANCE_TOKEN}`;
+  return fetch(`${zapiBase}/send-text`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Client-Token': process.env.ZAPI_CLIENT_TOKEN,
+    },
+    body: JSON.stringify({ phone, message }),
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -185,7 +231,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v4' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v5' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
@@ -195,13 +241,31 @@ module.exports = async function handler(req, res) {
     if (body.fromMe === true) return res.status(200).json({ ignored: 'fromMe' });
 
     const phone = body.phone;
-    const userMessage =
+    const senderName = body?.senderName || body?.chatName || body?.pushName || null;
+
+    // Mensagem de texto
+    let userMessage =
       body?.text?.message ||
       body?.message ||
       (typeof body?.text === 'string' ? body.text : undefined);
-    const senderName = body?.senderName || body?.chatName || body?.pushName || null;
+
+    // Se nao veio texto mas veio audio, transcreve com Groq
+    let foiAudio = false;
+    if (!userMessage && body?.audio && body.audio.audioUrl) {
+      foiAudio = true;
+      userMessage = await transcreverAudio(body.audio.audioUrl, body.audio.mimeType);
+    }
+
+    // Se era audio e nao deu pra transcrever, pede gentilmente
+    if (foiAudio && !userMessage) {
+      if (phone) {
+        await enviarWhatsapp(phone, 'Oi! Nao consegui ouvir direito seu audio agora. Pode mandar de novo ou, se preferir, me escrever por aqui?');
+      }
+      return res.status(200).json({ ok: true, note: 'audio-nao-transcrito' });
+    }
 
     if (!phone || !userMessage || typeof userMessage !== 'string') {
+      // Outros tipos (imagem, figurinha, status, etc) sao ignorados por enquanto
       return res.status(200).json({ ignored: 'no-text' });
     }
 
@@ -209,7 +273,7 @@ module.exports = async function handler(req, res) {
     const { mensagens: historico, nome: nomeSalvo } = await lerConversa(phone);
     const nome = nomeSalvo || senderName;
 
-    // 2. Anexa a mensagem nova do cliente
+    // 2. Anexa a mensagem nova do cliente (texto ou transcricao do audio)
     historico.push({ role: 'user', content: userMessage });
 
     // 3. Monta o contexto pro modelo (ultimas N, normalizadas)
@@ -255,15 +319,7 @@ module.exports = async function handler(req, res) {
     await salvarConversa(phone, historico, nome);
 
     // 5. Envia a resposta pelo WhatsApp via Z-API
-    const zapiBase = `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_INSTANCE_TOKEN}`;
-    const sendRes = await fetch(`${zapiBase}/send-text`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Client-Token': process.env.ZAPI_CLIENT_TOKEN,
-      },
-      body: JSON.stringify({ phone, message: reply }),
-    });
+    const sendRes = await enviarWhatsapp(phone, reply);
 
     if (!sendRes.ok) {
       const errText = await sendRes.text();
@@ -271,7 +327,7 @@ module.exports = async function handler(req, res) {
       return res.status(502).json({ error: 'send-failed', status: sendRes.status });
     }
 
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, audio: foiAudio });
   } catch (err) {
     console.error('[zapi-webhook] Erro inesperado:', err);
     return res.status(200).json({ ok: false });
