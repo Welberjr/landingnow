@@ -1,7 +1,7 @@
 // ============================================================================
-// LIA via WhatsApp - Z-API Webhook  |  v8
-// Memoria (Supabase) + transcricao de audio (Groq) + anti-duplicacao +
-// demora humana via Z-API + tratamento so pelo PRIMEIRO nome do cliente.
+// LIA via WhatsApp - Z-API Webhook  |  v9
+// Memoria (Supabase) + audio (Groq) + anti-duplicacao + demora humana +
+// primeiro nome + VISAO de imagem (comprovante de pagamento -> briefing).
 // Criado em 08/06/2026
 // ============================================================================
 
@@ -10,8 +10,8 @@ const SUPABASE_ANON = process.env.SUPABASE_ANON_KEY;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MAX_HISTORICO_SALVO = 40;
 const MAX_HISTORICO_CONTEXTO = 20;
+const MAX_IMAGEM_BYTES = 4500000; // ~4.5MB (limite seguro pra API)
 
-// Extrai apenas o primeiro nome (ex: "Welber Junior" -> "Welber")
 function primeiroNomeDe(nome) {
   if (!nome) return null;
   const limpo = String(nome).trim().split(/\s+/)[0];
@@ -72,6 +72,28 @@ async function transcreverAudio(audioUrl, mimeType) {
     console.error('[groq] erro na transcricao:', e);
     return null;
   }
+}
+
+// ---------------------------------------------------------------------------
+// Download de imagem -> base64 (pra visao do modelo)
+// ---------------------------------------------------------------------------
+async function baixarImagemBase64(imageUrl) {
+  try {
+    const r = await fetch(imageUrl);
+    if (!r.ok) { console.error('[imagem] download falhou:', r.status); return null; }
+    const buf = await r.arrayBuffer();
+    if (buf.byteLength > MAX_IMAGEM_BYTES) { console.error('[imagem] muito grande:', buf.byteLength); return null; }
+    return Buffer.from(buf).toString('base64');
+  } catch (e) {
+    console.error('[imagem] erro no download:', e);
+    return null;
+  }
+}
+
+function normalizarMime(mime) {
+  const limpo = (mime || 'image/jpeg').split(';')[0].trim().toLowerCase();
+  const aceitos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+  return aceitos.includes(limpo) ? limpo : 'image/jpeg';
 }
 
 // ---------------------------------------------------------------------------
@@ -234,6 +256,11 @@ Portfolio: https://www.landingnow.com.br/portfolio
 Briefing: https://www.landingnow.com.br/briefing
 Welber: https://wa.me/5561985970300
 
+QUANDO O CLIENTE ENVIA UMA IMAGEM:
+Olhe a imagem com atencao antes de responder.
+Se for um comprovante de pagamento (Pix, transferencia, print de banco com valor, horario e nome), agradeca de forma calorosa, diga que recebeu o comprovante e que o Welber vai conferir, e ja mande o link do briefing pra pessoa preencher: https://www.landingnow.com.br/briefing. Diga em uma linha que e o formulario pra dar inicio ao projeto. Importante: nunca afirme de forma absoluta que o pagamento ja esta confirmado, porque quem confere na conta e o Welber. Use algo como "recebi seu comprovante, muito obrigada" em vez de "pagamento confirmado".
+Se for outra imagem (foto de produto, print de uma duvida, logotipo, referencia visual), responda normalmente, ajudando com o que a pessoa precisa e seguindo a conversa.
+
 OBJECOES (responda curto e com empatia):
 Achou caro: lembra que o pagamento e dividido, metade agora e metade so na entrega, e o START e R$ 99. Pergunta o que cabe no momento dela.
 Vai pensar: tudo bem, pergunta com leveza o que ainda ta em duvida pra ajudar.
@@ -257,7 +284,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v8' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v9' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
@@ -279,12 +306,36 @@ module.exports = async function handler(req, res) {
       body?.message ||
       (typeof body?.text === 'string' ? body.text : undefined);
 
+    // --- Audio ---
     let foiAudio = false;
     if (!userMessage && body?.audio && body.audio.audioUrl) {
       foiAudio = true;
       userMessage = await transcreverAudio(body.audio.audioUrl, body.audio.mimeType);
     }
 
+    // --- Imagem ---
+    const img = (!userMessage && body?.image && (body.image.imageUrl || body.image.url)) ? body.image : null;
+    let imagemBase64 = null;
+    let imagemMime = null;
+    let foiImagem = false;
+    if (img) {
+      foiImagem = true;
+      imagemMime = normalizarMime(img.mimeType);
+      imagemBase64 = await baixarImagemBase64(img.imageUrl || img.url);
+    }
+
+    // Log discreto pra confirmar formato de midia (sem expor conteudo)
+    if (!userMessage && !foiImagem && !foiAudio) {
+      console.log('[midia recebida]', {
+        tipo: body.type,
+        chaves: Object.keys(body || {}),
+        temImage: !!body.image,
+        imageKeys: body.image ? Object.keys(body.image) : null,
+        temDocument: !!body.document,
+      });
+    }
+
+    // Audio que nao deu pra transcrever
     if (foiAudio && !userMessage) {
       if (phone) {
         await enviarWhatsapp(phone, 'Oi! Nao consegui ouvir direito seu audio agora. Pode mandar de novo ou, se preferir, me escrever por aqui?', 4);
@@ -292,19 +343,46 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ok: true, note: 'audio-nao-transcrito' });
     }
 
-    if (!phone || !userMessage || typeof userMessage !== 'string') {
-      return res.status(200).json({ ignored: 'no-text' });
+    // Imagem que nao deu pra baixar
+    if (foiImagem && !imagemBase64) {
+      if (phone) {
+        await enviarWhatsapp(phone, 'Oi! Recebi sua imagem mas nao consegui abrir ela aqui. Pode mandar de novo, por favor?', 4);
+      }
+      return res.status(200).json({ ok: true, note: 'imagem-nao-carregada' });
+    }
+
+    const ehImagem = foiImagem && !!imagemBase64;
+
+    if (!phone || (!ehImagem && (!userMessage || typeof userMessage !== 'string'))) {
+      return res.status(200).json({ ignored: 'no-content' });
     }
 
     // 1. Le o historico persistido
     const { mensagens: historico, nome: nomeSalvo } = await lerConversa(phone);
     const primeiroNome = primeiroNomeDe(nomeSalvo || senderName);
 
-    // 2. Anexa a mensagem nova do cliente
-    historico.push({ role: 'user', content: userMessage });
-
-    // 3. Monta o contexto pro modelo
-    const contexto = normalizar(historico).slice(-MAX_HISTORICO_CONTEXTO);
+    // 2. Monta as mensagens pra API e o registro de texto da mensagem do cliente
+    let mensagensApi;
+    let registroUser;
+    if (ehImagem) {
+      const legenda = (img.caption || '').trim();
+      registroUser = legenda ? `[o cliente enviou uma imagem] ${legenda}` : '[o cliente enviou uma imagem]';
+      const base = normalizar(historico).slice(-MAX_HISTORICO_CONTEXTO);
+      while (base.length && base[base.length - 1].role === 'user') base.pop();
+      mensagensApi = [
+        ...base,
+        {
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: imagemMime, data: imagemBase64 } },
+            { type: 'text', text: legenda || 'Imagem enviada pelo cliente.' },
+          ],
+        },
+      ];
+    } else {
+      registroUser = userMessage;
+      mensagensApi = normalizar([...historico, { role: 'user', content: userMessage }]).slice(-MAX_HISTORICO_CONTEXTO);
+    }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -327,7 +405,7 @@ module.exports = async function handler(req, res) {
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 700,
         system: systemFinal,
-        messages: contexto,
+        messages: mensagensApi,
       }),
     });
 
@@ -341,15 +419,16 @@ module.exports = async function handler(req, res) {
     const rawReply = data?.content?.[0]?.text || 'Pode repetir, por favor? Acho que me perdi aqui.';
     const reply = sanitizarTexto(rawReply);
 
-    // 4. Salva no historico (guardando so o primeiro nome)
+    // 3. Salva no historico (imagem vira placeholder de texto)
+    historico.push({ role: 'user', content: registroUser });
     historico.push({ role: 'assistant', content: reply });
     await salvarConversa(phone, historico, primeiroNome);
 
-    // 5. Envia UMA mensagem com demora humana
+    // 4. Envia UMA mensagem com demora humana
     const { typing, message: dmsg } = delaysHumanos(reply);
     await enviarWhatsapp(phone, reply, typing, dmsg);
 
-    return res.status(200).json({ ok: true, audio: foiAudio, typing });
+    return res.status(200).json({ ok: true, audio: foiAudio, imagem: ehImagem, typing });
   } catch (err) {
     console.error('[zapi-webhook] Erro inesperado:', err);
     return res.status(200).json({ ok: false });
