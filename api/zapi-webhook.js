@@ -1,7 +1,8 @@
 // ============================================================================
-// LIA via WhatsApp - Z-API Webhook  |  v6
-// Memoria (Supabase) + transcricao de audio (Groq) + envio humanizado
-// (digitando, mensagens curtas em blocos) + prompt conversacional.
+// LIA via WhatsApp - Z-API Webhook  |  v7
+// Memoria (Supabase) + transcricao de audio (Groq) + anti-duplicacao por
+// messageId + demora humana via delayTyping/delayMessage do Z-API (a funcao
+// nao trava mais, entao nao ha reenvio). Prompt conversacional.
 // Criado em 08/06/2026
 // ============================================================================
 
@@ -10,10 +11,33 @@ const SUPABASE_ANON = process.env.SUPABASE_ANON_KEY;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MAX_HISTORICO_SALVO = 40;
 const MAX_HISTORICO_CONTEXTO = 20;
-const MAX_BLOCOS = 3;          // no maximo 3 mensagens por resposta
-const BUFFER_ENTRE_BLOCOS = 600; // ms de pausa entre uma mensagem e outra
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// ---------------------------------------------------------------------------
+// Anti-duplicacao: marca o messageId no banco. Se ja existia, e mensagem
+// repetida (reenvio do Z-API) e deve ser ignorada.
+// ---------------------------------------------------------------------------
+async function ehDuplicada(messageId) {
+  if (!SUPABASE_URL || !SUPABASE_ANON || !messageId) return false;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/lia_processados?on_conflict=message_id`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON,
+        Authorization: `Bearer ${SUPABASE_ANON}`,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=ignore-duplicates,return=representation',
+      },
+      body: JSON.stringify({ message_id: messageId }),
+    });
+    if (!r.ok) return false; // em caso de erro, nao bloqueia o atendimento
+    const data = await r.json();
+    // vazio = o registro ja existia = mensagem repetida
+    return Array.isArray(data) && data.length === 0;
+  } catch (e) {
+    console.error('[dedup] erro:', e);
+    return false;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Transcricao de audio via Groq (Whisper)
@@ -47,7 +71,7 @@ async function transcreverAudio(audioUrl, mimeType) {
 }
 
 // ---------------------------------------------------------------------------
-// Persistencia no Supabase
+// Persistencia no Supabase (memoria da conversa)
 // ---------------------------------------------------------------------------
 async function lerConversa(phone) {
   if (!SUPABASE_URL || !SUPABASE_ANON) return { mensagens: [], nome: null };
@@ -128,12 +152,23 @@ function sanitizarTexto(texto) {
 }
 
 // ---------------------------------------------------------------------------
-// Envio pelo WhatsApp (Z-API) com simulacao de digitacao humana
+// Tempo humano: a resposta demora de 5s (curta) a ~20s (longa) para chegar.
+// Isso e feito pelo Z-API (status "Digitando..."), sem travar a funcao.
+// delayTyping vai no maximo a 15s; o excedente vira delayMessage (espera antes
+// de comecar a digitar).
 // ---------------------------------------------------------------------------
-async function enviarWhatsapp(phone, message, delayTyping) {
+function delaysHumanos(texto) {
+  const total = Math.min(20, Math.max(5, Math.round(texto.length / 11)));
+  const typing = Math.min(15, total);
+  const message = Math.max(0, total - typing);
+  return { typing, message };
+}
+
+async function enviarWhatsapp(phone, message, delayTyping = 0, delayMessage = 0) {
   const zapiBase = `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_INSTANCE_TOKEN}`;
   const corpo = { phone, message };
-  if (delayTyping && delayTyping > 0) corpo.delayTyping = delayTyping;
+  if (delayTyping > 0) corpo.delayTyping = delayTyping;
+  if (delayMessage > 0) corpo.delayMessage = delayMessage;
   return fetch(`${zapiBase}/send-text`, {
     method: 'POST',
     headers: {
@@ -142,39 +177,6 @@ async function enviarWhatsapp(phone, message, delayTyping) {
     },
     body: JSON.stringify(corpo),
   });
-}
-
-// Tempo de "digitando" proporcional ao tamanho (1 a 3 segundos)
-function tempoDigitando(texto) {
-  return Math.min(3, Math.max(1, Math.round(texto.length / 25)));
-}
-
-// Quebra a resposta em blocos curtos e envia um por vez, com "digitando" antes
-// de cada um, imitando uma pessoa mandando varias mensagens no WhatsApp.
-async function enviarComoHumano(phone, textoCompleto) {
-  let blocos = textoCompleto
-    .split(/\n\n+/)
-    .map((b) => b.trim())
-    .filter(Boolean);
-
-  if (blocos.length === 0) blocos = [textoCompleto];
-
-  // Limita a 3 mensagens: junta o excedente no ultimo bloco
-  if (blocos.length > MAX_BLOCOS) {
-    blocos = [blocos[0], blocos[1], blocos.slice(2).join('\n\n')];
-  }
-
-  let ultimaResposta = null;
-  for (let i = 0; i < blocos.length; i++) {
-    const bloco = blocos[i];
-    const typing = tempoDigitando(bloco);
-    ultimaResposta = await enviarWhatsapp(phone, bloco, typing);
-    // Espera esse bloco ser entregue (tempo de digitacao) antes do proximo
-    if (i < blocos.length - 1) {
-      await sleep(typing * 1000 + BUFFER_ENTRE_BLOCOS);
-    }
-  }
-  return ultimaResposta;
 }
 
 // ---------------------------------------------------------------------------
@@ -191,8 +193,8 @@ Regras firmes:
 - Mande mensagens curtas. No maximo 2 ou 3 linhas por vez.
 - Faca APENAS UMA pergunta por vez. Nunca varias perguntas juntas. Uma de cada vez, e espera a resposta.
 - Nao despeje varias informacoes de uma so vez. Conversa e troca: fala pouco, escuta, continua.
-- Se precisar dizer duas coisinhas, voce pode separar em ate 2 blocos curtos com uma linha em branco entre eles (como quem manda duas mensagens seguidas). Mas mantenha tudo curto.
 - Evite paragrafos longos e explicacoes compridas. Va no ponto, com simpatia.
+- Responda em uma unica mensagem curta. Nao quebre a resposta em varios pedacos.
 
 SEU JEITO (TOM):
 Humana, acolhedora, calorosa e ao mesmo tempo profissional. Demonstra interesse de verdade pelo negocio da pessoa. Escuta antes de falar. Usa emojis de leve, so quando combina, sem exagero.
@@ -239,7 +241,7 @@ Sempre em portugues com acentuacao correta.
 Nunca use travessao nem hifen no meio da frase.
 Nunca use asteriscos, sublinhado ou markdown.
 Planos sempre em CAIXA ALTA: START, PRO, PREMIUM, PREMIUM IA.
-Mensagens curtas, no maximo 2 ou 3 linhas. Uma pergunta por vez. Tom de pessoa real no WhatsApp.
+Uma unica mensagem curta, no maximo 2 ou 3 linhas. Uma pergunta por vez. Tom de pessoa real no WhatsApp.
 Use o nome da pessoa quando souber.
 `;
 
@@ -251,7 +253,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v6' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v7' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
@@ -259,6 +261,12 @@ module.exports = async function handler(req, res) {
     const body = req.body;
 
     if (body.fromMe === true) return res.status(200).json({ ignored: 'fromMe' });
+
+    // Anti-duplicacao: ignora reenvio da mesma mensagem
+    const messageId = body.messageId || body.id;
+    if (await ehDuplicada(messageId)) {
+      return res.status(200).json({ ignored: 'duplicate' });
+    }
 
     const phone = body.phone;
     const senderName = body?.senderName || body?.chatName || body?.pushName || null;
@@ -276,7 +284,7 @@ module.exports = async function handler(req, res) {
 
     if (foiAudio && !userMessage) {
       if (phone) {
-        await enviarWhatsapp(phone, 'Oi! Nao consegui ouvir direito seu audio agora. Pode mandar de novo ou, se preferir, me escrever por aqui?', 2);
+        await enviarWhatsapp(phone, 'Oi! Nao consegui ouvir direito seu audio agora. Pode mandar de novo ou, se preferir, me escrever por aqui?', 4);
       }
       return res.status(200).json({ ok: true, note: 'audio-nao-transcrito' });
     }
@@ -330,14 +338,15 @@ module.exports = async function handler(req, res) {
     const rawReply = data?.content?.[0]?.text || 'Pode repetir, por favor? Acho que me perdi aqui.';
     const reply = sanitizarTexto(rawReply);
 
-    // 4. Salva a resposta completa no historico (mesmo que o envio seja quebrado)
+    // 4. Salva no historico
     historico.push({ role: 'assistant', content: reply });
     await salvarConversa(phone, historico, nome);
 
-    // 5. Envia de forma humanizada (digitando + mensagens curtas)
-    await enviarComoHumano(phone, reply);
+    // 5. Envia UMA mensagem, com demora humana gerenciada pelo Z-API
+    const { typing, message: dmsg } = delaysHumanos(reply);
+    await enviarWhatsapp(phone, reply, typing, dmsg);
 
-    return res.status(200).json({ ok: true, audio: foiAudio });
+    return res.status(200).json({ ok: true, audio: foiAudio, typing });
   } catch (err) {
     console.error('[zapi-webhook] Erro inesperado:', err);
     return res.status(200).json({ ok: false });
