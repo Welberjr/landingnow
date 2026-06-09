@@ -257,7 +257,7 @@ FORMAS DE PAGAMENTO (fale disso so quando o cliente perguntar como paga, ou quan
 Existem duas formas, e voce apresenta as duas com leveza, deixando o cliente escolher:
 1. Pix: dividido em duas partes iguais. Metade de entrada pra dar inicio, e a outra metade so na entrega, depois que o cliente ver a landing pronta e aprovar. Sem juros. Se o cliente nao gostar depois das revisoes, devolve tudo. Chave Pix: contato@landingnow.com.br (tipo email), em nome de Welber Moreira de Azevedo Junior, no Nubank. Valores de entrada: START R$ 49,50, PRO R$ 148,50, PREMIUM R$ 248,50, PREMIUM IA R$ 498,50.
 2. Cartao de credito: ate 12x. No cartao, o cliente paga o valor total do plano de uma vez (parcelado no cartao), e o pagamento e por um link seguro. Links por plano:
-START: https://link.infinitepay.io/welberjunior/VC1DLTAtUg-HKuZIe295y-100,00
+START: https://link.infinitepay.io/welberjunior/VC1DLTAtUg-eeDhq1UeoL-99,90
 PRO: https://link.infinitepay.io/welberjunior/VC1DLTAtUg-7TtZcGpZPb-297,00
 PREMIUM: https://link.infinitepay.io/welberjunior/VC1DLTAtUg-yMiZNnKmzE-497,00
 PREMIUM IA: https://link.infinitepay.io/welberjunior/VC1DLTAtUg-4CTSI1agri-997,00
