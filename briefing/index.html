@@ -442,7 +442,7 @@ function renderPlanos(){
     let tag=p.badge==='Mais escolhido'?'<span class="tag">Mais escolhido</span>':(p.badge==='Novo'?'<span class="tag novo">Novo</span>':'');
     const itens=p.inclui.map(it=>typeof it==='object'?'<li class="titulo">'+iconeCheck()+'<span>'+it.t+'</span></li>':'<li>'+iconeCheck()+'<span>'+it+'</span></li>').join('');
     const card=document.createElement('div');card.className='card'+(destaque?' destaque':'');
-    card.innerHTML=tag+'<div class="p-nome">Plano '+p.nome+'</div><div class="p-tagline">'+p.tagline+'</div><div class="p-preco">'+p.preco+'</div><div class="p-cond">Pix, 50% início e 50% entrega, em '+p.prazo.replace(' úteis','')+'</div><ul class="p-lista">'+itens+'</ul><button class="btn-plano" type="button">Selecionar '+p.nome+'</button>';
+    card.innerHTML=tag+'<div class="p-nome">Plano '+p.nome+'</div><div class="p-tagline">'+p.tagline+'</div><div class="p-preco">'+p.preco+'</div><div class="p-cond">Pix 50% + 50% ou 12x no cartão, em '+p.prazo.replace(' úteis','')+'</div><ul class="p-lista">'+itens+'</ul><button class="btn-plano" type="button">Selecionar '+p.nome+'</button>';
     card.querySelector('.btn-plano').addEventListener('click',()=>selecionarPlano(key));
     grid.appendChild(card);
   });
