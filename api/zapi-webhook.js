@@ -521,8 +521,8 @@ module.exports = async function handler(req, res) {
     // Pode ser: eco da propria LIA (ignorar) ou o WELBER respondendo
     // manualmente (pausar a conversa e avisar o Welber no pessoal).
     // -----------------------------------------------------------------------
-    console.log("[fromMe-debug]", JSON.stringify({fromMe:body.fromMe,messageId:body.messageId,id:body.id,zaapId:body.zaapId,phone:body.phone,type:body.type,keys:Object.keys(body||{}).slice(0,20)}));
-    if (body.fromMe === true) {
+    const isFromMe = body.fromMe === true || body.fromMe === "true" || body.fromMe === 1;
+    if (isFromMe) {
       // Eco de mensagem que a propria LIA enviou
       if (messageId && (await jaRegistrada(messageId))) {
         return res.status(200).json({ ignored: 'eco-lia' });
