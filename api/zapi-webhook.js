@@ -1,5 +1,5 @@
 ﻿// ============================================================================
-// LIA via WhatsApp - Z-API Webhook  |  v15
+// LIA via WhatsApp - Z-API Webhook  |  v16
 // Tudo da v12 (memoria Supabase + audio Groq + anti-duplicacao + demora
 // humana + primeiro nome + visao de imagem) MAIS:
 //  - Modelo Claude Sonnet 4.6 (antes Haiku 4.5)
@@ -522,7 +522,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v15' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v16' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
@@ -531,6 +531,14 @@ module.exports = async function handler(req, res) {
     const messageId = body.messageId || body.id;
     const phone = body.phone;
     const senderName = body?.senderName || body?.chatName || body?.pushName || null;
+
+    // Grupos: a LIA NUNCA responde em grupos (atendimento e somente 1 a 1)
+    const ehGrupo = body.isGroup === true || body.isGroup === 'true' ||
+      /-group$/i.test(String(phone || '')) ||
+      String(phone || '').replace(/\D/g, '').length > 15;
+    if (ehGrupo) {
+      return res.status(200).json({ ignored: 'grupo' });
+    }
 
     // -----------------------------------------------------------------------
     // Mensagens enviadas PELO NUMERO da LandingNow (fromMe)
