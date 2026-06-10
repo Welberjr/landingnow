@@ -327,6 +327,16 @@ async function enviarWhatsapp(phone, message, delayTyping = 0, delayMessage = 0)
   }
 }
 
+// TEMPORARIO: grava os ultimos payloads brutos pra diagnostico
+async function debugSalvarPayload(body) {
+  try {
+    const { mensagens } = await lerConversa('debug:payloads');
+    const lista = Array.isArray(mensagens) ? mensagens.slice(-14) : [];
+    lista.push({ role: 'user', content: new Date().toISOString() + ' | ' + JSON.stringify(body).slice(0, 3500) });
+    await salvarConversa('debug:payloads', lista, 'debug');
+  } catch (e) { console.error('[debug] erro:', e); }
+}
+
 async function notificarAdmin(texto) {
   return enviarWhatsapp(ADMIN_PHONE, texto, 2, 0);
 }
@@ -506,12 +516,19 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v13' });
+  if (req.method === 'GET') {
+    if (req.query && req.query.debug === 'ln2026debug') {
+      const d = await lerConversa('debug:payloads');
+      return res.status(200).json({ payloads: d.mensagens || [] });
+    }
+    return res.status(200).json({ status: 'zapi-webhook online v13' });
+  }
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
   try {
     const body = req.body;
+    await debugSalvarPayload(body);
     const messageId = body.messageId || body.id;
     const phone = body.phone;
     const senderName = body?.senderName || body?.chatName || body?.pushName || null;
@@ -712,6 +729,13 @@ module.exports = async function handler(req, res) {
     // 3. Extrai avisos internos pro Welber e limpa o texto
     const { limpo, avisos } = extrairAvisos(rawReply);
     const reply = sanitizarTexto(limpo) || 'Pode repetir, por favor? Acho que me perdi aqui.';
+
+    // Re-checa a pausa: pode ter sido pausada ENQUANTO a resposta era gerada
+    if (await estaPausada(phone)) {
+      historico.push({ role: 'user', content: registroUser });
+      await salvarConversa(phone, historico, primeiroNome);
+      return res.status(200).json({ ok: true, paused: 'late-check' });
+    }
 
     // 4. Salva no historico (imagem vira placeholder de texto)
     historico.push({ role: 'user', content: registroUser });
