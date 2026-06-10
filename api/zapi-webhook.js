@@ -522,7 +522,35 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v14' });
+  if (req.method === 'GET') {
+    // TEMPORARIO: setup administrativo (remover apos configurar)
+    if (req.query && req.query.setup === 'wlbr-0610-setup') {
+      const acao = req.query.acao || '';
+      if (acao === 'zapi') {
+        const base = `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_INSTANCE_TOKEN}`;
+        const h = { 'Content-Type': 'application/json', 'Client-Token': process.env.ZAPI_CLIENT_TOKEN };
+        const r1 = await fetch(`${base}/update-webhook-received-delivery`, { method: 'PUT', headers: h, body: JSON.stringify({ value: 'https://www.landingnow.com.br/api/zapi-webhook' }) });
+        const t1 = await r1.text();
+        const r2 = await fetch(`${base}/update-notify-sent-by-me`, { method: 'PUT', headers: h, body: JSON.stringify({ notifySentByMe: true }) });
+        const t2 = await r2.text();
+        return res.status(200).json({ recebidasDelivery: { status: r1.status, body: t1.slice(0, 200) }, notifySentByMe: { status: r2.status, body: t2.slice(0, 200) } });
+      }
+      if (acao === 'estado') {
+        const num = String(req.query.num || '');
+        const pausada = await estaPausada(num);
+        const { mensagens } = await lerConversa(canonicalBR(num));
+        const ultimas = (mensagens || []).slice(-6).map((m) => ({ r: m.role, c: String(m.content || '').slice(0, 80) }));
+        return res.status(200).json({ num: canonicalBR(num), pausada, ultimas });
+      }
+      if (acao === 'despausar') {
+        const num = String(req.query.num || '');
+        await definirPausa(num, false);
+        return res.status(200).json({ ok: true, despausada: canonicalBR(num) });
+      }
+      return res.status(200).json({ erro: 'acao invalida' });
+    }
+    return res.status(200).json({ status: 'zapi-webhook online v14' });
+  }
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
