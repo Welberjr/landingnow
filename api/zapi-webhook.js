@@ -521,6 +521,23 @@ module.exports = async function handler(req, res) {
     // Pode ser: eco da propria LIA (ignorar) ou o WELBER respondendo
     // manualmente (pausar a conversa e avisar o Welber no pessoal).
     // -----------------------------------------------------------------------
+        // PRIORIDADE MAXIMA: keyword #lia pausa/volta — processa ANTES de tudo
+    // Assim nao importa se chega junto com mensagem do cliente
+    // -----------------------------------------------------------------------
+    const userMessageRaw =
+      body?.text?.message ||
+      body?.message ||
+      (typeof body?.text === 'string' ? body.text : null) || '';
+    if (phone && /^#lia\s+(pausa|pausar|off|silencio)\b/i.test(userMessageRaw.trim())) {
+      await definirPausa(phone, true);
+      return res.status(200).json({ ok: true, paused: 'keyword' });
+    }
+    if (phone && /^#lia\s+(voltar|volta|on|ativar)\b/i.test(userMessageRaw.trim())) {
+      await definirPausa(phone, false);
+      await enviarWhatsapp(phone, 'Estou de volta! Em que posso ajudar?', 3, 0);
+      return res.status(200).json({ ok: true, resumed: 'keyword' });
+    }
+
     const isFromMe = body.fromMe === true || body.fromMe === "true" || body.fromMe === 1;
     if (isFromMe) {
       // Eco de mensagem que a propria LIA enviou — ignora silenciosamente
@@ -555,6 +572,7 @@ module.exports = async function handler(req, res) {
       body?.message ||
       (typeof body?.text === 'string' ? body.text : undefined);
 
+    // -----------------------------------------------------------------------
     // --- Audio ---
     let foiAudio = false;
     if (!userMessage && body?.audio && body.audio.audioUrl) {
@@ -571,19 +589,6 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ok: true, admin: true });
     }
 
-    // -----------------------------------------------------------------------
-    // Palavra-chave de pausa: Welber digita #lia pausa na conversa
-    // A LIA silencia aquele chat e so volta com comando voltar NUMERO
-    // -----------------------------------------------------------------------
-    if (userMessage && /^#lia\s+(pausa|pausar|off|silencio)\b/i.test((userMessage||'').trim())) {
-      await definirPausa(phone, true);
-      return res.status(200).json({ ok: true, paused: 'keyword' });
-    }
-    if (userMessage && /^#lia\s+(voltar|volta|on|ativar)\b/i.test((userMessage||'').trim())) {
-      await definirPausa(phone, false);
-      await enviarWhatsapp(phone, 'Estou de volta! Em que posso ajudar?', 3, 0);
-      return res.status(200).json({ ok: true, resumed: 'keyword' });
-    }
     // --- Imagem ---
     const img = (!userMessage && body?.image && (body.image.imageUrl || body.image.url)) ? body.image : null;
     let imagemBase64 = null;
