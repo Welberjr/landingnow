@@ -1,5 +1,5 @@
 ﻿// ============================================================================
-// LIA via WhatsApp - Z-API Webhook  |  v13
+// LIA via WhatsApp - Z-API Webhook  |  v14
 // Tudo da v12 (memoria Supabase + audio Groq + anti-duplicacao + demora
 // humana + primeiro nome + visao de imagem) MAIS:
 //  - Modelo Claude Sonnet 4.6 (antes Haiku 4.5)
@@ -24,6 +24,20 @@ const MAX_IMAGEM_BYTES = 4500000; // ~4.5MB (limite seguro pra API)
 
 // WhatsApp pessoal do Welber (canal de comando e notificacoes)
 const ADMIN_PHONE = '5561982920444';
+
+// Normaliza numeros BR: adiciona DDI 55 se faltar e REMOVE o nono digito,
+// porque o WhatsApp entrega o JID de contas antigas sem ele.
+// Ex: 5561982920444 -> 556182920444 | 61982920444 -> 556182920444
+function canonicalBR(phone) {
+  let n = String(phone || '').replace(/\D/g, '');
+  if (n.length === 10 || n.length === 11) n = '55' + n;
+  if (/^55\d{2}9\d{8}$/.test(n)) n = n.slice(0, 4) + n.slice(5);
+  return n;
+}
+const ADMIN_CANON = canonicalBR(ADMIN_PHONE);
+function ehAdmin(phone) {
+  return !!phone && canonicalBR(phone) === ADMIN_CANON;
+}
 const MODELO = 'claude-sonnet-4-6';
 
 function primeiroNomeDe(nome) {
@@ -188,6 +202,7 @@ async function salvarConversa(phone, mensagens, nome) {
 // nome_cliente = 'paused' ou 'active'
 // ---------------------------------------------------------------------------
 async function estaPausada(phone) {
+  phone = canonicalBR(phone);
   if (!SUPABASE_URL || !SUPABASE_ANON) return false;
   try {
     const url = `${SUPABASE_URL}/rest/v1/lia_conversas?phone=eq.${encodeURIComponent('ctrl:' + phone)}&select=nome_cliente`;
@@ -204,6 +219,7 @@ async function estaPausada(phone) {
 }
 
 async function definirPausa(phone, pausada) {
+  phone = canonicalBR(phone);
   if (!SUPABASE_URL || !SUPABASE_ANON) return;
   try {
     const body = JSON.stringify({
@@ -327,18 +343,8 @@ async function enviarWhatsapp(phone, message, delayTyping = 0, delayMessage = 0)
   }
 }
 
-// TEMPORARIO: grava os ultimos payloads brutos pra diagnostico
-async function debugSalvarPayload(body) {
-  try {
-    const { mensagens } = await lerConversa('debug:payloads');
-    const lista = Array.isArray(mensagens) ? mensagens.slice(-14) : [];
-    lista.push({ role: 'user', content: new Date().toISOString() + ' | ' + JSON.stringify(body).slice(0, 3500) });
-    await salvarConversa('debug:payloads', lista, 'debug');
-  } catch (e) { console.error('[debug] erro:', e); }
-}
-
 async function notificarAdmin(texto) {
-  return enviarWhatsapp(ADMIN_PHONE, texto, 2, 0);
+  return enviarWhatsapp(ADMIN_CANON, texto, 2, 0);
 }
 
 // ---------------------------------------------------------------------------
@@ -347,8 +353,8 @@ async function notificarAdmin(texto) {
 function extrairNumeroComando(texto) {
   const bruto = ((texto || '').match(/\d[\d\s.\-()]{7,}/) || [''])[0].replace(/\D/g, '');
   if (!bruto) return null;
-  if (bruto.length === 10 || bruto.length === 11) return '55' + bruto;
-  if (bruto.length >= 12) return bruto;
+  if (bruto.length >= 10) return canonicalBR(bruto);
+
   return null;
 }
 
@@ -516,19 +522,12 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') {
-    if (req.query && req.query.debug === 'ln2026debug') {
-      const d = await lerConversa('debug:payloads');
-      return res.status(200).json({ payloads: d.mensagens || [] });
-    }
-    return res.status(200).json({ status: 'zapi-webhook online v13' });
-  }
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v14' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
   try {
     const body = req.body;
-    await debugSalvarPayload(body);
     const messageId = body.messageId || body.id;
     const phone = body.phone;
     const senderName = body?.senderName || body?.chatName || body?.pushName || null;
@@ -600,7 +599,7 @@ module.exports = async function handler(req, res) {
     // -----------------------------------------------------------------------
     // Canal de comando: mensagens vindas do WhatsApp pessoal do Welber
     // -----------------------------------------------------------------------
-    if (phone === ADMIN_PHONE) {
+    if (ehAdmin(phone)) {
       const resposta = await tratarComandoAdmin(userMessage || '');
       await enviarWhatsapp(ADMIN_PHONE, resposta, 2, 0);
       return res.status(200).json({ ok: true, admin: true });
