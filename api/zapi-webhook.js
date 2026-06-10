@@ -1,4 +1,4 @@
-// ============================================================================
+﻿// ============================================================================
 // LIA via WhatsApp - Z-API Webhook  |  v13
 // Tudo da v12 (memoria Supabase + audio Groq + anti-duplicacao + demora
 // humana + primeiro nome + visao de imagem) MAIS:
@@ -521,6 +521,7 @@ module.exports = async function handler(req, res) {
     // Pode ser: eco da propria LIA (ignorar) ou o WELBER respondendo
     // manualmente (pausar a conversa e avisar o Welber no pessoal).
     // -----------------------------------------------------------------------
+    console.log("[fromMe-debug]", JSON.stringify({fromMe:body.fromMe,messageId:body.messageId,id:body.id,zaapId:body.zaapId,phone:body.phone,type:body.type,keys:Object.keys(body||{}).slice(0,20)}));
     if (body.fromMe === true) {
       // Eco de mensagem que a propria LIA enviou
       if (messageId && (await jaRegistrada(messageId))) {
