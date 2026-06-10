@@ -523,44 +523,24 @@ module.exports = async function handler(req, res) {
     // -----------------------------------------------------------------------
     const isFromMe = body.fromMe === true || body.fromMe === "true" || body.fromMe === 1;
     if (isFromMe) {
-      // Eco de mensagem que a propria LIA enviou
+      // Eco de mensagem que a propria LIA enviou — ignora silenciosamente
       if (messageId && (await jaRegistrada(messageId))) {
         return res.status(200).json({ ignored: 'eco-lia' });
       }
-      // Mensagens do numero comercial pro chat do admin = notificacoes da LIA
-      if (!phone || phone === ADMIN_PHONE) {
-        return res.status(200).json({ ignored: 'fromMe-admin' });
-      }
-
-      const textoManual =
+      // Eco de texto identico a ultima mensagem da LIA (fallback)
+      const textoEco =
         body?.text?.message ||
         body?.message ||
         (typeof body?.text === 'string' ? body.text : null);
-
-      const { mensagens: hist, nome } = await lerConversa(phone);
-
-      // Fallback anti-eco: texto identico a ultima resposta da LIA
-      const ultimaLia = [...hist].reverse().find((m) => m && m.role === 'assistant');
-      if (textoManual && ultimaLia && ultimaLia.content === textoManual) {
-        return res.status(200).json({ ignored: 'eco-lia-texto' });
+      if (textoEco) {
+        const { mensagens: hEco } = await lerConversa(phone || '');
+        const ultimaLia = [...(hEco||[])].reverse().find((m) => m && m.role === 'assistant');
+        if (ultimaLia && ultimaLia.content === textoEco) {
+          return res.status(200).json({ ignored: 'eco-lia-texto' });
+        }
       }
-
-      const jaEstavaPausada = await estaPausada(phone);
-      if (!jaEstavaPausada) {
-        await definirPausa(phone, true);
-        const quem = primeiroNomeDe(nome) ? primeiroNomeDe(nome) + ' (' + phone + ')' : phone;
-        await notificarAdmin(
-          'Voce assumiu a conversa com ' + quem + '. Fiquei em silencio nesse chat.\n' +
-          'Pra eu voltar a atender, responda aqui: voltar ' + phone
-        );
-      }
-
-      // Guarda o que o Welber falou, pra LIA voltar com contexto
-      if (textoManual) {
-        hist.push({ role: 'assistant', content: textoManual });
-        await salvarConversa(phone, hist, nome);
-      }
-      return res.status(200).json({ ok: true, paused: true });
+      // Z-API nao entrega fromMe corretamente — ignora sem tentar pausar
+      return res.status(200).json({ ignored: 'fromMe' });
     }
 
     // -----------------------------------------------------------------------
@@ -591,6 +571,19 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ok: true, admin: true });
     }
 
+    // -----------------------------------------------------------------------
+    // Palavra-chave de pausa: Welber digita #lia pausa na conversa
+    // A LIA silencia aquele chat e so volta com comando voltar NUMERO
+    // -----------------------------------------------------------------------
+    if (userMessage && /^#lia\s+(pausa|pausar|off|silencio)\b/i.test((userMessage||'').trim())) {
+      await definirPausa(phone, true);
+      return res.status(200).json({ ok: true, paused: 'keyword' });
+    }
+    if (userMessage && /^#lia\s+(voltar|volta|on|ativar)\b/i.test((userMessage||'').trim())) {
+      await definirPausa(phone, false);
+      await enviarWhatsapp(phone, 'Estou de volta! Em que posso ajudar?', 3, 0);
+      return res.status(200).json({ ok: true, resumed: 'keyword' });
+    }
     // --- Imagem ---
     const img = (!userMessage && body?.image && (body.image.imageUrl || body.image.url)) ? body.image : null;
     let imagemBase64 = null;
