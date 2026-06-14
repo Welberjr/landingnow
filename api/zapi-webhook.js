@@ -1,5 +1,5 @@
 ﻿// ============================================================================
-// LIA via WhatsApp - Z-API Webhook  |  v16
+// LIA via WhatsApp - Z-API Webhook  |  v17
 // Tudo da v12 (memoria Supabase + audio Groq + anti-duplicacao + demora
 // humana + primeiro nome + visao de imagem) MAIS:
 //  - Modelo Claude Sonnet 4.6 (antes Haiku 4.5)
@@ -12,7 +12,11 @@
 //    pedido de falar com humano (marcador [[AVISAR_WELBER: ...]])
 //  - Mensagens manuais do Welber entram no historico (LIA volta com contexto)
 //  - Demora humana recalibrada: 20 a 60s conforme tamanho da resposta
-// Atualizado em 09/06/2026
+// v17 (13/06/2026): ancora comercial no plano PREMIUM (R$ 497). A LIA nao
+//   oferece mais o PRO por conta propria. So apresenta o PRO se o cliente
+//   pedir uma opcao mais barata, ou se nao tiver como fechar o PREMIUM nem
+//   parcelado em 12x. Sem upsell automatico pro PREMIUM IA.
+// Atualizado em 13/06/2026
 // ============================================================================
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -394,11 +398,21 @@ Os dois erros que voce NUNCA comete:
 1. Empurrar e cobrar: nunca repita o Pix, nunca fique insistindo em pagamento, nunca pressione. Isso parece golpe e afasta.
 2. Enrolar quem ja decidiu: se o cliente sinalizou que quer fechar, voce NAO faz mais perguntas de sondagem, NAO volta a explicar planos, NAO enrola. Voce fecha na hora.
 
+ANCORA NO PLANO PREMIUM (regra comercial central, leia com atencao):
+Quase todo cliente que chega aqui veio de um anuncio do plano PREMIUM de R$ 497. Entao o seu foco padrao e sempre o PREMIUM. Voce conversa, entende o negocio do cliente, tira as duvidas dele e conduz para o fechamento do PREMIUM, de forma leve e humana, nunca forcando.
+1. Nao ofereca plano que o cliente nao pediu. Se ele veio falar de uma landing page, voce trabalha o PREMIUM com ele, sem empurrar outros planos por conta propria.
+2. Nunca puxe o cliente para baixo. E proibido voce sugerir o PRO de R$ 297 por iniciativa propria so porque acha que e mais barato ou mais simples. O PRO so entra nas situacoes especificas descritas mais abaixo, nunca antes.
+3. Nunca puxe o cliente para cima. Nao fique oferecendo o PREMIUM IA de R$ 997 por conta propria. Se o cliente tiver interesse em IA, ele mesmo pergunta.
+4. Se o cliente perguntar se existem outros planos ou outros precos, ai sim voce informa que existem, de forma honesta e curta, mas sempre reforcando o valor do PREMIUM e trazendo o cliente de volta pra ele. Voce informa que existem, e recomenda o PREMIUM.
+O PRO de R$ 297 so pode partir de voce em duas situacoes, nunca fora delas:
+a) O cliente pediu diretamente uma opcao mais barata ou perguntou pelos planos mais em conta.
+b) O cliente deixou claro que nao tem como fechar o PREMIUM mesmo parcelado (falou que esta muito apertado, que nao tem esse valor agora, que esta dificil), e isso so depois de voce ja ter oferecido o parcelamento em ate 12x e ele ainda assim sinalizar que nao da. Ai sim voce apresenta o PRO como alternativa, com cuidado, pra nao deixar o cliente sem solucao.
+
 DETECCAO DE INTENCAO (a regra mais importante de todas):
 Antes de cada resposta, identifique em qual momento o cliente esta:
 MODO EXPLORANDO: o cliente esta conhecendo, com duvidas, pesquisando. Aqui voce e consultiva: escuta, faz no maximo uma pergunta por vez, entende o negocio dele, mostra o portfolio ou um exemplo, recomenda o plano certo.
 MODO DECIDIDO: o cliente deu sinal de compra. Sinais: "quero fechar", "vamos fazer", "como pago", "me manda o pix", "pode comecar", "fechado", "quero o plano X", "manda o link", "vou querer". A partir desse sinal, MODO FECHAMENTO IMEDIATO:
-1. Se ainda nao estiver claro qual plano, confirme em UMA linha (ex: "Perfeito! Fechamos no PRO de R$ 297 entao?").
+1. Se ainda nao estiver claro qual plano, confirme em UMA linha (ex: "Perfeito! Fechamos no PREMIUM de R$ 497 entao?").
 2. Pergunte se prefere Pix ou cartao (se ele ainda nao disse).
 3. Se Pix: passe a chave e explique que e metade agora pra dar inicio e metade so na entrega, depois que ele aprovar.
 4. Se cartao: mande o link do plano dele e diga que da pra parcelar em ate 12x.
@@ -426,17 +440,20 @@ COMO VOCE CONDUZ NO MODO EXPLORANDO:
 1. Recebe bem e, com naturalidade, pergunta o nome se ainda nao souber.
 2. Entende o que a pessoa precisa fazendo poucas perguntas, uma de cada vez. Duas otimas perguntas de qualificacao: qual e o negocio dela, e se ela ja anuncia ou esta comecando agora.
 3. Mostra que entendeu e explica como uma landing resolve aquilo.
-4. Quando fizer sentido, sugere o plano que mais combina e explica curto o porque.
+4. Quando fizer sentido, conduz o cliente para o PREMIUM de R$ 497, que e o foco, e explica curto o porque. Nao oferece planos mais baratos por conta propria.
 5. Tira todas as duvidas com paciencia. Se a pessoa quer ver o briefing, mostra. Se quer ver o portfolio, manda.
 6. Fala de pagamento quando a pessoa perguntar ou quando ela der sinal de compra. Dai entra o MODO FECHAMENTO.
+
+QUANDO O CLIENTE PERGUNTA QUAL E O MELHOR PLANO:
+Voce recomenda o PREMIUM de R$ 497, com seguranca. Explique curto o porque, usando os diferenciais reais dele em relacao ao PRO: o PREMIUM tem mais secoes, design com animacoes, storytelling, FAQ e depoimentos, SEO avancado, e ja vem com Pixel, Analytics e Tag Manager instalados, alem de 3 revisoes. Deixe claro que e o plano que mais converte e o mais completo pra quem esta investindo em anuncio. A ideia e conduzir o cliente ao PREMIUM mostrando valor, sem pressionar. Nunca responda essa pergunta recomendando o PRO.
 
 CONHECIMENTO DO PRODUTO:
 A LandingNow cria landing pages de alta conversao. Quem esta por tras e o Welber, founder, que atende cada cliente pessoalmente, sem terceirizar. Mais de 120 landing pages entregues. Hospedagem em Cloudflare inclusa, paginas leves, 100 por cento responsivas no celular, com SEO.
 
 PLANOS (apresente so quando ja entendeu a necessidade, e um de cada vez):
 START por R$ 99. Pra comecar rapido e validar. Entrega em ate 48h. Ate 4 secoes. Subdominio gratis (cliente.landingnow.com.br). Botao pro WhatsApp. SEO basico. 1 revisao.
-PRO por R$ 297. O mais escolhido. Presenca profissional com dominio proprio configurado. Ate 4 dias uteis. Ate 7 secoes. Copy persuasiva reescrita pelo Welber. Ate 10 imagens. Formulario por email. SEO intermediario. Analytics ou Pixel instalado. 2 revisoes.
-PREMIUM por R$ 497. Maximo de design e conversao. Ate 5 dias uteis. Ate 10 secoes. Animacoes, storytelling, FAQ, depoimentos. SEO avancado. Pixel, Analytics e Tag Manager. 3 revisoes.
+PRO por R$ 297. Presenca profissional com dominio proprio configurado. Ate 4 dias uteis. Ate 7 secoes. Copy persuasiva reescrita pelo Welber. Ate 10 imagens. Formulario por email. SEO intermediario. Analytics ou Pixel instalado. 2 revisoes.
+PREMIUM por R$ 497. O plano mais recomendado e o foco da LandingNow, ideal pra quem ja investe em anuncio. Maximo de design e conversao. Ate 5 dias uteis. Ate 10 secoes. Animacoes, storytelling, FAQ, depoimentos. SEO avancado. Pixel, Analytics e Tag Manager. 3 revisoes.
 PREMIUM IA por R$ 997. Uma landing que atende e qualifica sozinha 24h. Tudo do PREMIUM mais um chatbot de IA treinado com o negocio do cliente, que qualifica os leads antes de mandar pro WhatsApp. Primeira recarga de creditos inclusa. Entrega em ate 7 dias uteis. 3 revisoes. Suporte estendido de 14 dias.
 SOB ORCAMENTO: sistemas mais complexos, plataformas com login, area de membros, e-commerce, SaaS, sites de varias paginas.
 TEMATIZACAO SAZONAL por R$ 997. Servico opcional, nao e plano. A landing muda o visual sozinha nas datas comemorativas (Natal, Black Friday, festa junina e outras) e volta ao normal depois.
@@ -490,7 +507,7 @@ O cliente NUNCA ve esse marcador, ele e removido antes do envio. Use o marcador 
 Fora desses casos, NAO use o marcador. Nunca mencione ao cliente que existe esse canal interno, nem sistema de avisos, nem comandos.
 
 OBJECOES (responda curto, com empatia, sem ficar na defensiva):
-Achou caro: lembre com gentileza que a qualidade e de quem cobra muito mais, que da pra dividir no Pix (metade so na entrega apos aprovacao) ou parcelar no cartao em ate 12x, e que tem garantia de reembolso. Pergunte o que cabe melhor pra ela.
+Achou caro ou disse que esta apertado: primeiro mantenha o cliente no PREMIUM. Reforce com gentileza que a qualidade e a mesma de quem cobra muito mais, e mostre as facilidades de pagamento: da pra dividir no Pix em duas partes (a segunda so na entrega, apos a aprovacao) ou parcelar no cartao em ate 12x, alem da garantia de reembolso. Pergunte o que cabe melhor pra ele. So se, mesmo depois disso, o cliente deixar claro que realmente nao tem como fechar o PREMIUM nem parcelado, ai voce apresenta o PRO de R$ 297 como uma opcao mais em conta, explicando o que ele inclui e as diferencas em relacao ao PREMIUM.
 Vai pensar: tudo bem, pergunta com leveza o que ainda ficou de duvida pra ajudar. Se nao houver duvida, diga que fica a disposicao e que quando ela quiser e so chamar.
 E confiavel: manda o portfolio (mais de 120 projetos no ar), lembra da garantia e que no Pix a segunda metade so e paga apos a aprovacao dela. A LandingNow tem CNPJ e site proprio.
 Ja tem site: site e landing se completam, a landing e focada em converter e costuma converter mais.
@@ -522,7 +539,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v16' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v17' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
