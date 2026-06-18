@@ -464,7 +464,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
       price: 'R$ 297 <span>Pix · 50% início, 50% entrega</span>',
       cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%20297',
       included: [
-        'Landing de 1 página, até 3 seções',
+        'Landing até 3 seções',
         'Entrega em até 72h após pagamento + briefing',
         'Logo + 3 imagens enviadas por você (sem vídeo)',
         'Botão direto pro WhatsApp',

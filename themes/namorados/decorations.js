@@ -72,7 +72,7 @@
       '<div class="float-card">',
       '  <div class="float-card-icon">⚡</div>',
       '  <div>',
-      '    <span class="card-title">Entrega a partir de 48h</span>',
+      '    <span class="card-title">Entrega a partir de 72h</span>',
       '    <span class="card-sub">Seu projeto no ar rapidinho.</span>',
       '  </div>',
       '</div>',
@@ -127,7 +127,7 @@
   // -----------------------------------------------------------
   const marqueeMessages = [
     'landings que apaixonam clientes',
-    'entrega a partir de 48h',
+    'entrega a partir de 72h',
     'copy que faz vender',
     '100% mobile',
     'design que conquista'
@@ -181,7 +181,7 @@
   // 16. FINAL CTA - titulo com gradient automatico via CSS
   // -----------------------------------------------------------
   setHTML('.final-cta h2', 'Bora <em>conquistar</em><br>mais clientes?');
-  setText('.final-cta p', 'Sua próxima página, no ar a partir de 48h. A partir de R$ 99,90.');
+  setText('.final-cta p', 'Sua próxima página, no ar a partir de 72h. A partir de R$ 297.');
 
   // -----------------------------------------------------------
   // 17. SEASONAL ADDON - copy tematico

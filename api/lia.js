@@ -41,7 +41,7 @@ PLANOS DA LANDINGNOW (decora exatamente):
 
 1. Plano START por R$ 297 (pagamento via Pix, 50% pra iniciar e 50% na entrega)
    Entrega em ate 72 horas apos pagamento + briefing completo
-   Landing de 1 pagina, ate 3 secoes
+   Landing ate 3 secoes
    Logo + 3 imagens enviadas pelo cliente (nao inclui video)
    Botao direto pro WhatsApp
    100% otimizada pra mobile

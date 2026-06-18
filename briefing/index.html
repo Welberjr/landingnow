@@ -215,9 +215,9 @@
       <div class="chip-plano">
         <div class="info">
           <span class="pill">Plano <span id="chip-nome">Start</span></span>
-          <span class="meta" id="chip-meta">Entrega em 48 horas</span>
+          <span class="meta" id="chip-meta">Entrega em 72 horas</span>
         </div>
-        <span class="preco-chip" id="chip-preco">R$ 99,90</span>
+        <span class="preco-chip" id="chip-preco">R$ 297</span>
       </div>
       <h2 class="form-titulo">Conte sobre o <span class="serif">seu negócio</span></h2>
       <p class="form-intro">São poucas informações, mas são as que realmente importam pra criar uma página que vende. Quanto mais claro o seu diferencial e o seu objetivo, melhor fica o resultado.</p>
@@ -383,7 +383,7 @@
       <p>Agora é com a gente: vamos preparar a sua página com todo o cuidado.</p>
       <div class="prazo-box">
         <span class="rotulo">Prazo de entrega</span>
-        <span class="valor" id="ob-prazo">48 horas</span>
+        <span class="valor" id="ob-prazo">72 horas</span>
         <span class="plano-conf">Plano <strong id="ob-plano">Start</strong> selecionado</span>
       </div>
       <p style="margin-bottom:22px">Em breve entramos em contato pelo WhatsApp para alinhar os últimos detalhes.</p>
@@ -419,17 +419,17 @@ const LOGO_SRC = "/apple-touch-icon.png";
 
 /* ====== PLANOS ====== */
 const PLANOS = {
-  start:{nome:'Start',preco:'R$ 99,90',prazo:'48 horas',tagline:'Pra começar com presença online.',
-    inclui:['Landing de 1 página (até 4 seções)','Subdomínio gratuito landingnow.com.br','Botão direto pro WhatsApp','Hospedagem inclusa (uptime 99,9%)','1 rodada de revisão inclusa'],
-    maxFotos:4,dominio:false,referencias:false,chatbot:false,badge:''},
-  pro:{nome:'Pro',preco:'R$ 297',prazo:'4 dias úteis',tagline:'Pra vender de verdade.',
-    inclui:['Landing completa (até 7 seções)','Domínio próprio configurado','Copy persuasiva reescrita pela equipe','Identidade visual aplicada','2 rodadas de revisão inclusas'],
-    maxFotos:6,dominio:true,referencias:false,chatbot:false,badge:'Mais escolhido'},
-  premium:{nome:'Premium',preco:'R$ 497',prazo:'5 dias úteis',tagline:'Pra crescer no próximo nível.',
-    inclui:[{t:'Tudo do plano Pro, e mais:',titulo:true},'Landing premium (até 10 seções)','Animações sutis e copy com storytelling','SEO avançado, Pixel e Analytics','3 rodadas de revisão inclusas'],
+  start:{nome:'Start',preco:'R$ 297',prazo:'72 horas',tagline:'Pra começar com presença online.',
+    inclui:['Landing até 3 seções','Logo + 3 imagens enviadas por você','SEO otimizado, mínimo 80%','Botão direto pro WhatsApp','1 rodada de revisão inclusa'],
+    maxFotos:3,dominio:false,referencias:false,chatbot:false,badge:''},
+  pro:{nome:'Pro',preco:'R$ 497',prazo:'5 dias úteis',tagline:'Pra vender de verdade.',
+    inclui:['Landing completa (até 5 seções)','Logo + 5 imagens enviadas por você','Copy persuasiva reescrita pela equipe','SEO otimizado, mínimo 90%','3 rodadas de revisão inclusas'],
+    maxFotos:5,dominio:true,referencias:false,chatbot:false,badge:'Mais escolhido'},
+  premium:{nome:'Premium',preco:'R$ 997',prazo:'7 dias úteis',tagline:'Pra crescer no próximo nível.',
+    inclui:[{t:'Tudo do plano Pro, e mais:',titulo:true},'Landing premium (até 7 seções)','Logo + 10 imagens e 2 vídeos','SEO 100% e desempenho acima de 85%','Hospedagem e domínio grátis por 1 ano','5 rodadas de revisão inclusas'],
     maxFotos:10,dominio:true,referencias:true,chatbot:false,badge:''},
-  premiumia:{nome:'Premium IA',preco:'R$ 997',prazo:'7 dias úteis',tagline:'Pra capturar leads dormindo.',
-    inclui:[{t:'Tudo do plano Premium, e mais:',titulo:true},'IA integrada na landing (chatbot 24h)','Modelo Claude Haiku 4.5 da Anthropic','Triagem e captura automática de leads','Suporte estendido (14 dias)'],
+  premiumia:{nome:'Premium IA',preco:'R$ 1.497',prazo:'10 dias úteis',tagline:'Pra capturar leads dormindo.',
+    inclui:[{t:'Tudo do plano Premium, e mais:',titulo:true},'IA integrada na landing (chatbot 24h)','Revisões livres no prazo de 10 dias','Hospedagem, domínio e e-mail grátis por 1 ano','Triagem e captura automática de leads'],
     maxFotos:10,dominio:true,referencias:true,chatbot:true,badge:'Novo'}
 };
 let planoAtual='start';
