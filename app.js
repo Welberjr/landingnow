@@ -57,7 +57,7 @@ function calculate() {
   }
 
   const clientsNeeded = Math.ceil(goalVal / ticketVal);
-  const paybackSales = Math.ceil(297 / ticketVal);
+  const paybackSales = Math.ceil(497 / ticketVal);
   const nicheLabel = getCurrentNicheLabel();
 
   roiEyebrow.textContent = `// PROJEÇÃO PARA ${name.toUpperCase()}`;
@@ -461,108 +461,103 @@ document.querySelectorAll('.faq-item').forEach(item => {
     'start': {
       name: 'Plano Start',
       title: 'Pra começar com presença online.',
-      price: 'R$ 99,90 <span>Pix · 50% início, 50% entrega</span>',
-      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%2099%2C90',
+      price: 'R$ 297 <span>Pix · 50% início, 50% entrega</span>',
+      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%20297',
       included: [
-        'Landing de 1 página, até 4 seções',
-        'Entrega em até 48h após pagamento + briefing',
-        'Subdomínio gratuito (seunegocio.landingnow.com.br)',
+        'Landing de 1 página, até 3 seções',
+        'Entrega em até 72h após pagamento + briefing',
+        'Logo + 3 imagens enviadas por você (sem vídeo)',
         'Botão direto pro WhatsApp',
         '100% otimizada pra mobile',
-        'Hospedagem Cloudflare Pages inclusa (uptime 99,9%)',
-        'SEO técnico básico (meta tags, alt, semântica)',
-        'PageSpeed mobile acima de 70',
+        'SEO otimizado, mínimo 80%',
         '1 rodada de revisão inclusa',
         '7 dias de suporte grátis pós-entrega'
       ],
       excluded: [
-        'Domínio próprio configurado',
+        'Hospedagem e domínio (por sua conta, ou minha hospedagem por R$ 10/mês ou R$ 100/ano)',
         'Copy persuasiva reescrita pela equipe',
         'Formulário de contato integrado',
-        'Animações e identidade visual aplicada',
+        'Tratamento de imagens ou edição de vídeo (você seleciona e envia)',
         'Chatbot de IA na landing',
-        'Tema sazonal automatico (+ R$ 997, em ate 10x)'
+        'Tema sazonal automático (serviço à parte, R$ 1.499 em até 10x)'
       ]
     },
     'pro': {
       name: 'Plano Pro',
       title: 'Pra vender de verdade.',
-      price: 'R$ 297 <span>Pix · 50% início, 50% entrega</span>',
-      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Pro%20de%20R%24%20297',
+      price: 'R$ 497 <span>Pix · 50% início, 50% entrega</span>',
+      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Pro%20de%20R%24%20497',
       included: [
         'Tudo do plano Start, e mais:',
-        'Landing completa, até 7 seções',
-        'Entrega em até 4 dias úteis',
-        'Domínio próprio configurado (.com.br)',
+        'Landing completa, até 5 seções',
+        'Entrega em até 5 dias úteis',
+        'Domínio próprio configurado (você registra o .com.br)',
         'Copy persuasiva reescrita pela equipe',
         'Identidade visual aplicada com refinamento',
-        'Até 10 imagens do cliente inseridas na página',
-        'Formulário de contato integrado por email',
-        'Página de obrigado simples',
-        'SEO intermediário (Open Graph, Twitter Cards)',
-        'Google Analytics ou Meta Pixel instalado',
-        'PageSpeed mobile acima de 80',
-        '2 rodadas de revisão inclusas'
+        'Logo + 5 imagens enviadas por você (sem vídeo)',
+        'SEO otimizado, mínimo 90%',
+        'Google Tag ID e Conversion Label (Google Ads)',
+        '3 rodadas de revisão inclusas'
       ],
       excluded: [
-        'Animações sutis (scroll, hover, fade)',
-        'Copy estratégica com storytelling completo',
-        'Seção de depoimentos e FAQ com accordion',
-        'SEO avançado (schema markup, sitemap)',
-        'Chatbot de IA na landing',
-        'Tema sazonal automatico (+ R$ 997, em ate 10x)'
+        'Meta Pixel (este plano usa Google Ads, não dá pra trocar por Meta)',
+        'Hospedagem (opcional comigo por R$ 10/mês ou R$ 100/ano)',
+        'Formulário de contato integrado',
+        'Página de obrigado',
+        'Tratamento de imagens ou edição de vídeo (você seleciona e envia)',
+        'Tema sazonal automático (serviço à parte, R$ 1.499 em até 10x)'
       ]
     },
     'premium': {
       name: 'Plano Premium',
       title: 'Pra crescer no próximo nível.',
-      price: 'R$ 497 <span>Pix · 50% início, 50% entrega</span>',
-      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20de%20R%24%20497',
+      price: 'R$ 997 <span>Pix · 50% início, 50% entrega</span>',
+      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20de%20R%24%20997',
       included: [
         'Tudo do plano Pro, e mais:',
-        'Landing premium, até 10 seções',
-        'Entrega em até 5 dias úteis',
+        'Landing premium, até 7 seções',
+        'Entrega em até 7 dias úteis',
         'Design diferenciado com animações sutis',
         'Copy estratégica com narrativa completa',
-        'Até 15 imagens do cliente inseridas na página',
-        'Formulário avançado (Web3Forms, leads ilimitados)',
+        'Logo + 10 imagens e 2 vídeos enviados por você',
+        'Formulário avançado (Web3Forms, 250 formulários por mês)',
         'Página de obrigado personalizada',
         'Seção de depoimentos + FAQ com accordion',
-        'SEO avançado (schema JSON-LD, sitemap, robots)',
-        'Pixel + Analytics + Google Tag Manager',
-        'PageSpeed mobile acima de 85',
-        '3 rodadas de revisão inclusas'
+        'SEO 100% e desempenho acima de 85%',
+        'Google Ads (Tag e Conversion Label) + Meta Pixel',
+        'Hospedagem e domínio grátis por 1 ano',
+        '5 rodadas de revisão inclusas'
       ],
       excluded: [
         'Chatbot de IA integrado na landing',
-        'Qualificação automática de leads por IA',
-        'Captura automática de leads pela IA',
-        'Suporte estendido de 14 dias',
-        'Tema sazonal automatico (+ R$ 997, em ate 10x)'
+        'Qualificação e captura automática de leads por IA',
+        'Tratamento de imagens ou edição de vídeo (você seleciona e envia)',
+        'Tema sazonal automático (serviço à parte, R$ 1.499 em até 10x)'
       ]
     },
     'premium-ia': {
       name: 'Plano Premium IA',
       title: 'Pra capturar leads dormindo.',
-      price: 'R$ 997 <span>Pix · 50% início, 50% entrega</span>',
-      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20IA%20de%20R%24%20997',
+      price: 'R$ 1.497 <span>Pix · 50% início, 50% entrega</span>',
+      cta: 'https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20IA%20de%20R%24%201.497',
       included: [
         'Tudo do plano Premium, e mais:',
-        'Entrega em até 7 dias úteis',
+        'Entrega em até 10 dias úteis',
         'IA integrada na landing (chatbot 24h por dia)',
         'Modelo Claude Haiku 4.5 da Anthropic',
         'Personalidade e treinamento da IA pela equipe',
         'Fluxo de qualificação (triagem antes do humano)',
         'Captura de leads pela IA, enviados por e-mail',
         '1ª recarga de créditos da IA inclusa',
-        '14 dias de suporte grátis (suporte estendido)',
-        '3 rodadas de revisão inclusas'
+        'Revisões livres dentro do prazo de 10 dias',
+        'Hospedagem, domínio e e-mail personalizado grátis por 1 ano',
+        '14 dias de suporte grátis (suporte estendido)'
       ],
       excluded: [
+        'Após 1 ano: hospedagem e e-mail por R$ 20/mês',
         'Recargas de crédito da IA a partir do 2º mês',
         'Projetos sob orçamento (SaaS, login, dashboard)',
-        'Integração de IA customizada fora da landing',
-        'Tema sazonal automatico (+ R$ 997, em ate 10x)'
+        'Tema sazonal automático (serviço à parte, R$ 1.499 em até 10x)'
       ]
     }
   };

@@ -359,3 +359,13 @@ body[class*="theme-"] .seasonal-addon-chip:hover{background:rgba(255,77,122,0.12
   }
 }
 .custom-card p{ -webkit-hyphens:auto; hyphens:auto; overflow-wrap:break-word; }
+
+/* ============================================================
+   fix-v11 (18/06/2026): no mobile o botao flutuante "Pergunte a Lia"
+   ficava por cima dos botoes Briefing, Portfolio e Login do rodape.
+   Reservamos uma faixa inferior segura no footer e centralizamos.
+   ============================================================ */
+@media (max-width:768px){
+  footer{ padding-bottom:104px !important; }
+  .footer-bottom > div:last-child{ justify-content:center; width:100%; }
+}
