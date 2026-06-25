@@ -345,6 +345,7 @@ function detectNicho(b){
 }
 function pl(s){const k=(s||'').toLowerCase().replace(/\s+/g,'').replace('-','');return PM[k]||{n:s||'?',v:0,r:1};}
 function fm(v){return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function vlr(b){return (b&&b.valor!=null&&b.valor!=='')?Number(b.valor):pl(b?b.plano:'').v;}
 function fd(iso){if(!iso)return'?';return new Date(iso).toLocaleDateString('pt-BR');}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 function imgOk(u){return u&&typeof u==='string'&&u.startsWith(SB+'/storage/v1/object/public/');}
@@ -422,7 +423,7 @@ async function carregarBriefings(){
 }
 function renderKPIs(){
   const tot=BRIEFS.length,nov=BRIEFS.filter(b=>b.status==='novo').length;
-  let ar=0,rc=0;BRIEFS.forEach(b=>{const v=pl(b.plano).v;if(b.status_pagamento==='pago')rc+=v;else ar+=v;});
+  let ar=0,rc=0;BRIEFS.forEach(b=>{const v=vlr(b);if(b.status_pagamento==='pago')rc+=v;else ar+=v;});
   const wel=BRIEFS.filter(b=>b.atribuido_a==='welber').length;
   const ana=BRIEFS.filter(b=>b.atribuido_a==='ana_carolina').length;
   document.getElementById('kpis').innerHTML=`
@@ -493,7 +494,7 @@ function criarCard(b){
     </div>
     <div class="cb2">
       <span class="bd bp">${esc(p.n)}</span>
-      <span class="bd bv">${fm(p.v)}</span>
+      <span class="bd bv" id="vb-${b.id}">${fm(vlr(b))}</span>
       <span class="bd ${ent?'be':'bn2'}">${ent?'Entregue':'Novo'}</span>
       <span class="bd ${pago?'bpa':'br2'}">${pago?'Pago':'A receber'}</span>
       ${us>=mx?'<span class="bd bre">Rev. esgotada</span>':''}
@@ -519,6 +520,10 @@ function criarCard(b){
           <div class="fl">URL entregue</div>
           <div class="ue"><input id="ur-${b.id}" value="${esc(b.url_entregue||'')}" placeholder="https://cliente.pages.dev"><button class="sob" id="ubtn-${b.id}">Salvar</button></div>
         </div>
+        <div style="flex:1;min-width:180px">
+          <div class="fl">Valor (R$)</div>
+          <div class="ue"><input id="vl-${b.id}" type="number" step="1" min="0" value="${vlr(b)}" placeholder="Ex: 497"><button class="sob" id="vlbtn-${b.id}">Salvar</button></div>
+        </div>
       </div>
     </div>
     <div class="sc">
@@ -543,7 +548,7 @@ function criarCard(b){
       </div>
     </div>
     <div class="bf2">
-      <div><div class="bfl">Plano</div><div style="font-size:15px;font-weight:800;margin-top:2px">${esc(p.n)} <span class="bfv" style="font-size:15px">${fm(p.v)}</span></div></div>
+      <div><div class="bfl">Plano</div><div style="font-size:15px;font-weight:800;margin-top:2px">${esc(p.n)} <span class="bfv" style="font-size:15px" id="vf-${b.id}">${fm(vlr(b))}</span></div></div>
       <div class="sep"></div>
       <div><div class="bfl">Pagamento</div><div style="margin-top:4px">${pago?'<span class="bd bpa">Pago em '+fd(b.pago_em)+'</span>':'<span class="bd br2">Aguardando</span>'}</div></div>
     </div>
@@ -598,6 +603,7 @@ function criarCard(b){
   div.querySelector('#osb-'+b.id).onclick=e=>{e.stopPropagation();salvarObs(b,div);};
   div.querySelector('#nbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarNicho(b,div);};
   div.querySelector('#ubtn-'+b.id).onclick=e=>{e.stopPropagation();salvarURL(b,div);};
+  div.querySelector('#vlbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarValor(b,div);};
   div.querySelector('#pcbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarParceiro2(b,div);};
   div.querySelector('#atbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarAtrib(b,div);};
   div.querySelectorAll('[data-a]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();acao(btn.dataset.a,b,div);}));
@@ -644,6 +650,17 @@ async function salvarURL(b,card){
   await patch(b.id,{url_entregue:v}).catch(()=>{toast('Erro','er');return;});
   b.url_entregue=v;update(b);toast('URL salva!');
 }
+async function salvarValor(b,card){
+  const raw=card.querySelector('#vl-'+b.id).value.trim().replace(',','.');
+  const n=raw===''?null:Number(raw);
+  if(n!==null&&(isNaN(n)||n<0)){toast('Valor invalido','er');return;}
+  await patch(b.id,{valor:n}).catch(()=>{toast('Erro','er');return;});
+  b.valor=n;update(b);
+  const txt=fm(vlr(b));
+  const vb=card.querySelector('#vb-'+b.id);if(vb)vb.textContent=txt;
+  const vf=card.querySelector('#vf-'+b.id);if(vf)vf.textContent=txt;
+  renderKPIs();toast('Valor salvo!');
+}
 async function salvarParceiro2(b,card){
   const v=card.querySelector('#pc-'+b.id).value||null;
   await patch(b.id,{parceiro_id:v}).catch(()=>{toast('Erro','er');return;});
@@ -661,7 +678,7 @@ function copiarClaude(b){
   const p=pl(b.plano),nicho=b.nicho||detectNicho(b);
   const obj=Array.isArray(b.objetivos)?b.objetivos.join(', '):'';
   const resp=b.atribuido_a==='welber'?'Welber':b.atribuido_a==='ana_carolina'?'Ana Carolina':'A definir';
-  const txt='# Briefing: '+b.nome_negocio+'\n\n## Dados do cliente\n- Negocio: '+(b.nome_negocio||'?')+'\n- Responsavel: '+(b.nome_responsavel||'?')+'\n- WhatsApp: '+(b.whatsapp||'?')+'\n- Cidade: '+(b.cidade_regiao||'?')+'\n- Instagram: '+(b.instagram||'?')+'\n- Plano: '+p.n+' ('+fm(p.v)+')\n- Nicho: '+nicho+'\n- Responsavel pela entrega: '+resp+(b.dominio_desejado?'\n- Dominio: '+b.dominio_desejado:'')+'\n\n## O que o negocio vende\n'+(b.o_que_vende||'?')+'\n\n## Cliente ideal\n'+(b.cliente_ideal||'?')+'\n\n## Diferencial\n'+(b.diferencial||'?')+'\n\n## Objetivos\n'+(obj||'?')+(b.referencias?'\n\n## Referencias\n'+b.referencias:'')+(b.depoimentos_texto?'\n\n## Depoimentos\n'+b.depoimentos_texto:'')+(b.perguntas_faq?'\n\n## FAQ\n'+b.perguntas_faq:'')+(b.horario_atendimento?'\n\n## Horario\n'+b.horario_atendimento:'')+(b.observacoes?'\n\n## Obs. do cliente\n'+b.observacoes:'')+'\n\n---\n\nCrie uma landing page completa em HTML autossuficiente com assets em base64 para '+b.nome_negocio+' (nicho: '+nicho+').\n\nPadroes obrigatorios LandingNow:\n- Sem travessoes nos textos\n- Textos justificados, titulos centralizados no mobile\n- 100% responsivo (mobile first)\n- Estetica moderna com cores vivas, alto contraste, cards chamativos\n- Rodape horizontal com informacoes\n- NUNCA escrever "feito por landingnow"\n- Deploy: wrangler pages deploy . --project-name=nome-projeto --commit-dirty=true';
+  const txt='# Briefing: '+b.nome_negocio+'\n\n## Dados do cliente\n- Negocio: '+(b.nome_negocio||'?')+'\n- Responsavel: '+(b.nome_responsavel||'?')+'\n- WhatsApp: '+(b.whatsapp||'?')+'\n- Cidade: '+(b.cidade_regiao||'?')+'\n- Instagram: '+(b.instagram||'?')+'\n- Plano: '+p.n+' ('+fm(vlr(b))+')\n- Nicho: '+nicho+'\n- Responsavel pela entrega: '+resp+(b.dominio_desejado?'\n- Dominio: '+b.dominio_desejado:'')+'\n\n## O que o negocio vende\n'+(b.o_que_vende||'?')+'\n\n## Cliente ideal\n'+(b.cliente_ideal||'?')+'\n\n## Diferencial\n'+(b.diferencial||'?')+'\n\n## Objetivos\n'+(obj||'?')+(b.referencias?'\n\n## Referencias\n'+b.referencias:'')+(b.depoimentos_texto?'\n\n## Depoimentos\n'+b.depoimentos_texto:'')+(b.perguntas_faq?'\n\n## FAQ\n'+b.perguntas_faq:'')+(b.horario_atendimento?'\n\n## Horario\n'+b.horario_atendimento:'')+(b.observacoes?'\n\n## Obs. do cliente\n'+b.observacoes:'')+'\n\n---\n\nCrie uma landing page completa em HTML autossuficiente com assets em base64 para '+b.nome_negocio+' (nicho: '+nicho+').\n\nPadroes obrigatorios LandingNow:\n- Sem travessoes nos textos\n- Textos justificados, titulos centralizados no mobile\n- 100% responsivo (mobile first)\n- Estetica moderna com cores vivas, alto contraste, cards chamativos\n- Rodape horizontal com informacoes\n- NUNCA escrever "feito por landingnow"\n- Deploy: wrangler pages deploy . --project-name=nome-projeto --commit-dirty=true';
   navigator.clipboard.writeText(txt).then(()=>toast('Copiado para a area de transferencia!')).catch(()=>{
     const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Copiado!');
   });
@@ -721,7 +738,7 @@ function renderParceiros(){
   const pcg=document.getElementById('pcg');
   PARC.forEach(p=>{
     const briefs=BRIEFS.filter(b=>b.parceiro_id===p.id);
-    const fat=briefs.reduce((s,b)=>s+pl(b.plano).v,0);
+    const fat=briefs.reduce((s,b)=>s+vlr(b),0);
     const card=document.createElement('div');card.className='pca';
     card.innerHTML='<h3>'+esc(p.nome)+'</h3><div class="ps">'+esc(p.telefone||'')+(p.email?' '+esc(p.email):'')+'</div><span class="ptag '+tipoClass(p.tipo)+'">'+tipoLabel(p.tipo)+'</span><div style="margin-top:10px;display:flex;flex-direction:column;gap:4px"><div style="font-size:12px;color:var(--mut)">Briefings: <strong style="color:var(--ink)">'+briefs.length+'</strong></div><div style="font-size:12px;color:var(--mut)">Total faturado: <strong style="color:var(--neon)">'+fm(fat)+'</strong></div>'+(p.observacoes?'<div style="font-size:12px;color:var(--mut);margin-top:4px">'+esc(p.observacoes)+'</div>':'')+'</div><div class="pm"><button class="sob" data-eid="'+p.id+'">Editar</button><button class="sob" style="color:var(--hot);border-color:rgba(255,77,109,.3)" data-did="'+p.id+'">Excluir</button></div>';
     card.querySelector('[data-eid]').onclick=()=>editarParceiro(p);
@@ -786,17 +803,17 @@ function renderDash(){
   const agora=new Date(),lim=per?new Date(agora-per*86400000):null;
   const bs=BRIEFS.filter(b=>!lim||new Date(b.created_at)>=lim);
   const tot=bs.length,pag=bs.filter(b=>b.status_pagamento==='pago').length;
-  const fat=bs.reduce((s,b)=>s+(b.status_pagamento==='pago'?pl(b.plano).v:0),0);
-  const ar=bs.reduce((s,b)=>s+(b.status_pagamento==='a_receber'?pl(b.plano).v:0),0);
+  const fat=bs.reduce((s,b)=>s+(b.status_pagamento==='pago'?vlr(b):0),0);
+  const ar=bs.reduce((s,b)=>s+(b.status_pagamento==='a_receber'?vlr(b):0),0);
   const tk=pag?fat/pag:0,conv=tot?Math.round(pag/tot*100):0;
   document.getElementById('dk').innerHTML='<div class="dc"><div class="dl">Briefings no periodo</div><div class="dv">'+tot+'</div></div><div class="dc"><div class="dl">Faturamento recebido</div><div class="dv" style="color:var(--vd)">'+fm(fat)+'</div><div class="ds">'+pag+' pagamento(s)</div></div><div class="dc"><div class="dl">A receber</div><div class="dv" style="color:var(--am)">'+fm(ar)+'</div></div><div class="dc"><div class="dl">Ticket medio</div><div class="dv" style="color:var(--neon)">'+fm(tk)+'</div></div><div class="dc"><div class="dl">Taxa de conversao</div><div class="dv" style="color:var(--az)">'+conv+'%</div></div><div class="dc"><div class="dl">Rev. esgotadas</div><div class="dv" style="color:var(--hot)">'+bs.filter(b=>(b.revisoes_usadas||0)>=pl(b.plano).r).length+'</div></div>';
-  const plMap={};bs.forEach(b=>{const p=pl(b.plano);plMap[p.n]=(plMap[p.n]||0)+p.v;});
+  const plMap={};bs.forEach(b=>{const p=pl(b.plano);plMap[p.n]=(plMap[p.n]||0)+vlr(b);});
   const plMax=Math.max(...Object.values(plMap),1);
   document.getElementById('dpl').innerHTML=Object.entries(plMap).sort((a,b)=>b[1]-a[1]).map(([n,v])=>'<div class="br3"><span class="bl">'+esc(n)+'</span><div class="bx"><div class="bf3" style="width:'+Math.round(v/plMax*100)+'%"></div></div><span class="bval">'+fm(v)+'</span></div>').join('')||'<span style="color:var(--mut);font-size:13px">Sem dados</span>';
   const niMap={};bs.forEach(b=>{const n=b.nicho||'Outro';niMap[n]=(niMap[n]||0)+1;});
   const niMax=Math.max(...Object.values(niMap),1);
   document.getElementById('dni').innerHTML=Object.entries(niMap).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([n,v])=>'<div class="br3"><span class="bl">'+esc(n)+'</span><div class="bx"><div class="bf3" style="width:'+Math.round(v/niMax*100)+'%;background:var(--az)"></div></div><span class="bval">'+v+'</span></div>').join('')||'<span style="color:var(--mut);font-size:13px">Sem dados</span>';
-  const paMap={};bs.forEach(b=>{if(b.parceiro_id){const p=PARC.find(x=>x.id===b.parceiro_id);if(p)paMap[p.nome]=(paMap[p.nome]||0)+pl(b.plano).v;}});
+  const paMap={};bs.forEach(b=>{if(b.parceiro_id){const p=PARC.find(x=>x.id===b.parceiro_id);if(p)paMap[p.nome]=(paMap[p.nome]||0)+vlr(b);}});
   const paMax=Math.max(...Object.values(paMap),1);
   document.getElementById('dpa').innerHTML=Object.entries(paMap).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,v])=>'<div class="br3"><span class="bl">'+esc(n)+'</span><div class="bx"><div class="bf3" style="width:'+Math.round(v/paMax*100)+'%;background:var(--vd)"></div></div><span class="bval">'+fm(v)+'</span></div>').join('')||'<span style="color:var(--mut);font-size:13px">Nenhum parceiro vinculado</span>';
   const meses={};for(let i=5;i>=0;i--){const d=new Date(agora);d.setMonth(d.getMonth()-i);const k=d.toLocaleString('pt-BR',{month:'short',year:'2-digit'});meses[k]=0;}
