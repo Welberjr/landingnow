@@ -611,6 +611,7 @@ function criarCard(b){
 }
 async function patch(id,dados){
   const r=await fetch(SB+'/rest/v1/briefings?id=eq.'+id,{method:'PATCH',headers:{'apikey':AK,'Authorization':'Bearer '+gt(),'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(dados)});
+  if(r.status===401){lt();toast('Sessao expirada. Faca login novamente.','er');setTimeout(()=>location.reload(),1600);throw new Error('401');}
   if(!r.ok)throw new Error('HTTP '+r.status);
 }
 async function acao(a,b,card){
@@ -637,24 +638,24 @@ async function altRev(b,d,card){
 }
 async function salvarObs(b,card){
   const txt=card.querySelector('#ob-'+b.id).value,el=card.querySelector('#os-'+b.id);
-  await patch(b.id,{observacao_interna:txt}).catch(()=>{el.textContent='Erro';return;});
+  try{await patch(b.id,{observacao_interna:txt});}catch(e){el.textContent='Erro';return;}
   b.observacao_interna=txt;update(b);el.textContent='Salvo';setTimeout(()=>el.textContent='',2000);
 }
 async function salvarNicho(b,card){
   const v=card.querySelector('#ni-'+b.id).value.trim();
-  await patch(b.id,{nicho:v}).catch(()=>{toast('Erro','er');return;});
+  try{await patch(b.id,{nicho:v});}catch(e){toast('Erro','er');return;}
   b.nicho=v;update(b);toast('Nicho salvo!');
 }
 async function salvarURL(b,card){
   const v=card.querySelector('#ur-'+b.id).value.trim();
-  await patch(b.id,{url_entregue:v}).catch(()=>{toast('Erro','er');return;});
+  try{await patch(b.id,{url_entregue:v});}catch(e){toast('Erro','er');return;}
   b.url_entregue=v;update(b);toast('URL salva!');
 }
 async function salvarValor(b,card){
   const raw=card.querySelector('#vl-'+b.id).value.trim().replace(',','.');
   const n=raw===''?null:Number(raw);
   if(n!==null&&(isNaN(n)||n<0)){toast('Valor invalido','er');return;}
-  await patch(b.id,{valor:n}).catch(()=>{toast('Erro','er');return;});
+  try{await patch(b.id,{valor:n});}catch(e){toast('Erro','er');return;}
   b.valor=n;update(b);
   const txt=fm(vlr(b));
   const vb=card.querySelector('#vb-'+b.id);if(vb)vb.textContent=txt;
@@ -663,12 +664,14 @@ async function salvarValor(b,card){
 }
 async function salvarParceiro2(b,card){
   const v=card.querySelector('#pc-'+b.id).value||null;
-  await patch(b.id,{parceiro_id:v}).catch(()=>{toast('Erro','er');return;});
-  b.parceiro_id=v;update(b);toast('Parceiro vinculado!');
+  try{await patch(b.id,{parceiro_id:v});}catch(e){toast('Erro ao vincular','er');return;}
+  b.parceiro_id=v;update(b);
+  if(typeof renderParceiros==='function')renderParceiros();
+  toast(v?'Parceiro vinculado!':'Parceiro removido.');
 }
 async function salvarAtrib(b,card){
   const v=card.querySelector('#at-'+b.id).value||null;
-  await patch(b.id,{atribuido_a:v}).catch(()=>{toast('Erro','er');return;});
+  try{await patch(b.id,{atribuido_a:v});}catch(e){toast('Erro','er');return;}
   b.atribuido_a=v;update(b);
   const lbl=v==='welber'?'Welber':v==='ana_carolina'?'Ana Carolina':'Nao definido';
   toast('Atribuido a: '+lbl+'!');
