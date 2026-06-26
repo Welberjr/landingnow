@@ -180,21 +180,7 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
 </section>
 
 <!-- PROVA SOCIAL --><section class="social-proof"><div class="container"><div class="proof-grid"><div class="proof-item"><span class="proof-number">+120</span><span class="proof-label">Landing pages no ar</span></div><div class="proof-item"><span class="proof-number">100%</span><span class="proof-label">Dinheiro de volta</span></div><a class="proof-item proof-link" href="https://share.google/1TsT9adJlcnkYTW7H" target="_blank" rel="noopener"><span class="proof-number">5,0</span><span class="proof-stars"><svg class="g-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>★★★★★</span></a></div></div></section>
-<!-- MARQUEE -->
-<div class="marquee-section">
-  <div class="marquee">
-    <span>landing pages premium</span>
-    <span>entrega a partir de 72h</span>
-    <span>copy que converte</span>
-    <span>100% mobile</span>
-    <span>sem código, sem complicação</span>
-    <span>landing pages premium</span>
-    <span>entrega a partir de 72h</span>
-    <span>copy que converte</span>
-    <span>100% mobile</span>
-    <span>sem código, sem complicação</span>
-  </div>
-</div>
+<!-- Marquee de beneficios removido a pedido (reduz repeticao e altura) -->
 
 <!-- DOR / POR QUE PERDE VENDAS -->
 <section class="pain-section">
@@ -296,100 +282,230 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
     <div class="section-header section-header-centered">
       <div class="section-label">Cases reais</div>
       <h2>Trabalhos que <em class="italic">já estão no ar.</em></h2>
-      <p>Cada projeto entregue com cuidado, copy estratégica e design pensado pro nicho. Arrasta pro lado pra ver mais.</p>
+      <p>Cada projeto entregue com cuidado, copy estratégica e design pensado pro nicho. Passe o mouse pra pausar e clique pra abrir a página.</p>
     </div>
 
-    <div class="cases-grid">
-
-      <div class="case-card">
-        <div class="case-image">
-          <img src="cases/case-auge.webp" srcset="cases/case-auge-300.webp 300w, cases/case-auge.webp 600w" sizes="(max-width: 480px) 280px, 600px" alt="Auge Detailer" width="600" height="4664" decoding="async" loading="lazy">
-        </div>
+    <style>
+    .cases-marquee{position:relative;overflow:hidden;margin:0 -32px;padding:6px 0 10px;-webkit-mask:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);mask:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%)}
+    .cases-track{display:flex;width:max-content;padding:0 16px;animation:casesScroll 85s linear infinite;will-change:transform}
+    .cases-marquee:hover .cases-track{animation-play-state:paused}
+    .cases-track .case-card{flex:0 0 360px;margin-right:20px;text-decoration:none;color:inherit}
+    .cases-track .case-image img{width:100%;height:auto;transform:translateY(0);transition:transform 7s ease-in-out}
+    .cases-track .case-card:hover .case-image img{transform:translateY(calc(320px - 100%))}
+    @keyframes casesScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @media(max-width:768px){.cases-marquee{margin:0 -20px}.cases-track .case-card{flex:0 0 280px}.cases-track .case-image img{transition-duration:5s}}
+    @media(prefers-reduced-motion:reduce){.cases-track{animation:none}}
+    </style>
+    <div class="cases-marquee"><div class="cases-track">
+      <a href="https://real-glass-vidracaria.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-01.webp" alt="Real Glass Vidraçaria" width="600" height="1261" loading="lazy" decoding="async"></div>
         <div class="case-meta">
-          <div class="case-tag">Estética automotiva</div>
-          <div class="case-name">Auge Detailer</div>
-          <div class="case-desc">Detailing premium com 3 pacotes e cases de transformação.</div>
+          <div class="case-tag">Vidraçaria</div>
+          <div class="case-name">Real Glass Vidraçaria</div>
+          <div class="case-desc">Vidros sob medida na Grande Vitória.</div>
         </div>
-      </div>
-
-      <div class="case-card">
-        <div class="case-image">
-          <img src="cases/case-cafelumiere.webp" srcset="cases/case-cafelumiere-300.webp 300w, cases/case-cafelumiere.webp 600w" sizes="(max-width: 480px) 280px, 600px" alt="Café Lumière" width="600" height="1811" decoding="async" loading="lazy">
-        </div>
+      </a>
+      <a href="https://vivendo-aventuras-luciana.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-02.webp" alt="Vivendo Aventuras com Luciana" width="600" height="1131" loading="lazy" decoding="async"></div>
         <div class="case-meta">
-          <div class="case-tag">Cafeteria</div>
-          <div class="case-name">Café Lumière</div>
-          <div class="case-desc">Cardápio digital, fidelidade e admin completo.</div>
+          <div class="case-tag">Turismo</div>
+          <div class="case-name">Vivendo Aventuras com Luciana</div>
+          <div class="case-desc">Agência de viagens com identidade marcante.</div>
         </div>
-      </div>
-
-      <div class="case-card">
-        <div class="case-image">
-          <img src="cases/case-sakura.webp" srcset="cases/case-sakura-300.webp 300w, cases/case-sakura.webp 600w" sizes="(max-width: 480px) 280px, 600px" alt="Sakura Prime" width="600" height="2248" decoding="async" loading="lazy">
-        </div>
+      </a>
+      <a href="https://dr-bruno-rabello.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-03.webp" alt="Dr. Bruno Rabello" width="600" height="3346" loading="lazy" decoding="async"></div>
         <div class="case-meta">
-          <div class="case-tag">Restaurante</div>
-          <div class="case-name">Sakura Prime</div>
-          <div class="case-desc">Sushi premium com cardápio e pedido direto pelo site.</div>
+          <div class="case-tag">Saúde</div>
+          <div class="case-name">Dr. Bruno Rabello</div>
+          <div class="case-desc">Cirurgião de quadril no Rio de Janeiro.</div>
         </div>
-      </div>
-
-      <div class="case-card">
-        <div class="case-image">
-          <img src="cases/case-dratarma.webp" srcset="cases/case-dratarma-300.webp 300w, cases/case-dratarma.webp 600w" sizes="(max-width: 480px) 280px, 600px" alt="Dra. Tarma Keullin" width="600" height="1484" decoding="async" loading="lazy">
-        </div>
+      </a>
+      <a href="https://tarmakeullin.base44.app" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-04.webp" alt="Dra. Tarma Keullin" width="600" height="1789" loading="lazy" decoding="async"></div>
         <div class="case-meta">
           <div class="case-tag">Saúde</div>
           <div class="case-name">Dra. Tarma Keullin</div>
-          <div class="case-desc">Site profissional com chat de atendimento integrado.</div>
+          <div class="case-desc">Saúde íntima feminina com atendimento integrado.</div>
         </div>
-      </div>
-
-      <div class="case-card">
-        <div class="case-image">
-          <img src="cases/case-mra.webp" srcset="cases/case-mra-300.webp 300w, cases/case-mra.webp 600w" sizes="(max-width: 480px) 280px, 600px" alt="MedResumos Academy" width="600" height="3953" decoding="async" loading="lazy">
+      </a>
+      <a href="https://renata-collodetti-arquitetura.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-05.webp" alt="Renata Collodetti" width="600" height="2756" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Arquitetura</div>
+          <div class="case-name">Renata Collodetti</div>
+          <div class="case-desc">Arquitetura e urbanismo no Espírito Santo.</div>
         </div>
+      </a>
+      <a href="https://sakuraprime.base44.app" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-06.webp" alt="Sakura Prime" width="600" height="2248" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Gastronomia</div>
+          <div class="case-name">Sakura Prime</div>
+          <div class="case-desc">Sushi premium com cardápio e pedido direto.</div>
+        </div>
+      </a>
+      <a href="https://andrade-veiculos.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-07.webp" alt="Andrade Veículos" width="600" height="1773" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Automotivo</div>
+          <div class="case-name">Andrade Veículos</div>
+          <div class="case-desc">Seminovos com procedência na Serra, ES.</div>
+        </div>
+      </a>
+      <a href="https://daniele-leao.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-09.webp" alt="Daniele Leão" width="600" height="1418" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Psicologia</div>
+          <div class="case-name">Daniele Leão</div>
+          <div class="case-desc">Psicóloga clínica com presença acolhedora.</div>
+        </div>
+      </a>
+      <a href="https://insulfilm-glass.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-11.webp" alt="Insulfilm Glass" width="600" height="1532" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Automotivo</div>
+          <div class="case-name">Insulfilm Glass</div>
+          <div class="case-desc">Película residencial e automotiva na Grande Vitória.</div>
+        </div>
+      </a>
+      <a href="https://taf-elite.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-12.webp" alt="TAF Elite Pro" width="600" height="3243" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Educação</div>
+          <div class="case-name">TAF Elite Pro</div>
+          <div class="case-desc">Preparação física pra concursos, do zero à aprovação.</div>
+        </div>
+      </a>
+      <a href="https://maisonfilipeia.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-13.webp" alt="Maison Filipeia" width="600" height="3551" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Eventos</div>
+          <div class="case-name">Maison Filipeia</div>
+          <div class="case-desc">Espaço de eventos em João Pessoa.</div>
+        </div>
+      </a>
+      <a href="https://atlasaprova.com.br" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-14.webp" alt="Atlas Aprova x AFYA" width="600" height="3863" loading="lazy" decoding="async"></div>
         <div class="case-meta">
           <div class="case-tag">Educação médica</div>
-          <div class="case-name">MedResumos Academy</div>
-          <div class="case-desc">Landing institucional pra plataforma premium de educação médica.</div>
+          <div class="case-name">Atlas Aprova x AFYA</div>
+          <div class="case-desc">Plataforma de aprovação em Medicina.</div>
         </div>
-      </div>
-
-      <div class="case-card">
-        <div class="case-image">
-          <img src="cases/case-afya.webp" srcset="cases/case-afya-300.webp 300w, cases/case-afya.webp 600w" sizes="(max-width: 480px) 280px, 600px" alt="Afya Atlas" width="600" height="3905" decoding="async" loading="lazy">
+      </a>
+      <a href="https://av-midia-show.pages.dev" target="_blank" rel="noopener" class="case-card">
+        <div class="case-image"><img src="cases/case-15.webp" alt="AV Mídia Show" width="600" height="1633" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Áudio e Vídeo</div>
+          <div class="case-name">AV Mídia Show</div>
+          <div class="case-desc">Produtora de áudio e vídeo desde 1998.</div>
         </div>
+      </a>
+      <a href="https://real-glass-vidracaria.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-01.webp" alt="Real Glass Vidraçaria" width="600" height="1261" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Vidraçaria</div>
+          <div class="case-name">Real Glass Vidraçaria</div>
+          <div class="case-desc">Vidros sob medida na Grande Vitória.</div>
+        </div>
+      </a>
+      <a href="https://vivendo-aventuras-luciana.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-02.webp" alt="Vivendo Aventuras com Luciana" width="600" height="1131" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Turismo</div>
+          <div class="case-name">Vivendo Aventuras com Luciana</div>
+          <div class="case-desc">Agência de viagens com identidade marcante.</div>
+        </div>
+      </a>
+      <a href="https://dr-bruno-rabello.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-03.webp" alt="Dr. Bruno Rabello" width="600" height="3346" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Saúde</div>
+          <div class="case-name">Dr. Bruno Rabello</div>
+          <div class="case-desc">Cirurgião de quadril no Rio de Janeiro.</div>
+        </div>
+      </a>
+      <a href="https://tarmakeullin.base44.app" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-04.webp" alt="Dra. Tarma Keullin" width="600" height="1789" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Saúde</div>
+          <div class="case-name">Dra. Tarma Keullin</div>
+          <div class="case-desc">Saúde íntima feminina com atendimento integrado.</div>
+        </div>
+      </a>
+      <a href="https://renata-collodetti-arquitetura.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-05.webp" alt="Renata Collodetti" width="600" height="2756" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Arquitetura</div>
+          <div class="case-name">Renata Collodetti</div>
+          <div class="case-desc">Arquitetura e urbanismo no Espírito Santo.</div>
+        </div>
+      </a>
+      <a href="https://sakuraprime.base44.app" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-06.webp" alt="Sakura Prime" width="600" height="2248" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Gastronomia</div>
+          <div class="case-name">Sakura Prime</div>
+          <div class="case-desc">Sushi premium com cardápio e pedido direto.</div>
+        </div>
+      </a>
+      <a href="https://andrade-veiculos.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-07.webp" alt="Andrade Veículos" width="600" height="1773" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Automotivo</div>
+          <div class="case-name">Andrade Veículos</div>
+          <div class="case-desc">Seminovos com procedência na Serra, ES.</div>
+        </div>
+      </a>
+      <a href="https://daniele-leao.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-09.webp" alt="Daniele Leão" width="600" height="1418" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Psicologia</div>
+          <div class="case-name">Daniele Leão</div>
+          <div class="case-desc">Psicóloga clínica com presença acolhedora.</div>
+        </div>
+      </a>
+      <a href="https://insulfilm-glass.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-11.webp" alt="Insulfilm Glass" width="600" height="1532" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Automotivo</div>
+          <div class="case-name">Insulfilm Glass</div>
+          <div class="case-desc">Película residencial e automotiva na Grande Vitória.</div>
+        </div>
+      </a>
+      <a href="https://taf-elite.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-12.webp" alt="TAF Elite Pro" width="600" height="3243" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Educação</div>
+          <div class="case-name">TAF Elite Pro</div>
+          <div class="case-desc">Preparação física pra concursos, do zero à aprovação.</div>
+        </div>
+      </a>
+      <a href="https://maisonfilipeia.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-13.webp" alt="Maison Filipeia" width="600" height="3551" loading="lazy" decoding="async"></div>
+        <div class="case-meta">
+          <div class="case-tag">Eventos</div>
+          <div class="case-name">Maison Filipeia</div>
+          <div class="case-desc">Espaço de eventos em João Pessoa.</div>
+        </div>
+      </a>
+      <a href="https://atlasaprova.com.br" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-14.webp" alt="Atlas Aprova x AFYA" width="600" height="3863" loading="lazy" decoding="async"></div>
         <div class="case-meta">
           <div class="case-tag">Educação médica</div>
-          <div class="case-name">Afya Atlas</div>
-          <div class="case-desc">Landing pra plataforma de aprovação em medicina, com 32 unidades.</div>
+          <div class="case-name">Atlas Aprova x AFYA</div>
+          <div class="case-desc">Plataforma de aprovação em Medicina.</div>
         </div>
-      </div>
-
-      <div class="case-card">
-        <div class="case-image">
-          <img src="cases/case-tafelite.webp" srcset="cases/case-tafelite-300.webp 300w, cases/case-tafelite.webp 600w" sizes="(max-width: 480px) 280px, 600px" alt="TAF Elite" width="600" height="1916" decoding="async" loading="lazy">
-        </div>
+      </a>
+      <a href="https://av-midia-show.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
+        <div class="case-image"><img src="cases/case-15.webp" alt="AV Mídia Show" width="600" height="1633" loading="lazy" decoding="async"></div>
         <div class="case-meta">
-          <div class="case-tag">Preparação militar</div>
-          <div class="case-name">TAF Elite</div>
-          <div class="case-desc">Plataforma completa de preparação física para concursos.</div>
+          <div class="case-tag">Áudio e Vídeo</div>
+          <div class="case-name">AV Mídia Show</div>
+          <div class="case-desc">Produtora de áudio e vídeo desde 1998.</div>
         </div>
-      </div>
-
-      <div class="case-card">
-        <div class="case-image">
-          <img src="cases/case-velar.webp" srcset="cases/case-velar-300.webp 300w, cases/case-velar.webp 600w" sizes="(max-width: 480px) 280px, 600px" alt="Velar Barber Club" width="600" height="1112" decoding="async" loading="lazy">
-        </div>
-        <div class="case-meta">
-          <div class="case-tag">SaaS · Barbearias</div>
-          <div class="case-name">Velar Barber Club</div>
-          <div class="case-desc">Plataforma SaaS completa para gerenciar barbearias.</div>
-        </div>
-      </div>
-
-    </div>
+      </a>
+    </div></div>
 
     <div class="cases-cta">
       <h3>Quer ver seu negócio na <em>próxima vitrine?</em></h3>

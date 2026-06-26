@@ -13,3 +13,7 @@ _*.py
 clientes/
 
 contexto-landingnow.md
+
+# screenshots de origem pesados
+cases/Portif*.png
+cases/*.png
