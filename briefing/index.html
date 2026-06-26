@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 <style>
   :root{
     --bg:#0A0A0A;--bg-soft:#131313;--bg-card:#1A1A1A;--line:#2A2A2A;
@@ -181,13 +182,53 @@
     .foot{justify-content:center;text-align:center}
     .foot .contato{justify-content:center}
   }
+
+  /* botao ver escopo */
+  .btn-ver-escopo{grid-column:1/-1;width:100%;background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);font-family:'Inter';font-weight:600;font-size:15px;padding:15px;border-radius:100px;cursor:pointer;transition:all .2s;margin-top:4px;display:inline-flex;align-items:center;justify-content:center;gap:9px}
+  .btn-ver-escopo:hover{border-color:var(--neon);color:var(--neon)}
+  .btn-ver-escopo svg{width:18px;height:18px}
+
+  /* MODAL ESCOPO */
+  .escopo-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:26px 16px;overflow-y:auto}
+  .escopo-overlay.on{display:flex}
+  .escopo-modal{position:relative;width:100%;max-width:640px;background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:30px 28px 24px;margin:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+  .escopo-x{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--muted);font-size:28px;line-height:1;cursor:pointer;transition:color .2s}
+  .escopo-x:hover{color:var(--ink)}
+  .escopo-tag{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--neon)}
+  .escopo-titulo{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:8px 0 4px}
+  .escopo-titulo span{color:var(--neon)}
+  .escopo-prazo{font-size:13px;color:var(--muted);margin-bottom:20px}
+  .escopo-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .escopo-col-h{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+  .esc-in-h{color:var(--neon)}.esc-out-h{color:var(--hot)}
+  .esc-lista{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .esc-lista li{font-size:13px;line-height:1.45;color:var(--ink-soft);padding-left:22px;position:relative}
+  .esc-lista li::before{position:absolute;left:0;top:-1px;font-weight:800}
+  .esc-in li::before{content:"\2713";color:var(--neon)}
+  .esc-out li::before{content:"\2715";color:var(--hot)}
+  .esc-term li::before{content:"\2022";color:var(--muted);font-size:16px;top:-3px}
+  .escopo-termos{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
+  .escopo-acordo{background:var(--neon-soft);border:1px solid rgba(200,255,61,.3);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+  .escopo-check{display:flex;align-items:flex-start;gap:11px;cursor:pointer;user-select:none}
+  .escopo-check input{position:absolute;opacity:0;pointer-events:none}
+  .escopo-check-box{flex-shrink:0;margin-top:1px;width:20px;height:20px;border-radius:6px;border:1.8px solid var(--muted);transition:all .2s;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--bg)}
+  .escopo-check input:checked + .escopo-check-box{background:var(--neon);border-color:var(--neon)}
+  .escopo-check input:checked + .escopo-check-box::after{content:"\2713"}
+  .escopo-check-txt{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.4}
+  .escopo-acoes{display:flex;gap:12px;flex-wrap:wrap}
+  .escopo-pdf{flex:0 0 auto;background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);font-family:'Inter';font-weight:600;font-size:14px;padding:13px 20px;border-radius:100px;cursor:pointer;transition:all .2s}
+  .escopo-pdf:hover{border-color:var(--neon);color:var(--neon)}
+  .escopo-confirma{flex:1;min-width:210px;background:var(--neon);border:none;color:var(--bg);font-family:'Inter';font-weight:700;font-size:15px;padding:14px;border-radius:100px;cursor:pointer;transition:all .2s}
+  .escopo-confirma:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 28px var(--neon-glow)}
+  .escopo-confirma:disabled{opacity:.45;cursor:not-allowed}
+  @media(max-width:560px){.escopo-cols{grid-template-columns:1fr}.escopo-modal{padding:26px 20px 20px}}
 </style>
 </head>
 <body>
 
   <header>
     <div class="wrap topbar">
-      <a class="logo-wordmark" onclick="irParaPlanos();return false;">
+      <a class="logo-wordmark" href="/" title="Voltar para a página inicial">
         <img class="logo-img" alt="landingnow">
         <span class="logo-text">landingnow<span>.</span></span>
       </a>
@@ -367,8 +408,12 @@
             <div class="barra-texto" id="barra-texto">Enviando...</div>
           </div>
 
+          <button type="button" class="btn-ver-escopo" id="btn-ver-escopo" onclick="abrirEscopo(false)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            Ver tudo que vou receber
+          </button>
           <button type="submit" class="btn-enviar" id="btn-enviar">Enviar meu briefing</button>
-          <p class="seguro">Suas informações vão direto para a equipe da landingnow.</p>
+          <p class="seguro">Antes de enviar, você confirma que viu o que está e o que não está incluso no seu plano.</p>
         </div>
       </form>
     </div>
@@ -409,6 +454,37 @@
       <div class="copy">© 2026 landingnow. Todos os direitos reservados.</div>
     </div>
   </footer>
+
+  <!-- MODAL ESCOPO: o que o cliente vai receber -->
+  <div class="escopo-overlay" id="escopoOverlay" aria-hidden="true">
+    <div class="escopo-modal" role="dialog" aria-modal="true" aria-label="O que voce vai receber">
+      <button class="escopo-x" id="escopoX" aria-label="Fechar">&times;</button>
+      <div class="escopo-tag">O que você vai receber</div>
+      <h3 class="escopo-titulo">Plano <span id="esc-nome">Start</span> · <span id="esc-preco">R$ 297</span></h3>
+      <p class="escopo-prazo">Entrega em <span id="esc-prazo">72 horas</span> · Pix 50% + 50% ou 12x no cartão</p>
+      <div class="escopo-cols">
+        <div class="escopo-col">
+          <div class="escopo-col-h esc-in-h">Está incluso</div>
+          <ul id="esc-incluso" class="esc-lista esc-in"></ul>
+        </div>
+        <div class="escopo-col">
+          <div class="escopo-col-h esc-out-h">Não está incluso</div>
+          <ul id="esc-naoincluso" class="esc-lista esc-out"></ul>
+        </div>
+      </div>
+      <div class="escopo-termos">
+        <div class="escopo-col-h">Como funciona</div>
+        <ul id="esc-termos" class="esc-lista esc-term"></ul>
+      </div>
+      <div class="escopo-acordo" id="escopoAcordo">
+        <label class="escopo-check"><input type="checkbox" id="esc-aceite"><span class="escopo-check-box"></span><span class="escopo-check-txt">Li e sei exatamente o que vou receber neste plano — o que está incluso e o que não está.</span></label>
+      </div>
+      <div class="escopo-acoes">
+        <button class="escopo-pdf" id="escPdf" type="button">Baixar em PDF</button>
+        <button class="escopo-confirma" id="escConfirma" type="button" disabled>Confirmar e enviar briefing</button>
+      </div>
+    </div>
+  </div>
 
 <script>
 /* ====== CONFIG SUPABASE (chave publica anon, segura no frontend) ====== */
@@ -453,6 +529,7 @@ function setCond(idGrupo,ligar,campoId,obrig){const g=document.getElementById(id
 
 function selecionarPlano(key){
   planoAtual=key;const p=PLANOS[key];
+  const _f=document.getElementById('form-brief');if(_f)_f.dataset.cienteOk='';
   document.getElementById('chip-nome').textContent=p.nome;
   document.getElementById('chip-preco').textContent=p.preco;
   document.getElementById('chip-meta').textContent='Entrega em '+p.prazo;
@@ -570,6 +647,9 @@ form.addEventListener('submit',async(e)=>{
   const objetivos=Array.from(document.querySelectorAll('#chips-objetivo input:checked')).map(i=>i.value);
   if(objetivos.length===0){mostrarErro('Escolha pelo menos um objetivo para a página.');document.getElementById('chips-objetivo').scrollIntoView({block:'center',behavior:'smooth'});return;}
 
+  // Antes de enviar, o cliente ve o escopo e marca que esta ciente.
+  if(form.dataset.cienteOk!=='1'){ abrirEscopo(true); return; }
+
   form.dataset.enviando='1';btnEnviar.disabled=true;
   const txtBtn=btnEnviar.textContent;btnEnviar.textContent='Enviando...';
 
@@ -636,6 +716,62 @@ form.addEventListener('submit',async(e)=>{
     mostrarErro('Não foi possível enviar agora. '+(err&&err.message?err.message:'Tente novamente em instantes.'));
     btnEnviar.disabled=false;btnEnviar.textContent=txtBtn;form.dataset.enviando='';
   }
+});
+
+/* ====== ESCOPO: o que o cliente vai receber ====== */
+const NAO_INCLUI={
+  start:['Textos/copy reescritos pela equipe (no Start você envia os textos)','Hospedagem e domínio (por sua conta, ~R$ 50/ano no Registro.br; hospedagem opcional comigo por R$ 10/mês ou R$ 100/ano)','Vídeos e mais de 3 imagens','Atendente de IA (chatbot)','Mais de 3 seções','Revisões além de 1 rodada'],
+  pro:['Hospedagem e domínio grátis (registro por sua conta; grátis só no Premium e Premium IA)','Vídeos','Atendente de IA (chatbot)','Mais de 5 seções ou mais de 5 imagens','Revisões além de 3 rodadas'],
+  premium:['Atendente de IA e captura automática de leads (recursos do Premium IA)','E-mail profissional próprio (recurso do Premium IA)','Revisões além de 5 rodadas'],
+  premiumia:['Manutenção depois do 1º ano grátis (opcional: R$ 197/mês, sem fidelidade)']
+};
+const FORA_ESCOPO=['Gestão de tráfego e anúncios pagos','Produção de fotos ou vídeos profissionais (você envia o material)','Loja virtual / e-commerce com carrinho e checkout','Sistema de login ou área de membros','Criação de identidade visual (logo) do zero','Produção de conteúdo contínua (blog, posts de redes)'];
+const TERMOS=['Pagamento: 50% pra iniciar a produção + 50% na entrega, via Pix — ou em até 12x no cartão.','Garantia: se mesmo após as revisões inclusas você não aprovar o resultado, devolvo 100% do valor.','O prazo de entrega começa a contar após o pagamento da entrada e o envio do briefing completo.','As revisões valem dentro do prazo de produção do plano. Pedidos fora do que foi combinado são orçados à parte.'];
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function listaIncluso(){return PLANOS[planoAtual].inclui.map(it=>typeof it==='object'?it.t:it);}
+function listaNaoIncluso(){return (NAO_INCLUI[planoAtual]||[]).concat(FORA_ESCOPO);}
+function renderEscopo(){
+  const p=PLANOS[planoAtual];
+  document.getElementById('esc-nome').textContent=p.nome;
+  document.getElementById('esc-preco').textContent=p.preco;
+  document.getElementById('esc-prazo').textContent=p.prazo;
+  document.getElementById('esc-incluso').innerHTML=listaIncluso().map(t=>'<li>'+escHtml(t)+'</li>').join('');
+  document.getElementById('esc-naoincluso').innerHTML=listaNaoIncluso().map(t=>'<li>'+escHtml(t)+'</li>').join('');
+  document.getElementById('esc-termos').innerHTML=TERMOS.map(t=>'<li>'+escHtml(t)+'</li>').join('');
+}
+function abrirEscopo(gating){
+  renderEscopo();
+  document.getElementById('escopoAcordo').style.display=gating?'block':'none';
+  const conf=document.getElementById('escConfirma');
+  if(gating){document.getElementById('esc-aceite').checked=false;conf.textContent='Confirmar e enviar briefing';conf.disabled=true;conf.dataset.modo='enviar';}
+  else{conf.textContent='Entendi';conf.disabled=false;conf.dataset.modo='fechar';}
+  document.getElementById('escopoOverlay').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function fecharEscopo(){document.getElementById('escopoOverlay').classList.remove('on');document.body.style.overflow='';}
+function baixarPDF(){
+  if(!(window.jspdf&&window.jspdf.jsPDF)){mostrarErro('Aguarde um instante e tente baixar o PDF de novo.');return;}
+  const {jsPDF}=window.jspdf,p=PLANOS[planoAtual],doc=new jsPDF({unit:'pt',format:'a4'});
+  const M=48;let y=64;const W=595-2*M;
+  function head(t){doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(25);doc.text(t,M,y);y+=18;}
+  function itens(arr,pre){doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(70);arr.forEach(t=>{const ls=doc.splitTextToSize(pre+t,W);doc.text(ls,M,y);y+=ls.length*14+1;});y+=10;}
+  doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(10);doc.text('landingnow',M,y);
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(110);doc.text('Escopo do seu projeto - o que voce vai receber',M,y+18);y+=44;
+  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20);doc.text('Plano '+p.nome+'    '+p.preco+'    entrega em '+p.prazo,M,y);y+=26;
+  head('Esta incluso');itens(listaIncluso(),'+  ');
+  head('Nao esta incluso');itens(listaNaoIncluso(),'-  ');
+  head('Como funciona');itens(TERMOS,'*  ');
+  doc.setFontSize(9);doc.setTextColor(140);doc.text('landingnow   (61) 98597-0300   @landingnow.br   gerado em '+new Date().toLocaleDateString('pt-BR'),M,812);
+  doc.save('escopo-plano-'+p.nome.toLowerCase().replace(/\s+/g,'-')+'.pdf');
+}
+document.getElementById('escopoX').addEventListener('click',fecharEscopo);
+document.getElementById('escopoOverlay').addEventListener('click',e=>{if(e.target.id==='escopoOverlay')fecharEscopo();});
+document.getElementById('esc-aceite').addEventListener('change',e=>{document.getElementById('escConfirma').disabled=!e.target.checked;});
+document.getElementById('escPdf').addEventListener('click',baixarPDF);
+document.getElementById('escConfirma').addEventListener('click',()=>{
+  const c=document.getElementById('escConfirma');
+  if(c.dataset.modo==='enviar'){if(!document.getElementById('esc-aceite').checked)return;form.dataset.cienteOk='1';fecharEscopo();form.requestSubmit();}
+  else{fecharEscopo();}
 });
 
 /* ====== INICIO ====== */
