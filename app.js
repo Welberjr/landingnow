@@ -1,20 +1,6 @@
-// ROI CALCULATOR
-const niches = {
-  confeitaria: { default: { name: 'Doce Encanto', ticket: 120, goal: 10000 }, label: 'confeitaria' },
-  clinica: { default: { name: 'Clínica Vida Plena', ticket: 250, goal: 25000 }, label: 'clínica' },
-  estetica: { default: { name: 'Studio Lumière', ticket: 180, goal: 18000 }, label: 'clínica de estética' },
-  academia: { default: { name: 'Forge Fitness', ticket: 150, goal: 30000 }, label: 'academia' },
-  automotiva: { default: { name: 'Premium Detailing', ticket: 350, goal: 20000 }, label: 'estética automotiva' },
-  outro: { default: { name: 'Seu Negócio', ticket: 200, goal: 15000 }, label: 'negócio' }
-};
-
-let currentNiche = 'confeitaria';
-let customNicheText = '';
-
-const bizName = document.getElementById('bizName');
+// ROI CALCULATOR (somente ticket + meta)
 const ticket = document.getElementById('ticket');
 const goal = document.getElementById('goal');
-const customNiche = document.getElementById('customNiche');
 const roiEyebrow = document.getElementById('roiEyebrow');
 const roiTitle = document.getElementById('roiTitle');
 const roiClientsValue = document.getElementById('roiClientsValue');
@@ -23,52 +9,35 @@ const roiNarrative = document.getElementById('roiNarrative');
 const ticketHint = document.getElementById('ticketHint');
 const goalHint = document.getElementById('goalHint');
 
-function formatNumber(n) {
-  return n.toLocaleString('pt-BR');
-}
-
-function getCurrentNicheLabel() {
-  if (currentNiche === 'outro' && customNicheText.trim()) {
-    return customNicheText.trim().toLowerCase();
-  }
-  return niches[currentNiche].label;
-}
+function formatNumber(n) { return n.toLocaleString('pt-BR'); }
 
 function calculate() {
-  const name = bizName.value.trim() || 'Seu Negócio';
   let ticketVal = parseInt(ticket.value);
   let goalVal = parseInt(goal.value);
 
-  // Validações com aviso visual
   if (!ticketVal || ticketVal < 10) {
     ticketHint.textContent = '⚠ Ticket mínimo de R$ 10 pra calcular';
     ticketHint.classList.add('visible');
     ticketVal = 10;
-  } else {
-    ticketHint.classList.remove('visible');
-  }
+  } else { ticketHint.classList.remove('visible'); }
 
   if (!goalVal || goalVal < 500) {
     goalHint.textContent = '⚠ Meta mínima de R$ 500 pra calcular';
     goalHint.classList.add('visible');
     goalVal = 500;
-  } else {
-    goalHint.classList.remove('visible');
-  }
+  } else { goalHint.classList.remove('visible'); }
 
   const clientsNeeded = Math.ceil(goalVal / ticketVal);
   const paybackSales = Math.ceil(497 / ticketVal);
-  const nicheLabel = getCurrentNicheLabel();
 
-  roiEyebrow.textContent = `// PROJEÇÃO PARA ${name.toUpperCase()}`;
+  roiEyebrow.textContent = '// PROJEÇÃO DA SUA META';
   roiTitle.innerHTML = `Pra bater sua meta, você precisa fechar <em>${formatNumber(clientsNeeded)} ${clientsNeeded === 1 ? 'cliente' : 'clientes'}</em> por mês.`;
   roiClientsValue.textContent = formatNumber(clientsNeeded);
   roiPayback.textContent = paybackSales;
 
-  // Narrativa adaptada ao volume + nicho
   let strategy;
   if (clientsNeeded <= 5) {
-    strategy = `Com tráfego pago bem direcionado e uma boa landing, esse volume é totalmente possível pra uma ${nicheLabel}.`;
+    strategy = 'Com tráfego pago bem direcionado e uma boa landing, esse volume é totalmente possível.';
   } else if (clientsNeeded <= 30) {
     const perWeek = Math.ceil(clientsNeeded / 4);
     strategy = `Isso dá cerca de <span class="highlight">${perWeek} ${perWeek === 1 ? 'cliente novo por semana' : 'clientes novos por semana'}</span>. Com landing profissional + tráfego pago + atendimento ágil, é uma meta viável.`;
@@ -80,46 +49,11 @@ function calculate() {
     strategy = `São cerca de <span class="highlight">${perDay} clientes por dia</span>. Esse volume exige tráfego escalável, time de atendimento e operação afinada. A landing é o primeiro passo.`;
   }
 
-  roiNarrative.innerHTML = `
-    Pra <strong>${name}</strong> bater <strong>R$ ${formatNumber(goalVal)}</strong> de meta, com ticket médio de <strong>R$ ${formatNumber(ticketVal)}</strong>, são necessárias <span class="highlight">${formatNumber(clientsNeeded)} ${clientsNeeded === 1 ? 'venda' : 'vendas'} por mês</span>. ${strategy}
-  `;
+  roiNarrative.innerHTML = `Pra bater <strong>R$ ${formatNumber(goalVal)}</strong> de meta, com ticket médio de <strong>R$ ${formatNumber(ticketVal)}</strong>, são necessárias <span class="highlight">${formatNumber(clientsNeeded)} ${clientsNeeded === 1 ? 'venda' : 'vendas'} por mês</span>. ${strategy}`;
 }
 
-bizName.addEventListener('input', calculate);
 ticket.addEventListener('input', calculate);
 goal.addEventListener('input', calculate);
-
-customNiche.addEventListener('input', () => {
-  customNicheText = customNiche.value;
-  calculate();
-});
-
-document.querySelectorAll('.niche-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.niche-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentNiche = btn.dataset.niche;
-
-    // Mostra/esconde campo de nicho personalizado
-    if (currentNiche === 'outro') {
-      customNiche.style.display = 'block';
-      customNiche.focus();
-    } else {
-      customNiche.style.display = 'none';
-      customNicheText = '';
-    }
-
-    const def = niches[currentNiche].default;
-
-    // só atualiza se o usuário não tiver mexido nos campos
-    const knownNames = Object.values(niches).map(n => n.default.name);
-    if (knownNames.includes(bizName.value)) bizName.value = def.name;
-
-    ticket.value = def.ticket;
-    goal.value = def.goal;
-    calculate();
-  });
-});
 
 calculate();
 
