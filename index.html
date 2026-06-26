@@ -320,14 +320,14 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
     </div>
 
     <style>
-    .cases-marquee{position:relative;overflow:hidden;margin:0 -32px;padding:6px 0 10px;-webkit-mask:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);mask:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%)}
+    .cases-marquee{position:relative;left:50%;right:50%;width:100vw;margin-left:-50vw;margin-right:-50vw;overflow:hidden;padding:6px 0 10px;-webkit-mask:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);mask:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%)}
     .cases-track{display:flex;width:max-content;padding:0 16px;animation:casesScroll 85s linear infinite;will-change:transform}
     .cases-marquee:hover .cases-track{animation-play-state:paused}
     .cases-track .case-card{flex:0 0 360px;margin-right:20px;text-decoration:none;color:inherit}
     .cases-track .case-image img{width:100%;height:auto;transform:translateY(0);transition:transform 7s ease-in-out}
     .cases-track .case-card:hover .case-image img{transform:translateY(calc(320px - 100%))}
     @keyframes casesScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    @media(max-width:768px){.cases-marquee{margin:0 -20px}.cases-track .case-card{flex:0 0 280px}.cases-track .case-image img{transition-duration:5s}}
+    @media(max-width:768px){.cases-track .case-card{flex:0 0 280px}.cases-track .case-image img{transition-duration:5s}}
     @media(prefers-reduced-motion:reduce){.cases-track{animation:none}}
     </style>
     <div class="cases-marquee"><div class="cases-track">
