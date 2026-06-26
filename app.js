@@ -549,3 +549,12 @@ document.querySelectorAll('.faq-item').forEach(item => {
     if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
   });
 })();
+
+// HERO: palavra que troca + mockup cross-fade
+(function(){
+  var w=document.getElementById('heroWord');
+  if(w){var words=['vende','agenda','fecha'],i=0;
+    setInterval(function(){w.classList.add('swap');setTimeout(function(){i=(i+1)%words.length;w.textContent=words[i];w.classList.remove('swap');},250);},2200);}
+  var shots=document.querySelectorAll('.mockup-shot');
+  if(shots.length>1){var j=0;setInterval(function(){shots[j].classList.remove('on');j=(j+1)%shots.length;shots[j].classList.add('on');},3000);}
+})();

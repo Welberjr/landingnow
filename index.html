@@ -117,6 +117,32 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
 <main id="main">
 <!-- HERO -->
 <section class="hero">
+  <style>
+  .accent-word{transition:opacity .25s ease;display:inline-block}
+  .accent-word.swap{opacity:0}
+  .hero-visual{position:relative;display:flex;align-items:center;justify-content:center;padding:10px}
+  .hero-mockup{position:relative;width:100%;max-width:430px;background:#0c0c0c;border:1px solid #2A2A2A;border-radius:16px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.85);animation:heroFloat 6s ease-in-out infinite}
+  .mockup-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#161616;border-bottom:1px solid #2A2A2A}
+  .mockup-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .mockup-url{margin-left:8px;font-size:11px;color:#8A8A8A;background:#0c0c0c;border-radius:6px;padding:4px 12px;flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mockup-screen{position:relative;width:100%;height:430px;background:#000;overflow:hidden}
+  .mockup-shot{position:absolute;inset:0;width:100%;height:auto;object-fit:cover;object-position:top;opacity:0;transition:opacity 1s ease}
+  .mockup-shot.on{opacity:1}
+  .mockup-badge{position:absolute;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid #2A2A2A;border-radius:100px;padding:9px 15px;font-size:13px;font-weight:600;color:#fff;box-shadow:0 14px 34px -10px rgba(0,0,0,.7);white-space:nowrap;z-index:2}
+  .mockup-badge-1{top:26px;right:-12px;color:#C8FF3D;animation:heroFloat 6s ease-in-out infinite .6s}
+  .mockup-badge-2{bottom:32px;left:-16px;animation:heroFloat 7s ease-in-out infinite .2s}
+  @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .hero-proof{display:flex;align-items:center;gap:14px;margin-top:20px;flex-wrap:wrap}
+  .hero-avatars{display:flex}
+  .hero-av{width:34px;height:34px;border-radius:50%;border:2px solid #0A0A0A;margin-left:-10px;display:grid;place-items:center;font-size:13px;font-weight:800;color:#0A0A0A}
+  .hero-av:first-child{margin-left:0}
+  .hero-proof-txt{font-size:13.5px;color:#8A8A8A;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .hero-proof-txt .sep{opacity:.4}
+  .hero-stars{color:#FFB830;text-decoration:none;letter-spacing:1px}
+  .hero-stars strong,.hero-proof-txt strong{color:#FAFAFA}
+  @media(max-width:900px){.hero-mockup{max-width:330px}.mockup-screen{height:330px}.mockup-badge{font-size:12px;padding:7px 13px}.mockup-badge-1{right:-4px}.mockup-badge-2{left:-4px}}
+  @media(prefers-reduced-motion:reduce){.hero-mockup,.mockup-badge{animation:none}}
+  </style>
   <div class="container">
     <div class="hero-grid">
       <div class="hero-text">
@@ -125,7 +151,7 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
           <span>A partir de 72h. Em até 10 dias.</span>
         </div>
         <h1>
-          Sua página que <span class="accent-word">vende</span><br>
+          Sua página que <span class="accent-word" id="heroWord">vende</span><br>
           enquanto você <span class="strikethrough">dorme.</span>
         </h1>
         <p class="lead">
@@ -141,39 +167,37 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
         <p class="hero-microcopy" style="margin-top:14px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <span>⚡ Resposta rápida</span><span style="opacity:.4">·</span><span>sem compromisso</span><span style="opacity:.4">·</span><span>você só paga se fechar</span>
         </p>
-        <div class="hero-checks">
-          <div class="hero-check">
-            <svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            A partir de 72h
+        <div class="hero-proof">
+          <div class="hero-avatars">
+            <span class="hero-av" style="background:linear-gradient(135deg,#C8FF3D,#88c000)">S</span>
+            <span class="hero-av" style="background:linear-gradient(135deg,#6CB4FF,#2a6bd0)">B</span>
+            <span class="hero-av" style="background:linear-gradient(135deg,#FF7BA8,#c2185b)">M</span>
+            <span class="hero-av" style="background:linear-gradient(135deg,#FFB830,#e08800)">A</span>
           </div>
-          <div class="hero-check">
-            <svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            100% mobile
-          </div>
-          <div class="hero-check">
-            <svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Atendimento direto
+          <div class="hero-proof-txt">
+            <a href="https://share.google/1TsT9adJlcnkYTW7H" target="_blank" rel="noopener" class="hero-stars">★★★★★ <strong>5,0</strong> no Google</a>
+            <span class="sep">·</span>
+            <span><strong>+120</strong> páginas no ar</span>
           </div>
         </div>
       </div>
 
-      <div class="hero-cards">
-        <div class="float-card">
-          <div class="float-card-icon">⚡</div>
-          <span>Entrega a partir de 72h</span>
+      <div class="hero-visual">
+        <div class="hero-mockup">
+          <div class="mockup-bar">
+            <span class="mockup-dot" style="background:#FF5F57"></span>
+            <span class="mockup-dot" style="background:#FEBC2E"></span>
+            <span class="mockup-dot" style="background:#28C840"></span>
+            <span class="mockup-url">seunegocio.com.br</span>
+          </div>
+          <div class="mockup-screen">
+            <img src="cases/case-02.webp" class="mockup-shot on" alt="Exemplo de landing page criada pela landingnow" loading="eager" decoding="async">
+            <img src="cases/case-06.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
+            <img src="cases/case-04.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
+          </div>
         </div>
-        <div class="float-card">
-          <div class="float-card-icon">📱</div>
-          <span>Otimizada pra mobile</span>
-        </div>
-        <div class="float-card featured">
-          <div class="float-card-icon">💬</div>
-          <span>Botão WhatsApp direto</span>
-        </div>
-        <div class="float-card">
-          <div class="float-card-icon">🚀</div>
-          <span>Foco em conversão</span>
-        </div>
+        <div class="mockup-badge mockup-badge-1">★ 5,0 no Google</div>
+        <div class="mockup-badge mockup-badge-2">⚡ No ar em 72h</div>
       </div>
     </div>
   </div>
