@@ -330,7 +330,7 @@ body::after{content:'';position:fixed;top:-20%;left:-10%;width:800px;height:800p
 <script>
 const SB='https://hubxacojvgoepowsgbas.supabase.co';
 const AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1YnhhY29qdmdvZXBvd3NnYmFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxOTEwNjMsImV4cCI6MjA5Mzc2NzA2M30.MdjhqdZDywBVwh-V54CoacsB-sBHsQPVwH8i6NzP2eU';
-const PM={start:{n:'Start',v:99.9,r:1},pro:{n:'Pro',v:297,r:2},premium:{n:'Premium',v:497,r:3},premiumia:{n:'Premium IA',v:997,r:3}};
+const PM={start:{n:'Start',v:99.9,r:1},pro:{n:'Pro',v:297,r:2},premium:{n:'Premium',v:497,r:5},premiumia:{n:'Premium IA',v:997,r:3}};
 const PRAZOS={start:2,pro:4,premium:5,premiumia:7};
 const NICHOS=[
   {n:'Barbearia e Beleza Masculina',p:['barbearia','barber','barba','masculin']},
@@ -534,7 +534,7 @@ function criarCard(b){
         </div>
         <div style="flex:1;min-width:180px">
           <div class="fl">URL entregue</div>
-          <div class="ue"><input id="ur-${b.id}" value="${esc(b.url_entregue||'')}" placeholder="https://cliente.pages.dev"><button class="sob" id="ubtn-${b.id}">Salvar</button></div>
+          <div class="ue"><input id="ur-${b.id}" value="${esc(b.url_entregue||'')}" placeholder="https://cliente.pages.dev"><button class="sob" id="ubtn-${b.id}">Salvar</button><button class="sob" id="uopen-${b.id}" title="Abrir o site">Abrir</button></div>
         </div>
         <div style="flex:1;min-width:180px">
           <div class="fl">Valor (R$)</div>
@@ -632,6 +632,7 @@ function criarCard(b){
   div.querySelector('#osb-'+b.id).onclick=e=>{e.stopPropagation();salvarObs(b,div);};
   div.querySelector('#nbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarNicho(b,div);};
   div.querySelector('#ubtn-'+b.id).onclick=e=>{e.stopPropagation();salvarURL(b,div);};
+  div.querySelector('#uopen-'+b.id).onclick=e=>{e.stopPropagation();var u=div.querySelector('#ur-'+b.id).value.trim();if(!u){toast('Sem link salvo','er');return;}window.open(u.indexOf('http')===0?u:'https://'+u,'_blank','noopener');};
   div.querySelector('#vlbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarValor(b,div);};
   div.querySelector('#pcbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarParceiro2(b,div);};
   div.querySelector('#atbtn-'+b.id).onclick=e=>{e.stopPropagation();salvarAtrib(b,div);};
