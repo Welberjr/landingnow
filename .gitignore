@@ -7,3 +7,9 @@ apply-lia-v*.py
 # Tema sazonal - raws temporarios e scripts auxiliares
 _*.png
 _*.py
+.vercel
+
+# Landing pages de clientes (organizadas localmente, nao versionar)
+clientes/
+
+contexto-landingnow.md
