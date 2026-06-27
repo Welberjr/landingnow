@@ -138,7 +138,8 @@ Reestruturacao completa da ordem das secoes: R$ 297
 Mudanca integral da paleta de cores apos primeira entrega: cobrado como PROJETO NOVO
 
 ALTERACOES POS ENTREGA (depois da landing publicada e aprovada):
-Ajuste pontual de texto, cor ou imagem isolada: R$ 49 por ajuste
+Troca de palavra ou texto: R$ 49 por ajuste
+Ajuste dentro de uma secao existente (conteudo, cor, imagem ou layout da secao): R$ 97 por secao
 Adicao de nova secao: R$ 197
 Refazer 1 secao do zero: R$ 197
 Reestruturacao completa: R$ 297
