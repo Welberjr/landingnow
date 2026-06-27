@@ -14,6 +14,10 @@ clientes/
 
 contexto-landingnow.md
 
+# Contrato (documento legal com dados pessoais: nome, Pix, CNPJ) - NUNCA no repo publico
+Contrato.*
+*.bak-*
+
 # screenshots de origem pesados
 cases/Portif*.png
 cases/*.png
