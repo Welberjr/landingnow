@@ -1,61 +1,4 @@
-// ROI CALCULATOR (somente ticket + meta)
-const ticket = document.getElementById('ticket');
-const goal = document.getElementById('goal');
-const roiEyebrow = document.getElementById('roiEyebrow');
-const roiTitle = document.getElementById('roiTitle');
-const roiClientsValue = document.getElementById('roiClientsValue');
-const roiPayback = document.getElementById('roiPayback');
-const roiNarrative = document.getElementById('roiNarrative');
-const ticketHint = document.getElementById('ticketHint');
-const goalHint = document.getElementById('goalHint');
-
-function formatNumber(n) { return n.toLocaleString('pt-BR'); }
-
-function calculate() {
-  let ticketVal = parseInt(ticket.value);
-  let goalVal = parseInt(goal.value);
-
-  if (!ticketVal || ticketVal < 10) {
-    ticketHint.textContent = '⚠ Ticket mínimo de R$ 10 pra calcular';
-    ticketHint.classList.add('visible');
-    ticketVal = 10;
-  } else { ticketHint.classList.remove('visible'); }
-
-  if (!goalVal || goalVal < 500) {
-    goalHint.textContent = '⚠ Meta mínima de R$ 500 pra calcular';
-    goalHint.classList.add('visible');
-    goalVal = 500;
-  } else { goalHint.classList.remove('visible'); }
-
-  const clientsNeeded = Math.ceil(goalVal / ticketVal);
-  const paybackSales = Math.ceil(497 / ticketVal);
-
-  roiEyebrow.textContent = '// PROJEÇÃO DA SUA META';
-  roiTitle.innerHTML = `Pra bater sua meta, você precisa fechar <em>${formatNumber(clientsNeeded)} ${clientsNeeded === 1 ? 'cliente' : 'clientes'}</em> por mês.`;
-  roiClientsValue.textContent = formatNumber(clientsNeeded);
-  roiPayback.textContent = paybackSales;
-
-  let strategy;
-  if (clientsNeeded <= 5) {
-    strategy = 'Com tráfego pago bem direcionado e uma boa landing, esse volume é totalmente possível.';
-  } else if (clientsNeeded <= 30) {
-    const perWeek = Math.ceil(clientsNeeded / 4);
-    strategy = `Isso dá cerca de <span class="highlight">${perWeek} ${perWeek === 1 ? 'cliente novo por semana' : 'clientes novos por semana'}</span>. Com landing profissional + tráfego pago + atendimento ágil, é uma meta viável.`;
-  } else if (clientsNeeded <= 100) {
-    const perDay = Math.ceil(clientsNeeded / 30);
-    strategy = `Em média <span class="highlight">${perDay} ${perDay === 1 ? 'cliente por dia' : 'clientes por dia'}</span>. Pra esse volume, a combinação landing + tráfego pago consistente + processo de atendimento bem estruturado é essencial.`;
-  } else {
-    const perDay = Math.ceil(clientsNeeded / 30);
-    strategy = `São cerca de <span class="highlight">${perDay} clientes por dia</span>. Esse volume exige tráfego escalável, time de atendimento e operação afinada. A landing é o primeiro passo.`;
-  }
-
-  roiNarrative.innerHTML = `Pra bater <strong>R$ ${formatNumber(goalVal)}</strong> de meta, com ticket médio de <strong>R$ ${formatNumber(ticketVal)}</strong>, são necessárias <span class="highlight">${formatNumber(clientsNeeded)} ${clientsNeeded === 1 ? 'venda' : 'vendas'} por mês</span>. ${strategy}`;
-}
-
-ticket.addEventListener('input', calculate);
-goal.addEventListener('input', calculate);
-
-calculate();
+// (Calculadora de meta removida a pedido)
 
 // FAQ
 document.querySelectorAll('.faq-item').forEach(item => {
@@ -74,9 +17,6 @@ document.querySelectorAll('.faq-item').forEach(item => {
   const selectors = [
     '.cases-section .section-header',
     '.cases-section .cases-cta',
-    '.roi-section .section-header',
-    '.roi-section .roi-controls',
-    '.roi-section .roi-result',
     '.pricing-section .section-header',
     '.price-card',
     '.custom-card',
@@ -535,10 +475,9 @@ document.querySelectorAll('.faq-item').forEach(item => {
     document.body.classList.remove('modal-open');
   }
 
-  document.querySelectorAll('.price-details-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      openModal(btn.getAttribute('data-plan'));
-    });
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest && e.target.closest('.price-details-btn');
+    if (btn) openModal(btn.getAttribute('data-plan'));
   });
 
   elClose.addEventListener('click', closeModal);
@@ -558,3 +497,63 @@ document.querySelectorAll('.faq-item').forEach(item => {
   var shots=document.querySelectorAll('.mockup-shot');
   if(shots.length>1){var j=0;setInterval(function(){shots[j].classList.remove('on');j=(j+1)%shots.length;shots[j].classList.add('on');},3000);}
 })();
+
+// PRECOS: carrossel que desliza no mobile (Pro centralizado, loop infinito)
+(function(){
+  var grid = document.querySelector('.pricing-grid');
+  if(!grid) return;
+  var mq = window.matchMedia('(max-width:768px)');
+  var built = false, proCard = null, setSize = 0;
+
+  function centerCard(card){
+    if(!card) return;
+    var gr = grid.getBoundingClientRect();
+    var cr = card.getBoundingClientRect();
+    var center = (cr.left - gr.left) + grid.scrollLeft + card.clientWidth / 2;
+    grid.scrollLeft = center - grid.clientWidth / 2;
+  }
+
+  function build(){
+    if(built || !mq.matches) return;
+    try{
+      var originals = Array.prototype.slice.call(grid.querySelectorAll('.price-card'));
+      setSize = originals.length;
+      if(setSize < 2) return;
+      built = true;
+      var before = document.createDocumentFragment(), after = document.createDocumentFragment();
+      originals.forEach(function(c){
+        var b = c.cloneNode(true); b.setAttribute('data-clone','1'); b.classList.remove('reveal'); before.appendChild(b);
+        var a = c.cloneNode(true); a.setAttribute('data-clone','1'); a.classList.remove('reveal'); after.appendChild(a);
+        c.classList.remove('reveal');
+      });
+      grid.insertBefore(before, grid.firstChild);
+      grid.appendChild(after);
+      proCard = grid.querySelector('.price-card.featured:not([data-clone])') || originals[1] || originals[0];
+      requestAnimationFrame(function(){ centerCard(proCard); });
+
+      var ticking = false;
+      grid.addEventListener('scroll', function(){
+        if(ticking) return; ticking = true;
+        requestAnimationFrame(function(){
+          var cards = grid.querySelectorAll('.price-card');
+          if(cards.length >= setSize + 1){
+            var setW = cards[setSize].getBoundingClientRect().left - cards[0].getBoundingClientRect().left;
+            if(setW > 0){
+              if(grid.scrollLeft < setW * 0.5) grid.scrollLeft += setW;
+              else if(grid.scrollLeft > setW * 1.5) grid.scrollLeft -= setW;
+            }
+          }
+          ticking = false;
+        });
+      }, {passive:true});
+    }catch(err){}
+  }
+
+  function onChange(e){ if(e.matches) build(); }
+
+  if(mq.matches) build();
+  window.addEventListener('load', function(){ if(built && proCard) centerCard(proCard); });
+  if(mq.addEventListener) mq.addEventListener('change', onChange);
+  else if(mq.addListener) mq.addListener(onChange);
+})();
+
