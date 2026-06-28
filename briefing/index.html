@@ -726,7 +726,7 @@ const NAO_INCLUI={
   premiumia:['Manutenção depois do 1º ano grátis (opcional: R$ 197/mês, sem fidelidade)']
 };
 const FORA_ESCOPO=['Gestão de tráfego e anúncios pagos','Produção de fotos ou vídeos profissionais (você envia o material)','Loja virtual / e-commerce com carrinho e checkout','Sistema de login ou área de membros','Criação de identidade visual (logo) do zero','Produção de conteúdo contínua (blog, posts de redes)'];
-const TERMOS=['Pagamento: 50% pra iniciar a produção + 50% na entrega, via Pix — ou em até 12x no cartão.','Garantia: se mesmo após as revisões inclusas você não aprovar o resultado, devolvo 100% do valor.','O prazo de entrega começa a contar após o pagamento da entrada e o envio do briefing completo.','As revisões valem dentro do prazo de produção do plano. Pedidos fora do que foi combinado são orçados à parte.'];
+const TERMOS=['Pagamento: 50% pra iniciar a produção + 50% na entrega, via Pix — ou em até 12x no cartão.','Garantia: se mesmo após as revisões inclusas você não aprovar o resultado, devolvo 100% do valor.','O prazo de entrega começa a contar após o pagamento da entrada e o envio do briefing completo.','As revisões valem dentro do prazo de produção do plano. Pedidos fora do que foi combinado são orçados à parte.','Após a entrega final (encerradas as revisões), alterações são cobradas à parte: R$ 49 por troca de palavra ou texto e R$ 97 por ajuste em uma seção. Ou manutenção mensal opcional de R$ 197 com ajustes ilimitados.'];
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function listaIncluso(){return PLANOS[planoAtual].inclui.map(it=>typeof it==='object'?it.t:it);}
 function listaNaoIncluso(){return (NAO_INCLUI[planoAtual]||[]).concat(FORA_ESCOPO);}
@@ -752,16 +752,29 @@ function fecharEscopo(){document.getElementById('escopoOverlay').classList.remov
 function baixarPDF(){
   if(!(window.jspdf&&window.jspdf.jsPDF)){mostrarErro('Aguarde um instante e tente baixar o PDF de novo.');return;}
   const {jsPDF}=window.jspdf,p=PLANOS[planoAtual],doc=new jsPDF({unit:'pt',format:'a4'});
-  const M=48;let y=64;const W=595-2*M;
-  function head(t){doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(25);doc.text(t,M,y);y+=18;}
-  function itens(arr,pre){doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(70);arr.forEach(t=>{const ls=doc.splitTextToSize(pre+t,W);doc.text(ls,M,y);y+=ls.length*14+1;});y+=10;}
-  doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(10);doc.text('landingnow',M,y);
-  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(110);doc.text('Escopo do seu projeto - o que voce vai receber',M,y+18);y+=44;
-  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20);doc.text('Plano '+p.nome+'    '+p.preco+'    entrega em '+p.prazo,M,y);y+=26;
-  head('Esta incluso');itens(listaIncluso(),'+  ');
-  head('Nao esta incluso');itens(listaNaoIncluso(),'-  ');
-  head('Como funciona');itens(TERMOS,'*  ');
-  doc.setFontSize(9);doc.setTextColor(140);doc.text('landingnow   (61) 98597-0300   @landingnow.br   gerado em '+new Date().toLocaleDateString('pt-BR'),M,812);
+  const M=48,PW=595,W=PW-2*M;let y=142;
+  // ===== cabecalho: faixa preta + logo da marca =====
+  doc.setFillColor(10,10,10);doc.rect(0,0,PW,104,'F');
+  const bx=M,by=34,k=1.0625,F=(sx,sy)=>[bx+sx*k,by+sy*k];
+  doc.setFillColor(200,255,61);doc.roundedRect(bx,by,34,34,8,8,'F');
+  doc.setDrawColor(10,10,10);doc.setLineCap(1);doc.setLineJoin(1);
+  doc.setLineWidth(3.2);var L1=F(10,9),L2=F(10,22),L3=F(18,22);doc.line(L1[0],L1[1],L2[0],L2[1]);doc.line(L2[0],L2[1],L3[0],L3[1]);
+  doc.setLineWidth(2.6);var A1=F(16,16),A2=F(23,9),A3=F(19,9),A4=F(23,13);doc.line(A1[0],A1[1],A2[0],A2[1]);doc.line(A3[0],A3[1],A2[0],A2[1]);doc.line(A2[0],A2[1],A4[0],A4[1]);
+  doc.setFont('helvetica','bold');doc.setFontSize(21);doc.setTextColor(245,245,245);doc.text('landingnow',bx+48,58);
+  doc.setTextColor(200,255,61);doc.text('.',bx+48+doc.getTextWidth('landingnow'),58);
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(170,170,170);doc.text('Escopo do seu projeto - o que você vai receber',bx+48,76);
+  // ===== plano + preco =====
+  doc.setFont('helvetica','bold');doc.setFontSize(15);doc.setTextColor(20,20,20);doc.text('Plano '+p.nome,M,y);
+  doc.setTextColor(96,150,20);doc.text(p.preco,M+doc.getTextWidth('Plano '+p.nome)+16,y);
+  doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(120,120,120);doc.text('Entrega em '+p.prazo,M,y+16);
+  y+=34;doc.setDrawColor(200,255,61);doc.setLineWidth(2.4);doc.line(M,y,M+46,y);y+=24;
+  function head(t,c){if(y>765){doc.addPage();y=60;}doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(c[0],c[1],c[2]);doc.text(t,M,y);y+=17;}
+  function itens(arr,pre,c){doc.setFont('helvetica','normal');doc.setFontSize(10.5);arr.forEach(function(t){if(y>772){doc.addPage();y=60;}doc.setTextColor(c[0],c[1],c[2]);doc.text(pre,M,y);doc.setTextColor(60,60,60);var ls=doc.splitTextToSize(t,W-16);doc.text(ls,M+16,y);y+=ls.length*14+2;});y+=12;}
+  head('Está incluso',[70,150,20]);itens(listaIncluso(),'+',[110,180,40]);
+  head('Não está incluso',[200,60,60]);itens(listaNaoIncluso(),'-',[200,90,90]);
+  head('Como funciona',[20,20,20]);itens(TERMOS,'*',[140,140,140]);
+  doc.setDrawColor(225,225,225);doc.setLineWidth(.6);doc.line(M,802,PW-M,802);
+  doc.setFontSize(8.6);doc.setTextColor(150,150,150);doc.text('landingnow.com.br    (61) 98597-0300    @landingnow.br    gerado em '+new Date().toLocaleDateString('pt-BR'),M,816);
   doc.save('escopo-plano-'+p.nome.toLowerCase().replace(/\s+/g,'-')+'.pdf');
 }
 document.getElementById('escopoX').addEventListener('click',fecharEscopo);
