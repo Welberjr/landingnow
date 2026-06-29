@@ -327,11 +327,6 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
     @keyframes casesScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     @media(max-width:768px){.cases-track .case-card{flex:0 0 280px}.cases-track .case-image img{transition-duration:5s}}
     @media(prefers-reduced-motion:reduce){.cases-track{animation:none}}
-    /* menos espaco embaixo + CTA com destaque (e um CTA forte) */
-    .cases-section{padding-bottom:56px}
-    .cases-cta{background:linear-gradient(180deg,rgba(200,255,61,.1),rgba(200,255,61,.02)),var(--bg-card);border-color:rgba(200,255,61,.42);box-shadow:0 0 55px rgba(200,255,61,.15)}
-    .cases-cta h3{font-size:34px}
-    @media(max-width:768px){.cases-section{padding-bottom:40px}.cases-cta h3{font-size:24px!important}}
     </style>
     <div class="cases-marquee"><div class="cases-track">
       <a href="https://real-glass-vidracaria.pages.dev" target="_blank" rel="noopener" class="case-card">
@@ -528,13 +523,6 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
       </a>
     </div></div>
 
-    <div class="cases-cta">
-      <h3>Quer ver seu negócio na <em>próxima vitrine?</em></h3>
-      <p>Cada projeto é único. Vem conversar comigo e desenhamos a página perfeita pro seu negócio.</p>
-      <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Vi%20os%20cases%20e%20quero%20minha%20landing%20page" class="btn-neon">
-        Quero a minha →
-      </a>
-    </div>
   </div>
 </section>
 
@@ -620,15 +608,6 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
     </div>
     <!-- infos de pagamento/hospedagem ficam no FAQ -->
 
-    <div class="guarantee-box" style="margin:24px auto 0;max-width:760px;display:flex;align-items:center;gap:14px;background:rgba(200,255,61,.08);border:1px solid rgba(200,255,61,.3);border-radius:16px;padding:18px 22px;">
-      <span style="font-size:26px;line-height:1;flex-shrink:0;">&#128737;&#65039;</span>
-      <div style="text-align:left;">
-        <strong style="display:block;font-size:15px;color:var(--ink);margin-bottom:3px;">Garantia total: o risco é meu, não seu.</strong>
-        <span style="font-size:13.5px;color:var(--muted);line-height:1.5;">Você paga só 50% pra começar e os outros 50% quando aprovar. Se mesmo após as revisões você não gostar, devolvo 100% do valor. Sem perguntas.</span>
-      </div>
-    </div>
-
-    <div class="guarantee-compact"><span>🛡️</span> Garantia de 100% do dinheiro de volta</div>
 
 <!-- add-on sazonal (tema comemorativo) removido a pedido -->
   </div>
@@ -871,8 +850,15 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
 .nav-link::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--neon);transition:right .25s ease}
 .nav-link:hover::after{right:0}
 .nav-link-login{margin-right:6px}
-/* ===== Garantia compacta (so mobile) ===== */
-.guarantee-compact{display:none}
+/* ===== Espacamento enxuto / premium ===== */
+.cases-section{padding:84px 0}
+.pricing-section{padding:84px 0}
+.founder-section{padding:88px 0}
+.faq-section{padding:76px 0}
+.final-cta{padding:96px 0}
+.hero{padding-top:128px}
+.section-header{margin-bottom:40px}
+.founder-wrapper{gap:52px}
 
 /* clones do carrossel de precos: so aparecem no mobile */
 @media(min-width:769px){
@@ -907,10 +893,11 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
   .nav-links a:not(.nav-cta){display:inline-flex !important;font-size:13px !important;padding:4px 0 !important}
   .nav-link::after{display:none}
   .nav-links .nav-cta{display:none !important}
-  /* ===== Garantia: caixa vira linha compacta ===== */
-  .guarantee-box{display:none !important}
-  .guarantee-compact{display:flex !important;align-items:center;justify-content:center;gap:8px;max-width:100%;margin:18px auto 0;padding:12px 16px;background:rgba(200,255,61,.08);border:1px solid rgba(200,255,61,.3);border-radius:100px;font-size:13px;font-weight:600;color:var(--ink);text-align:center}
-  .guarantee-compact span{font-size:17px;line-height:1}
+  /* ===== Espacamento enxuto no mobile ===== */
+  .cases-section,.pricing-section,.founder-section{padding:48px 0 !important}
+  .final-cta{padding:52px 0 !important}
+  .hero{padding-top:92px !important}
+  .section-header{margin-bottom:26px !important}
   /* ===== Card de preco mais compacto no mobile (cabe na tela) ===== */
   .pricing-grid .price-card{padding:24px 20px !important}
   .pricing-grid .price-card-title{font-size:21px !important;line-height:1.15 !important}
