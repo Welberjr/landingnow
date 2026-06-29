@@ -105,9 +105,9 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
       <span class="logo-text">landingnow<span>.</span></span>
     </a>
     <div class="nav-links">
-      <a href="/briefing" class="nav-pill nav-pill-primary">Briefing</a>
-      <a href="/portfolio" class="nav-pill nav-pill-ghost">Portfólio</a>
-      <a href="/painel" class="nav-pill nav-pill-muted">Login</a>
+      <a href="/briefing" class="nav-link">Briefing</a>
+      <a href="/portfolio" class="nav-link">Portfólio</a>
+      <a href="/painel" class="nav-link nav-link-login">Login</a>
       <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20minha%20landing%20page" class="nav-cta">Quero a minha</a>
     </div>
   </div>
@@ -859,14 +859,13 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
 .price-icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:14px;background:rgba(200,255,61,.1);color:var(--neon)}
 .price-icon svg{width:24px;height:24px}
 .price-card.featured .price-icon{background:var(--neon);color:var(--bg)}
-/* ===== Pilulas do menu (topo) ===== */
-.nav-pill{display:inline-flex;align-items:center;padding:8px 16px;border-radius:100px;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;transition:all .2s}
-.nav-pill-primary{background:var(--neon);color:var(--bg)}
-.nav-pill-primary:hover{transform:translateY(-1px);box-shadow:0 8px 22px var(--neon-glow)}
-.nav-pill-ghost{background:transparent;color:var(--neon);border:1px solid var(--neon)}
-.nav-pill-ghost:hover{background:rgba(200,255,61,.12)}
-.nav-pill-muted{background:transparent;color:var(--ink-soft);border:1px solid var(--line)}
-.nav-pill-muted:hover{border-color:var(--ink-soft);color:var(--ink)}
+/* ===== Menu do topo: links limpos + 1 CTA ===== */
+.nav-links{gap:30px}
+.nav-link{position:relative;color:var(--ink-soft) !important;font-size:14px;font-weight:500;text-decoration:none;transition:color .2s;padding:6px 0}
+.nav-link:hover{color:var(--ink) !important}
+.nav-link::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--neon);transition:right .25s ease}
+.nav-link:hover::after{right:0}
+.nav-link-login{margin-right:6px}
 /* ===== Garantia compacta (so mobile) ===== */
 .guarantee-compact{display:none}
 
@@ -897,10 +896,11 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
   .hero-proof-txt{justify-content:center}
   .hero-avatars{justify-content:center}
 
-  /* ===== Menu topo no mobile: 3 pilulas, sem CTA ===== */
-  nav{padding:12px 14px}
-  .nav-links{display:flex !important;gap:7px !important;align-items:center}
-  .nav-links .nav-pill{display:inline-flex !important;padding:7px 12px !important;font-size:11.5px !important}
+  /* ===== Menu topo no mobile: links de texto, sem CTA ===== */
+  nav{padding:12px 16px}
+  .nav-links{display:flex !important;gap:18px !important;align-items:center}
+  .nav-links a:not(.nav-cta){display:inline-flex !important;font-size:13px !important;padding:4px 0 !important}
+  .nav-link::after{display:none}
   .nav-links .nav-cta{display:none !important}
   /* ===== Garantia: caixa vira linha compacta ===== */
   .guarantee-box{display:none !important}
