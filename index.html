@@ -327,6 +327,11 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
     @keyframes casesScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     @media(max-width:768px){.cases-track .case-card{flex:0 0 280px}.cases-track .case-image img{transition-duration:5s}}
     @media(prefers-reduced-motion:reduce){.cases-track{animation:none}}
+    /* menos espaco embaixo + CTA com destaque (e um CTA forte) */
+    .cases-section{padding-bottom:56px}
+    .cases-cta{background:linear-gradient(180deg,rgba(200,255,61,.1),rgba(200,255,61,.02)),var(--bg-card);border-color:rgba(200,255,61,.42);box-shadow:0 0 55px rgba(200,255,61,.15)}
+    .cases-cta h3{font-size:34px}
+    @media(max-width:768px){.cases-section{padding-bottom:40px}.cases-cta h3{font-size:24px!important}}
     </style>
     <div class="cases-marquee"><div class="cases-track">
       <a href="https://real-glass-vidracaria.pages.dev" target="_blank" rel="noopener" class="case-card">
