@@ -4,40 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Portfólio | landingnow.</title>
-<link rel="icon" href="favicon.ico">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#080808;--bg2:#0f0f0f;--bg3:#161616;--neon:#C8FF3D;--neon2:rgba(200,255,61,.12);--ink:#f5f5f5;--ink2:#bcbcbc;--ink3:#9a9a9a;--red:#FF3B5C;--blue:#6CB4FF;--purple:#B98CFF;--amber:#FFB830;--teal:#30FFCE;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.16);--r:20px}
+:root{--bg:#0E1430;--bg2:#221A47;--bg3:#2B2356;--ambar:#FFC24B;--ambar2:rgba(255,194,75,.12);--ambar-claro:#FFD98A;--laranja:#FF6B4A;--zap:#25D366;--ink:#F4F1FF;--ink2:rgba(244,241,255,.72);--ink3:rgba(244,241,255,.55);--red:#FF3B5C;--blue:#6CB4FF;--purple:#B98CFF;--amber:#FFC24B;--teal:#7FD8C8;--line:rgba(244,241,255,.1);--line2:rgba(244,241,255,.18);--r:20px}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Figtree',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
-nav{position:sticky;top:0;z-index:50;background:rgba(8,8,8,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+nav{position:sticky;top:0;z-index:50;background:rgba(14,20,48,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .nav-inner{max-width:1400px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;gap:28px}
-.logo{display:flex;align-items:center;gap:10px;font-family:'Inter',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.02em}
-.logo .dot{color:var(--neon)}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Figtree',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.02em}
+.logo .dot{color:var(--ambar)}
 .logo svg{width:30px;height:30px}
 .nav-links{display:flex;gap:24px;font-size:14px;color:var(--ink2);margin-left:auto}
 .nav-links a:hover{color:var(--ink)}
-.nav-cta{margin-left:24px;background:var(--neon);color:#080808;padding:10px 20px;border-radius:100px;font-size:13px;font-weight:700;transition:transform .2s}
+.nav-cta{margin-left:24px;background:var(--ambar);color:#0E1430;padding:10px 20px;border-radius:100px;font-size:13px;font-weight:700;transition:transform .2s}
 .nav-cta:hover{transform:translateY(-1px)}
 .hero{text-align:center;padding:78px 40px 46px;position:relative}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--neon);border:1px solid rgba(200,255,61,.3);background:var(--neon2);padding:7px 16px;border-radius:100px;margin-bottom:26px}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(34px,6vw,62px);font-weight:800;letter-spacing:-.03em;line-height:1.03;margin-bottom:18px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ambar);border:1px solid rgba(255,194,75,.3);background:var(--ambar2);padding:7px 16px;border-radius:100px;margin-bottom:26px}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(34px,6vw,62px);font-weight:800;letter-spacing:-.03em;line-height:1.03;margin-bottom:18px}
 .hero p{max-width:560px;margin:0 auto;color:var(--ink2);font-size:16px}
 .hero-stats{display:flex;justify-content:center;gap:48px;margin-top:40px;flex-wrap:wrap}
-.stat-num{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:600;color:var(--neon);line-height:1}
+.stat-num{font-family:'Spline Sans Mono',monospace;font-size:34px;font-weight:600;color:var(--ambar);line-height:1}
 .stat-label{font-size:11px;color:var(--ink3);margin-top:5px;letter-spacing:.06em;text-transform:uppercase}
-.filter-bar{position:sticky;top:60px;z-index:40;background:rgba(8,8,8,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);overflow-x:auto}
+.filter-bar{position:sticky;top:60px;z-index:40;background:rgba(14,20,48,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);overflow-x:auto}
 .filter-bar::-webkit-scrollbar{display:none}
 .filter-inner{display:flex;justify-content:center;gap:6px;padding:11px 40px;width:max-content;min-width:100%}
 .filter-btn,.price-btn{background:transparent;color:var(--ink3);border:1px solid transparent;padding:8px 16px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit}
 .filter-btn:hover,.price-btn:hover{color:var(--ink);border-color:var(--line2)}
-.filter-btn.active{background:var(--neon2);color:var(--neon);border-color:rgba(200,255,61,.3)}
-.filter-bar-price{top:110px;background:rgba(8,8,8,.82)}
-.price-btn.active{background:rgba(255,255,255,.07);color:var(--ink);border-color:var(--line2)}
+.filter-btn.active{background:var(--ambar2);color:var(--ambar);border-color:rgba(255,194,75,.3)}
+.filter-bar-price{top:110px;background:rgba(14,20,48,.82)}
+.price-btn.active{background:rgba(244,241,255,.08);color:var(--ink);border-color:var(--line2)}
 .price-label{display:flex;align-items:center;font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;padding-right:4px;white-space:nowrap}
 .grid-section{max-width:1400px;margin:0 auto;padding:46px 40px 0}
 .section-label{display:flex;align-items:center;gap:12px;margin-bottom:22px}
@@ -47,47 +48,47 @@ nav{position:sticky;top:0;z-index:50;background:rgba(8,8,8,.82);backdrop-filter:
 .section-label-count{font-size:11px;color:var(--ink3);background:var(--bg3);padding:2px 9px;border-radius:100px;border:1px solid var(--line)}
 .card-grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
 .card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:transform .25s,border-color .25s;position:relative;display:flex;flex-direction:column;flex:1 1 360px;max-width:440px;min-width:280px}
-.card:hover{transform:translateY(-4px);border-color:rgba(200,255,61,.32)}
+.card:hover{transform:translateY(-4px);border-color:rgba(255,194,75,.32)}
 .thumb-wrap{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--bg3)}
 .thumb{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .4s}
 .card:hover .thumb{transform:scale(1.04)}
-.card-badge{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:100px;background:rgba(8,8,8,.72);backdrop-filter:blur(8px);border:1px solid currentColor}
+.card-badge{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:100px;background:rgba(14,20,48,.72);backdrop-filter:blur(8px);border:1px solid currentColor}
 .card-body{padding:17px 20px 19px;display:flex;flex-direction:column;flex:1}
 .card-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
-.card-name{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em}
-.card-price{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--neon);white-space:nowrap}
+.card-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.card-price{font-family:'Spline Sans Mono',monospace;font-weight:600;font-size:15px;color:var(--ambar);white-space:nowrap}
 .card-desc{font-size:13.5px;color:var(--ink2);line-height:1.5;margin-bottom:16px;flex:1}
 .card-footer{display:flex;align-items:center;justify-content:space-between}
 .card-cat{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink3)}
 .card-cat-dot{width:7px;height:7px;border-radius:50%}
 .card-open{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--ink2)}
 .card-open svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7}
-.card:hover .card-open{color:var(--neon)}
+.card:hover .card-open{color:var(--ambar)}
 .price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
 .price-card{background:var(--bg2);border-radius:16px;padding:24px 22px}
-.price-val{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em}
-.price-name{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:8px}
+.price-val{font-family:'Spline Sans Mono',monospace;font-size:24px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em}
+.price-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;margin-bottom:8px}
 .price-desc{font-size:12.5px;color:var(--ink3);line-height:1.5}
-.cta-strip{position:relative;z-index:1;max-width:1400px;margin:64px auto 80px;background:radial-gradient(ellipse at center,rgba(200,255,61,.13) 0%,rgba(200,255,61,.05) 72%);border:1px solid rgba(200,255,61,.35);border-radius:var(--r);box-shadow:0 0 64px rgba(200,255,61,.07);padding:62px 48px;display:flex;flex-direction:column;align-items:center;text-align:center}
-.cta-pre{display:block;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--neon);margin-bottom:18px}
-.cta-strip h2{font-family:'Syne',sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:800;letter-spacing:-.03em;margin-bottom:12px;max-width:680px}
+.cta-strip{position:relative;z-index:1;max-width:1400px;margin:64px auto 80px;background:radial-gradient(ellipse at center,rgba(255,194,75,.13) 0%,rgba(255,194,75,.05) 72%);border:1px solid rgba(255,194,75,.35);border-radius:var(--r);box-shadow:0 0 64px rgba(255,194,75,.07);padding:62px 48px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.cta-pre{display:block;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ambar);margin-bottom:18px}
+.cta-strip h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:800;letter-spacing:-.03em;margin-bottom:12px;max-width:680px}
 .cta-strip p{font-size:15px;color:var(--ink2);max-width:460px}
 .cta-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:32px}
-.btn-neon{background:var(--neon);color:#080808;padding:13px 26px;border-radius:100px;font-size:14px;font-weight:700;transition:all .2s}
-.btn-neon:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,255,61,.4)}
+.btn-zap{background:var(--zap);color:#0E1430;padding:13px 26px;border-radius:100px;font-size:14px;font-weight:700;transition:all .2s}
+.btn-zap:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.35)}
 .btn-ghost{background:transparent;color:var(--ink);padding:13px 26px;border-radius:100px;font-size:14px;font-weight:500;border:1px solid var(--line2);transition:all .2s}
-.btn-ghost:hover{border-color:var(--neon);color:var(--neon)}
+.btn-ghost:hover{border-color:var(--ambar);color:var(--ambar)}
 footer{border-top:1px solid var(--line);padding:38px 40px;text-align:center}
-.foot-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-bottom:8px}
+.foot-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;margin-bottom:8px}
 footer p{font-size:13px;color:var(--ink3)}
 @media(max-width:900px){.card{flex:1 1 calc(50% - 10px);max-width:none}}
 @media(max-width:600px){.nav-inner,.grid-section,.hero{padding-left:20px;padding-right:20px}.nav-links{display:none}.card{flex:1 1 100%}.filter-inner{justify-content:flex-start;padding:11px 20px}.hero-stats{gap:26px}.cta-strip{margin:48px 20px 56px;padding:40px 24px}.hero h1{font-size:clamp(30px,9vw,44px)}}</style>
 </head>
 <body>
 <nav><div class="nav-inner">
-  <a href="https://landingnow.com.br" class="logo"><svg viewBox="0 0 32 32"><rect x="2" y="2" width="28" height="28" rx="8" fill="#C8FF3D"/><path d="M10 9 L10 22 L18 22" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M16 16 L23 9 M19 9 L23 9 L23 13" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> landingnow<span class="dot">.</span></a>
-  <div class="nav-links"><a href="https://landingnow.com.br">Início</a><a href="#planos">Valores</a><a href="https://landingnow.com.br">Voltar ao site</a></div>
-  <a href="https://landingnow.com.br" class="nav-cta">Quero a minha</a>
+  <a href="/" class="logo"><svg viewBox="0 0 32 32"><rect x="2" y="2" width="28" height="28" rx="8" fill="#FFC24B"/><path d="M10 9 L10 22 L18 22" stroke="#0E1430" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M16 16 L23 9 M19 9 L23 9 L23 13" stroke="#0E1430" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> landingnow<span class="dot">.</span></a>
+  <div class="nav-links"><a href="/">Início</a><a href="#planos">Valores</a><a href="/">Voltar ao site</a></div>
+  <a href="/briefing" class="nav-cta">Quero a minha</a>
 </div></nav>
 <header class="hero">
   <div class="hero-badge">PORTFÓLIO LANDINGNOW</div>
@@ -97,21 +98,21 @@ footer p{font-size:13px;color:var(--ink3)}
     <div class="stat"><div class="stat-num">+120</div><div class="stat-label">landing pages no ar</div></div>
     <div class="stat"><div class="stat-num">8</div><div class="stat-label">nichos atendidos</div></div>
     <div class="stat"><div class="stat-num">72h</div><div class="stat-label">entrega média</div></div>
-    <div class="stat"><div class="stat-num">R$ 99</div><div class="stat-label">a partir de</div></div>
+    <div class="stat"><div class="stat-num">R$ 297</div><div class="stat-label">a partir de</div></div>
   </div>
 </header>
 <div class="filter-bar"><div class="filter-inner"><button class="filter-btn active" data-filter="all">Todos</button><button class="filter-btn" data-filter="saude">Saúde</button><button class="filter-btn" data-filter="automotivo">Automotivo</button><button class="filter-btn" data-filter="barbearia">Barbearias e Beleza</button><button class="filter-btn" data-filter="educacao">Educação e Infoprodutos</button><button class="filter-btn" data-filter="servicos">Serviços e Negócios</button><button class="filter-btn" data-filter="gastronomia">Gastronomia e Eventos</button><button class="filter-btn" data-filter="tech">Tecnologia / SaaS</button><button class="filter-btn" data-filter="outros">Outros Cases</button></div></div>
 <div class="filter-bar filter-bar-price"><div class="filter-inner"><span class="price-label">Valor:</span><button class="price-btn active" data-price="all">Todos</button><button class="price-btn" data-price="low">Até R$ 297</button><button class="price-btn" data-price="mid">R$ 497 a 647</button><button class="price-btn" data-price="high">R$ 997</button><button class="price-btn" data-price="premium">R$ 1.000+</button><button class="price-btn" data-price="ondemand">Sob demanda</button></div></div>
 
 <div class="grid-section" data-category="saude">
-  <div class="section-label"><div class="section-label-dot" style="background:#30FFCE"></div><span class="section-label-text">Saúde</span><div class="section-label-line"></div><span class="section-label-count">8 projetos</span></div>
+  <div class="section-label"><div class="section-label-dot" style="background:#7FD8C8"></div><span class="section-label-text">Saúde</span><div class="section-label-line"></div><span class="section-label-count">18 projetos</span></div>
   <div class="card-grid">
     <a href="https://mracademy.com.br/" target="_blank" rel="noopener" class="card" data-category="saude" data-range="high">
       <div class="thumb-wrap"><img src="/portfolio/assets/cases/mracademy.webp" alt="MRA Academy" loading="eager" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">MRA Academy</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Educação médica com narrativa completa, prova social e página longa de conversão.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://clinione.base44.app" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
@@ -119,7 +120,7 @@ footer p{font-size:13px;color:var(--ink3)}
       <div class="card-body">
         <div class="card-top"><span class="card-name">CliniOne</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Clínica com apresentação institucional, serviços e CTA de agendamento.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://clinicaeleve.base44.app" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
@@ -127,7 +128,7 @@ footer p{font-size:13px;color:var(--ink3)}
       <div class="card-body">
         <div class="card-top"><span class="card-name">Clínica Eleve</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Landing premium para clínica, com blocos de serviços, diferenciais e contato.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://clinicaaura.base44.app" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
@@ -135,7 +136,7 @@ footer p{font-size:13px;color:var(--ink3)}
       <div class="card-body">
         <div class="card-top"><span class="card-name">Clínica Aura</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Página para saúde e estética com visual refinado e fluxo de agendamento.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://drajulianaalbuquerque.base44.app" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
@@ -143,7 +144,7 @@ footer p{font-size:13px;color:var(--ink3)}
       <div class="card-body">
         <div class="card-top"><span class="card-name">Dra. Juliana Albuquerque</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Página profissional para médica, com autoridade, especialidades e CTA direto.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://tarmakeullin.base44.app" target="_blank" rel="noopener" class="card" data-category="saude" data-range="high">
@@ -151,23 +152,103 @@ footer p{font-size:13px;color:var(--ink3)}
       <div class="card-body">
         <div class="card-top"><span class="card-name">Dra. Tarma Keullin</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Site profissional com atendimento integrado e qualificação de leads.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://daniele-leao.pages.dev/" target="_blank" rel="noopener" class="card" data-category="saude" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/daniele-leao.webp" alt="Daniele Leão" loading="lazy" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/daniele-leao.webp" alt="Daniele Leão" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
-        <div class="card-top"><span class="card-name">Daniele Leão</span><span class="card-price">R$ 99</span></div>
+        <div class="card-top"><span class="card-name">Daniele Leão</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Psicóloga clínica com apresentação acolhedora, abordagens, depoimentos e agendamento.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://dr-bruno-rabello.pages.dev/" target="_blank" rel="noopener" class="card" data-category="saude" data-range="high">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/dr-bruno-rabello.webp" alt="Dr. Bruno Rabello" loading="lazy" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/dr-bruno-rabello.webp" alt="Dr. Bruno Rabello" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Dr. Bruno Rabello</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Cirurgião de quadril no Rio de Janeiro com autoridade médica, tratamentos e agendamento de avaliação.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://equilibre-se-df.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/equilibre-se.webp" alt="Equilibre-se Nutrição" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Equilibre-se Nutrição</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutrição na Asa Sul com acompanhamento humanizado, sem dietas restritivas e agendamento pelo WhatsApp.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://evolua-nutricao-df.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/clinica-evolua.webp" alt="Clínica Evolua" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Clínica Evolua</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Clínica de nutrição e medicina na Asa Norte, com avaliação completa presencial e online, particular e convênio.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://lidiane-santiago-nutri.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/lidiane-santiago.webp" alt="Lidiane Santiago" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Lidiane Santiago</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutricionista esportiva e clínica com planos sob medida para emagrecimento, performance e mulheres 40+.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://brenda-duraes-nutri.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/brenda-duraes.webp" alt="Brenda Durães" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Brenda Durães</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutricionista em Sobradinho com foco em emagrecimento saudável, ganho de massa muscular e reeducação alimentar.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://clube-de-resultados.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/clube-de-resultados.webp" alt="Clube de Resultados" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Clube de Resultados</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutrição esportiva no Sudoeste com acompanhamento individualizado, suporte semanal e comunidade de resultados.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://clinica-449.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/clinica-449.webp" alt="Clínica 449" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Clínica 449</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutrição esportiva no Sudoeste desde 2001, com acompanhamento para atletas de endurance, crossfit e saúde geral.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://daniel-pingret-nutri.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/daniel-pingret.webp" alt="Daniel Pingret" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Daniel Pingret</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutricionista esportivo e funcional na Asa Norte, com planejamentos para hipertrofia, performance e rotina real.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://clinica-nutrit.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/clinica-nutrit.webp" alt="Clínica Nutrit" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Clínica Nutrit</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutrição e psicologia integradas em Águas Claras, com planos personalizados para cada fase da vida.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://clinica-florescer.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/clinica-florescer.webp" alt="Clínica Florescer" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Clínica Florescer</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutrição clínica, esportiva e comportamental em Águas Claras, com atendimento presencial e online.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://consciencia-nutricional.pages.dev" target="_blank" rel="noopener" class="card" data-category="saude" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/consciencia-nutricional.webp" alt="ConsCiência Nutricional" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">ConsCiência Nutricional</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Nutrição clínica e esportiva no Sudoeste, com consciência alimentar e atendimento sem radicalismos.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Saúde</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
   </div>
@@ -176,7 +257,7 @@ footer p{font-size:13px;color:var(--ink3)}
   <div class="section-label"><div class="section-label-dot" style="background:#6CB4FF"></div><span class="section-label-text">Automotivo</span><div class="section-label-line"></div><span class="section-label-count">9 projetos</span></div>
   <div class="card-grid">
     <a href="https://freitasautoparts.com.br" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="high">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/freitasautoparts.webp" alt="Freitas Auto Parts" loading="eager" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/freitasautoparts.webp" alt="Freitas Auto Parts" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Freitas Auto Parts</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Autopeças com oferta objetiva, catálogo de soluções e contato rápido.</p>
@@ -184,7 +265,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://autorodmotors.com.br" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/autorodmotors.webp" alt="Autorod Motors" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/autorodmotors.webp" alt="Autorod Motors" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Autorod Motors</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Loja automotiva com vitrine, diferenciais e CTA para negociação.</p>
@@ -192,7 +273,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://andrade-veiculos.pages.dev" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/andrade-veiculos.webp" alt="Andrade Veículos" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/andrade-veiculos.webp" alt="Andrade Veículos" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Andrade Veículos</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Vitrine de veículos com foco em estoque, WhatsApp e confiança.</p>
@@ -200,7 +281,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://auge-detailer.pages.dev" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/auge-detailer.webp" alt="Auge Detailer" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/auge-detailer.webp" alt="Auge Detailer" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Auge Detailer</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Detailing premium com pacotes, transformações e experiência visual completa.</p>
@@ -208,39 +289,39 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://insulfilm-glass.pages.dev" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/insulfilm-glass.webp" alt="Insulfilm Glass" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/insulfilm-glass.webp" alt="Insulfilm Glass" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
-        <div class="card-top"><span class="card-name">Insulfilm Glass</span><span class="card-price">R$ 99</span></div>
+        <div class="card-top"><span class="card-name">Insulfilm Glass</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Landing de serviço automotivo com benefícios, aplicação e chamada comercial.</p>
         <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#6CB4FF"></div>Automotivo</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://laranjasom.pages.dev" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/laranjasom.webp" alt="Laranja Som" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/laranjasom.webp" alt="Laranja Som" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
-        <div class="card-top"><span class="card-name">Laranja Som</span><span class="card-price">R$ 99</span></div>
+        <div class="card-top"><span class="card-name">Laranja Som</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Som automotivo com oferta, diferenciais, imagens e contato por WhatsApp.</p>
         <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#6CB4FF"></div>Automotivo</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://solucoes-diesel.pages.dev/" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/solucoes-diesel.webp" alt="Soluções Diesel" loading="lazy" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/solucoes-diesel.webp" alt="Soluções Diesel" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
-        <div class="card-top"><span class="card-name">Soluções Diesel</span><span class="card-price">R$ 99</span></div>
+        <div class="card-top"><span class="card-name">Soluções Diesel</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Mecânica diesel e gasolina com hero forte, diferenciais, serviços e CTA no WhatsApp.</p>
         <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#6CB4FF"></div>Automotivo</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://karapina-motos.pages.dev/" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/karapina-motos.webp" alt="Karapina Motos" loading="lazy" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/karapina-motos.webp" alt="Karapina Motos" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
-        <div class="card-top"><span class="card-name">Karapina Motos</span><span class="card-price">R$ 99</span></div>
+        <div class="card-top"><span class="card-name">Karapina Motos</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Peças e mecânica de motos com vitrine, diferenciais, serviços e CTA no WhatsApp.</p>
         <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#6CB4FF"></div>Automotivo</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://scario-autopecas.pages.dev/" target="_blank" rel="noopener" class="card" data-category="automotivo" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/scario-autopecas.webp" alt="Scario Autopeças" loading="lazy" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/scario-autopecas.webp" alt="Scario Autopeças" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Scario Autopeças</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Autopeças em São Paulo com vitrine de marcas, melhores preços e entrega rápida.</p>
@@ -250,38 +331,30 @@ footer p{font-size:13px;color:var(--ink3)}
   </div>
 </div>
 <div class="grid-section" data-category="barbearia">
-  <div class="section-label"><div class="section-label-dot" style="background:#FFB830"></div><span class="section-label-text">Barbearias e Beleza</span><div class="section-label-line"></div><span class="section-label-count">3 projetos</span></div>
+  <div class="section-label"><div class="section-label-dot" style="background:#FFC24B"></div><span class="section-label-text">Barbearias e Beleza</span><div class="section-label-line"></div><span class="section-label-count">3 projetos</span></div>
   <div class="card-grid">
-    <a href="https://vivendo-aventuras-luciana.pages.dev" target="_blank" rel="noopener" class="card" data-category="outros" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/vivendo-aventuras-luciana.webp" alt="Vivendo Aventuras com Luciana" loading="lazy" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
-      <div class="card-body">
-        <div class="card-top"><span class="card-name">Vivendo Aventuras com Luciana</span><span class="card-price">R$ 497</span></div>
-        <p class="card-desc">Agencia de turismo com identidade visual marcante, personagem 3D e CTA direto pro WhatsApp.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#9a9a9a"></div>Turismo e Viagens</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
-      </div>
-    </a>
     <a href="https://velarbarberclub.com" target="_blank" rel="noopener" class="card" data-category="barbearia" data-range="ondemand">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/velarbarberclub.webp" alt="Velar Barber Club" loading="eager" class="thumb"><span class="card-badge" style="color:#bcbcbc">Sob demanda</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/velarbarberclub.webp" alt="Velar Barber Club" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#C7C2DD">Sob demanda</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Velar Barber Club</span><span class="card-price">Sob demanda</span></div>
         <p class="card-desc">Plataforma SaaS para barbearias, fora do escopo de landing page padrão.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FFB830"></div>Barbearias e Beleza</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FFC24B"></div>Barbearias e Beleza</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://domcorte.base44.app" target="_blank" rel="noopener" class="card" data-category="barbearia" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/domcorte.webp" alt="Dom Corte" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/domcorte.webp" alt="Dom Corte" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Dom Corte</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Barbearia com posicionamento, serviços, localização e chamada para agendar.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FFB830"></div>Barbearias e Beleza</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FFC24B"></div>Barbearias e Beleza</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://barbeariadojhonn.base44.app" target="_blank" rel="noopener" class="card" data-category="barbearia" data-range="ondemand">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/barbeariadojhonn.webp" alt="Barbearia do Jhonn" loading="eager" class="thumb"><span class="card-badge" style="color:#bcbcbc">Sob demanda</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/barbeariadojhonn.webp" alt="Barbearia do Jhonn" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#C7C2DD">Sob demanda</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Barbearia do Jhonn</span><span class="card-price">Sob demanda</span></div>
         <p class="card-desc">Página comercial para barbearia com serviços e agendamento rápido.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FFB830"></div>Barbearias e Beleza</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FFC24B"></div>Barbearias e Beleza</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
   </div>
@@ -290,7 +363,7 @@ footer p{font-size:13px;color:var(--ink3)}
   <div class="section-label"><div class="section-label-dot" style="background:#B98CFF"></div><span class="section-label-text">Educação e Infoprodutos</span><div class="section-label-line"></div><span class="section-label-count">6 projetos</span></div>
   <div class="card-grid">
     <a href="https://atlasaprova.com.br" target="_blank" rel="noopener" class="card" data-category="educacao" data-range="high">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/atlasaprova.webp" alt="Atlas Aprova x AFYA" loading="eager" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/atlasaprova.webp" alt="Atlas Aprova x AFYA" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Atlas Aprova x AFYA</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Infoproduto de educação médica com copy, prova social e estrutura de conversão.</p>
@@ -298,7 +371,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://metodo5diaspro.com" target="_blank" rel="noopener" class="card" data-category="educacao" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/metodo5diaspro.webp" alt="Método 5 Dias Pro" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/metodo5diaspro.webp" alt="Método 5 Dias Pro" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Método 5 Dias Pro</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Página de método com promessa clara, narrativa e CTA de inscrição.</p>
@@ -306,7 +379,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://metodo5dpro.com" target="_blank" rel="noopener" class="card" data-category="educacao" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/metodo5dpro.webp" alt="Método 5D Pro" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/metodo5dpro.webp" alt="Método 5D Pro" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Método 5D Pro</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Landing de treinamento com estrutura de oferta e fechamento.</p>
@@ -314,7 +387,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://iamasterclass.com" target="_blank" rel="noopener" class="card" data-category="educacao" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/iamasterclass.webp" alt="IA Masterclass" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/iamasterclass.webp" alt="IA Masterclass" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">IA Masterclass</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Masterclass com headline forte, conteúdo, benefícios e conversão.</p>
@@ -322,7 +395,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://taf-elite.pages.dev/" target="_blank" rel="noopener" class="card" data-category="educacao" data-range="high">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/taf-elite-pro.webp" alt="TAF Elite Pro" loading="eager" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/taf-elite-pro.webp" alt="TAF Elite Pro" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">TAF Elite Pro</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Preparação física para concursos com narrativa, módulos e CTA.</p>
@@ -330,7 +403,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://kronosoficial.com.br" target="_blank" rel="noopener" class="card" data-category="educacao" data-range="premium">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/kronosoficial.webp" alt="Kronos Oficial" loading="eager" class="thumb"><span class="card-badge" style="color:#C8FF3D">Premium</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/kronosoficial.webp" alt="Kronos Oficial" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FF6B4A">Premium</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Kronos Oficial</span><span class="card-price">R$ 6.000</span></div>
         <p class="card-desc">Infoproduto com visual premium, autoridade e página longa.</p>
@@ -340,102 +413,118 @@ footer p{font-size:13px;color:var(--ink3)}
   </div>
 </div>
 <div class="grid-section" data-category="servicos">
-  <div class="section-label"><div class="section-label-dot" style="background:#C8FF3D"></div><span class="section-label-text">Serviços e Negócios</span><div class="section-label-line"></div><span class="section-label-count">12 projetos</span></div>
+  <div class="section-label"><div class="section-label-dot" style="background:#FF6B4A"></div><span class="section-label-text">Serviços e Negócios</span><div class="section-label-line"></div><span class="section-label-count">14 projetos</span></div>
   <div class="card-grid">
     <a href="https://vestier-uniformes.pages.dev" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/vestier-uniformes.webp" alt="Vestier Uniformes" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/vestier-uniformes.webp" alt="Vestier Uniformes" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
-        <div class="card-top"><span class="card-name">Vestier Uniformes</span><span class="card-price">R$ 99</span></div>
+        <div class="card-top"><span class="card-name">Vestier Uniformes</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Uniformes profissionais com catálogo, diferenciais e orçamento rápido.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://vmfretesemudancas.pages.dev" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/vmfretesemudancas.webp" alt="VM Fretes e Mudanças" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/vmfretesemudancas.webp" alt="VM Fretes e Mudanças" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">VM Fretes e Mudanças</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Serviço local com oferta direta, prova de confiança e WhatsApp.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://nunesmudancas.pages.dev" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/nunesmudancas.webp" alt="Nunes Mudanças" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/nunesmudancas.webp" alt="Nunes Mudanças" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Nunes Mudanças</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Landing de mudanças com serviços, regiões atendidas e contato imediato.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://renata-collodetti-arquitetura.pages.dev" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/renata-collodetti-arquitetura.webp" alt="Renata Collodetti Arquitetura" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/renata-collodetti-arquitetura.webp" alt="Renata Collodetti Arquitetura" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Renata Collodetti Arquitetura</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Arquitetura com posicionamento visual, portfólio e narrativa consultiva.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://raadengenharia.base44.app" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/raadengenharia.webp" alt="Raad Engenharia" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/raadengenharia.webp" alt="Raad Engenharia" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Raad Engenharia</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Engenharia com blocos técnicos, credibilidade e apresentação institucional.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://marketplaceconsultoria.pages.dev" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/marketplaceconsultoria.webp" alt="Thiago Coutinho - Marketplace" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/marketplaceconsultoria.webp" alt="Thiago Coutinho - Marketplace" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Thiago Coutinho - Marketplace</span><span class="card-price">R$ 647</span></div>
         <p class="card-desc">Consultoria com promessa objetiva, serviços e CTA para diagnóstico.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://mm-refrigeracao.pages.dev/" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/mm-refrigeracao.webp" alt="MM Refrigeração" loading="lazy" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/mm-refrigeracao.webp" alt="MM Refrigeração" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
-        <div class="card-top"><span class="card-name">MM Refrigeração</span><span class="card-price">R$ 99</span></div>
+        <div class="card-top"><span class="card-name">MM Refrigeração</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Ar condicionado e refrigeração com hero objetivo, serviços, diferenciais e contato rápido.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://rafaelfelix.com.br/" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/rafael-felix.webp" alt="Rafael Félix" loading="lazy" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/rafael-felix.webp" alt="Rafael Félix" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Rafael Félix</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Gestor de tráfego com headline de impacto, método, provas e captação de leads.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://av-midia-show.pages.dev/" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="high">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/av-midia-show.webp" alt="AV Mídia Show" loading="lazy" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/av-midia-show.webp" alt="AV Mídia Show" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">AV Mídia Show</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Produtora de áudio e vídeo profissional com narrativa de marca, portfólio e captação de clientes.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://brasilia-notebooks.pages.dev/" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/brasilia-notebooks.webp" alt="Brasília Notebooks" loading="lazy" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/brasilia-notebooks.webp" alt="Brasília Notebooks" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Brasília Notebooks</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Reparo de notebooks e computadores em domicílio em Brasília, com diagnóstico e atendimento rápido.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://chaveiro-hl.pages.dev/" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/chaveiro-hl.webp" alt="Chaveiro HL" loading="lazy" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/chaveiro-hl.webp" alt="Chaveiro HL" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Chaveiro HL</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Chaveiro automotivo e residencial na Grande Vitória com chave codificada, cópias e atendimento rápido.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://real-glass-vidracaria.pages.dev/" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/real-glass-vidracaria.webp" alt="Real Glass Vidraçaria" loading="lazy" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/real-glass-vidracaria.webp" alt="Real Glass Vidraçaria" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Real Glass Vidraçaria</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Vidraçaria na Grande Vitória com vidros sob medida, acabamento impecável e orçamento pelo WhatsApp.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#C8FF3D"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://diagnostico-360-v2.pages.dev" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="high">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/diagnostico-360.webp" alt="Diagnóstico 360" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Diagnóstico 360</span><span class="card-price">R$ 997</span></div>
+        <p class="card-desc">Consultoria de marketing para clínicas e médicos, com plano de ação em 45 dias e agente de IA incluso.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://erick-nunes.pages.dev" target="_blank" rel="noopener" class="card" data-category="servicos" data-range="low">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/erick-nunes.webp" alt="Erick Nunes" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Erick Nunes</span><span class="card-price">R$ 297</span></div>
+        <p class="card-desc">Tráfego pago e Google Meu Negócio na Grande Vitória.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#FF6B4A"></div>Serviços e Negócios</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
   </div>
@@ -444,7 +533,7 @@ footer p{font-size:13px;color:var(--ink3)}
   <div class="section-label"><div class="section-label-dot" style="background:#FF3B5C"></div><span class="section-label-text">Gastronomia e Eventos</span><div class="section-label-line"></div><span class="section-label-count">3 projetos</span></div>
   <div class="card-grid">
     <a href="https://dom-feijao.pages.dev" target="_blank" rel="noopener" class="card" data-category="gastronomia" data-range="mid">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/dom-feijao.webp" alt="Dom Feijão" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/dom-feijao.webp" alt="Dom Feijão" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Dom Feijão</span><span class="card-price">R$ 497</span></div>
         <p class="card-desc">Gastronomia com cardápio/oferta, apelo visual e pedido por WhatsApp.</p>
@@ -452,7 +541,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://sakuraprime.base44.app" target="_blank" rel="noopener" class="card" data-category="gastronomia" data-range="high">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/sakuraprime.webp" alt="Sakura Prime" loading="eager" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/sakuraprime.webp" alt="Sakura Prime" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Sakura Prime</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Sushi premium com cardápio, experiência visual e pedido direto.</p>
@@ -460,7 +549,7 @@ footer p{font-size:13px;color:var(--ink3)}
       </div>
     </a>
     <a href="https://maisonfilipeia.pages.dev" target="_blank" rel="noopener" class="card" data-category="gastronomia" data-range="high">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/maisonfilipeia.webp" alt="Maison Filipeia" loading="eager" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/maisonfilipeia.webp" alt="Maison Filipeia" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#B98CFF">Avançado</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Maison Filipeia</span><span class="card-price">R$ 997</span></div>
         <p class="card-desc">Eventos com apresentação elegante, espaços, diferenciais e contato.</p>
@@ -470,62 +559,70 @@ footer p{font-size:13px;color:var(--ink3)}
   </div>
 </div>
 <div class="grid-section" data-category="tech">
-  <div class="section-label"><div class="section-label-dot" style="background:#30FFCE"></div><span class="section-label-text">Tecnologia / SaaS</span><div class="section-label-line"></div><span class="section-label-count">2 projetos</span></div>
+  <div class="section-label"><div class="section-label-dot" style="background:#7FD8C8"></div><span class="section-label-text">Tecnologia / SaaS</span><div class="section-label-line"></div><span class="section-label-count">2 projetos</span></div>
   <div class="card-grid">
-    <a href="https://automalab.pages.dev" target="_blank" rel="noopener" class="card" data-category="tech" data-range="pro">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/automalab.webp" alt="Automalab" loading="eager" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+    <a href="https://automalab.pages.dev" target="_blank" rel="noopener" class="card" data-category="tech" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/automalab.webp" alt="Automalab" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Automalab</span><span class="card-price">R$ 497</span></div>
-        <p class="card-desc">Landing page para SaaS de automacao WhatsApp com IA, CRM e funil de vendas.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Tecnologia / SaaS</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <p class="card-desc">Landing page para SaaS de automação de WhatsApp com IA, CRM e funil de vendas.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Tecnologia / SaaS</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
         <a href="https://landingnow.com.br" target="_blank" rel="noopener" class="card" data-category="tech" data-range="premium">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/landingnow.webp" alt="landingnow." loading="eager" class="thumb"><span class="card-badge" style="color:#C8FF3D">Premium</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/landingnow.webp" alt="landingnow." loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FF6B4A">Premium</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">landingnow.</span><span class="card-price">R$ 1.997</span></div>
         <p class="card-desc">Página de produto com chatbot IA, planos, provas e tematização sazonal.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#30FFCE"></div>Tecnologia / SaaS</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#7FD8C8"></div>Tecnologia / SaaS</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
   </div>
 </div>
 <div class="grid-section" data-category="outros">
-  <div class="section-label"><div class="section-label-dot" style="background:#9a9a9a"></div><span class="section-label-text">Outros Cases</span><div class="section-label-line"></div><span class="section-label-count">3 projetos</span></div>
+  <div class="section-label"><div class="section-label-dot" style="background:#8F89AD"></div><span class="section-label-text">Outros Cases</span><div class="section-label-line"></div><span class="section-label-count">3 projetos</span></div>
   <div class="card-grid">
     <a href="https://praia-shopping-estacionamento.pages.dev" target="_blank" rel="noopener" class="card" data-category="outros" data-range="low">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/praia-shopping-estacionamento.webp" alt="Praia Shopping Estacionamento" loading="eager" class="thumb"><span class="card-badge" style="color:#FFB830">Essencial</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/praia-shopping-estacionamento.webp" alt="Praia Shopping Estacionamento" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#FFC24B">Essencial</span></div>
       <div class="card-body">
-        <div class="card-top"><span class="card-name">Praia Shopping Estacionamento</span><span class="card-price">R$ 99</span></div>
+        <div class="card-top"><span class="card-name">Praia Shopping Estacionamento</span><span class="card-price">R$ 297</span></div>
         <p class="card-desc">Página operacional com informação direta, tarifas e contato.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#9a9a9a"></div>Outros Cases</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#8F89AD"></div>Outros Cases</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
     <a href="https://crimenamansaovasconceloss.netlify.app" target="_blank" rel="noopener" class="card" data-category="outros" data-range="ondemand">
-      <div class="thumb-wrap"><img src="/portfolio/assets/cases/crimenamansaovasconceloss.webp" alt="Crime na Mansão Vasconcelos" loading="eager" class="thumb"><span class="card-badge" style="color:#bcbcbc">Sob demanda</span></div>
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/crimenamansaovasconceloss.webp" alt="Crime na Mansão Vasconcelos" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#C7C2DD">Sob demanda</span></div>
       <div class="card-body">
         <div class="card-top"><span class="card-name">Crime na Mansão Vasconcelos</span><span class="card-price">Custom</span></div>
         <p class="card-desc">Experiência interativa/especial com estrutura fora dos planos de landing.</p>
-        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#9a9a9a"></div>Outros Cases</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#8F89AD"></div>Outros Cases</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+      </div>
+    </a>
+    <a href="https://vivendo-aventuras-luciana.pages.dev" target="_blank" rel="noopener" class="card" data-category="outros" data-range="mid">
+      <div class="thumb-wrap"><img src="/portfolio/assets/cases/vivendo-aventuras-luciana.webp" alt="Vivendo Aventuras com Luciana" loading="lazy" decoding="async" class="thumb"><span class="card-badge" style="color:#6CB4FF">Profissional</span></div>
+      <div class="card-body">
+        <div class="card-top"><span class="card-name">Vivendo Aventuras com Luciana</span><span class="card-price">R$ 497</span></div>
+        <p class="card-desc">Agência de turismo com identidade visual marcante, personagem 3D e CTA direto para o WhatsApp.</p>
+        <div class="card-footer"><div class="card-cat"><div class="card-cat-dot" style="background:#8F89AD"></div>Turismo e Viagens</div><span class="card-open">Abrir <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
       </div>
     </a>
   </div>
 </div>
 <div class="grid-section" id="planos" style="padding-top:64px">
-  <div class="section-label"><div class="section-label-dot" style="background:#C8FF3D"></div><span class="section-label-text">Faixas de investimento</span><div class="section-label-line"></div></div>
-  <div class="price-grid"><div class="price-card" style="border:1px solid rgba(255,184,48,.3)"><div class="price-val" style="color:#FFB830">R$ 99 a 297</div><div class="price-name">Essencial</div><div class="price-desc">Página objetiva com design personalizado, SEO e pixel. Ideal para começar a vender.</div></div>
+  <div class="section-label"><div class="section-label-dot" style="background:#FFC24B"></div><span class="section-label-text">Faixas de investimento</span><div class="section-label-line"></div></div>
+  <div class="price-grid"><div class="price-card" style="border:1px solid rgba(255,194,75,.3)"><div class="price-val" style="color:#FFC24B">R$ 297</div><div class="price-name">Essencial</div><div class="price-desc">Página objetiva com design personalizado, SEO e pixel. Ideal para começar a vender.</div></div>
     <div class="price-card" style="border:1px solid rgba(108,180,255,.3)"><div class="price-val" style="color:#6CB4FF">R$ 497 a 647</div><div class="price-name">Profissional</div><div class="price-desc">Seções completas, animações, integrações e suporte prioritário.</div></div>
     <div class="price-card" style="border:1px solid rgba(185,140,255,.3)"><div class="price-val" style="color:#B98CFF">R$ 997</div><div class="price-name">Avançado</div><div class="price-desc">Projetos robustos com painel, chatbot IA e recursos sob medida.</div></div>
-    <div class="price-card" style="border:1px solid rgba(200,255,61,.3)"><div class="price-val" style="color:#C8FF3D">R$ 1.000+</div><div class="price-name">Premium</div><div class="price-desc">Plataformas SaaS completas, automações e desenvolvimento dedicado.</div></div>
-    <div class="price-card" style="border:1px solid rgba(160,160,160,.3)"><div class="price-val" style="color:#bcbcbc">Sob demanda</div><div class="price-name">Personalizado</div><div class="price-desc">Escopo sob medida com orçamento conforme a necessidade do projeto.</div></div></div>
+    <div class="price-card" style="border:1px solid rgba(255,107,74,.3)"><div class="price-val" style="color:#FF6B4A">R$ 1.000+</div><div class="price-name">Premium</div><div class="price-desc">Plataformas SaaS completas, automações e desenvolvimento dedicado.</div></div>
+    <div class="price-card" style="border:1px solid rgba(199,194,221,.3)"><div class="price-val" style="color:#C7C2DD">Sob demanda</div><div class="price-name">Personalizado</div><div class="price-desc">Escopo sob medida com orçamento conforme a necessidade do projeto.</div></div></div>
 </div>
 <div class="cta-strip">
   <span class="cta-pre">PRONTO PARA COMEÇAR?</span>
   <h2>Transforme esse design no próximo site do seu cliente.</h2>
   <p>Escolha o plano que faz sentido e receba em até 72h.</p>
   <div class="cta-btns">
-    <a href="https://wa.me/5561985970300?text=Oi!%20Vi%20os%20cases%20e%20quero%20uma%20landing%20page" class="btn-neon" target="_blank" rel="noopener">Falar no WhatsApp</a>
-    <a href="https://landingnow.com.br#precos" class="btn-ghost" target="_blank" rel="noopener">Ver planos</a>
+    <a href="https://wa.me/5561985970300?text=Oi!%20Vi%20os%20cases%20e%20quero%20uma%20landing%20page" class="btn-zap" target="_blank" rel="noopener">Falar no WhatsApp</a>
+    <a href="/#precos" class="btn-ghost">Ver planos</a>
   </div>
 </div>
 <footer>

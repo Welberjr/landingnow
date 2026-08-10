@@ -4,22 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Briefing · landingnow</title>
-<meta name="theme-color" content="#0A0A0A">
+<meta name="theme-color" content="#0E1430">
 <meta name="description" content="Preencha seu briefing e comece sua landing page com a landingnow.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 <style>
   :root{
-    --bg:#0A0A0A;--bg-soft:#131313;--bg-card:#1A1A1A;--line:#2A2A2A;
-    --ink:#FAFAFA;--ink-soft:#B8B8B8;--muted:#8A8A8A;
-    --neon:#C8FF3D;--neon-soft:rgba(200,255,61,0.15);--neon-glow:rgba(200,255,61,0.4);
-    --hot:#FF4D6D;--whatsapp:#25D366;--radius:16px;--maxw:1180px;
+    --bg:#0E1430;--bg-soft:#171B40;--bg-card:#221A47;--line:rgba(244,241,255,.1);
+    --ink:#F4F1FF;--ink-soft:rgba(244,241,255,.72);--muted:rgba(244,241,255,.55);
+    --neon:#FFC24B;--neon-claro:#FFD98A;--neon-soft:rgba(255,194,75,0.15);--neon-glow:rgba(255,194,75,0.4);
+    --hot:#FF6B4A;--whatsapp:#25D366;--radius:16px;--maxw:1180px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative;min-height:100vh}
+  body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative;min-height:100vh}
+  h1,.form-titulo,.obrigado h2,.escopo-titulo,.logo-text,.p-preco,.chip-plano .pill,.preco-chip,.prazo-box .valor{font-family:'Bricolage Grotesque',sans-serif}
+  .badge-top,.eyebrow,.tag,.p-nome,.escopo-tag,.escopo-col-h,.prazo-box .rotulo,.campo>label{font-family:'Spline Sans Mono',monospace}
+  button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--neon);outline-offset:2px}
+  .chip input:focus-visible+span,.escopo-check input:focus-visible+.escopo-check-box{outline:2px solid var(--neon);outline-offset:2px}
 
 
 
@@ -31,7 +35,7 @@
   .logo-img{width:30px;height:30px;flex-shrink:0;object-fit:contain;display:block;border-radius:7px}
   .logo-text{font-size:19px;font-weight:700;letter-spacing:-.02em}
   .logo-text span{color:var(--neon)}
-  .badge-top{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--neon);border:1.5px solid var(--neon);border-radius:100px;padding:8px 16px;display:inline-flex;align-items:center;gap:8px}
+  .badge-top{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--neon);border:1.5px solid var(--neon);border-radius:100px;padding:8px 16px;display:inline-flex;align-items:center;gap:8px}
   .badge-top .pulse{width:6px;height:6px;background:var(--neon);border-radius:50%;box-shadow:0 0 12px var(--neon);animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
 
@@ -41,24 +45,24 @@
 
   /* PLANOS */
   .hero{padding:48px 0 14px;text-align:center}
-  .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 18px;border:1.5px solid var(--neon);border-radius:100px;font-size:12px;font-weight:600;color:var(--neon);margin-bottom:26px;letter-spacing:.1em;text-transform:uppercase}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 18px;border:1.5px solid var(--neon);border-radius:100px;font-size:12px;font-weight:600;color:var(--neon);margin-bottom:26px;letter-spacing:.06em;text-transform:uppercase}
   .eyebrow .pulse{width:6px;height:6px;background:var(--neon);border-radius:50%;box-shadow:0 0 12px var(--neon);animation:pulse 2s infinite}
   h1{font-weight:800;letter-spacing:-.035em;line-height:1.0;font-size:clamp(36px,6.4vw,68px);max-width:15ch;margin:0 auto 20px}
-  h1 .serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--bg);background:var(--neon);padding:0 16px;border-radius:5px;display:inline-block;line-height:.92;box-shadow:0 0 32px var(--neon-glow);margin:0 2px}
+  h1 .serif{font-weight:800;color:var(--bg);background:linear-gradient(135deg,var(--neon-claro),var(--neon));padding:0 16px;border-radius:5px;display:inline-block;line-height:.92;box-shadow:0 0 32px var(--neon-glow);margin:0 2px}
   .sub{color:var(--ink-soft);font-size:clamp(15px,2.2vw,18px);max-width:52ch;margin:0 auto}
 
   .planos{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:42px 0 8px;align-items:stretch}
   .card{position:relative;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:28px 22px 24px;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.2,.7,.3,1),border-color .35s,box-shadow .35s;opacity:0;transform:translateY(18px);animation:cardIn .6s ease forwards}
   @keyframes cardIn{to{opacity:1;transform:none}}
   .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.13s}.card:nth-child(3){animation-delay:.21s}.card:nth-child(4){animation-delay:.29s}
-  .card:hover{transform:translateY(-8px);border-color:var(--neon);box-shadow:0 0 50px rgba(200,255,61,.12)}
+  .card:hover{transform:translateY(-8px);border-color:var(--neon);box-shadow:0 0 50px rgba(255,194,75,.12)}
   @property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
   .card.destaque::before{content:"";position:absolute;inset:0;border-radius:var(--radius);padding:1.6px;background:conic-gradient(from var(--ang,0deg),transparent 18%,var(--neon),transparent 42%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 4.5s linear infinite;pointer-events:none}
   @keyframes spin{to{--ang:360deg}}
-  .card.destaque{background:linear-gradient(180deg,rgba(200,255,61,.06),var(--bg-card) 36%)}
-  .tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;background:var(--neon);color:var(--bg);padding:6px 15px;border-radius:100px;box-shadow:0 8px 20px -6px var(--neon-glow)}
+  .card.destaque{background:linear-gradient(180deg,rgba(255,194,75,.06),var(--bg-card) 36%)}
+  .tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;background:var(--neon);color:var(--bg);padding:6px 15px;border-radius:100px;box-shadow:0 8px 20px -6px var(--neon-glow)}
   .tag.novo{background:transparent;color:var(--neon);border:1.5px solid var(--neon);box-shadow:none}
-  .p-nome{font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .p-nome{font-weight:700;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
   .p-tagline{font-size:14px;color:var(--ink-soft);min-height:42px;margin-bottom:16px;line-height:1.45}
   .p-preco{font-weight:800;font-size:38px;letter-spacing:-.03em;line-height:1}
   .p-cond{font-size:12px;color:var(--muted);margin:8px 0 20px;line-height:1.5}
@@ -66,14 +70,14 @@
   .p-lista li{display:flex;gap:10px;font-size:13.5px;color:var(--ink-soft);text-align:left;line-height:1.4}
   .p-lista li svg{flex-shrink:0;margin-top:2px;color:var(--neon)}
   .p-lista li.titulo{color:var(--ink);font-weight:700}
-  .btn-plano{width:100%;border:none;cursor:pointer;font-family:'Inter';font-weight:600;font-size:15px;padding:14px;border-radius:100px;background:transparent;color:var(--ink);border:1.5px solid var(--line);transition:all .25s}
+  .btn-plano{width:100%;border:none;cursor:pointer;font-family:'Figtree';font-weight:600;font-size:15px;padding:14px;border-radius:100px;background:transparent;color:var(--ink);border:1.5px solid var(--line);transition:all .25s}
   .btn-plano:hover{border-color:var(--neon);color:var(--neon)}
   .card.destaque .btn-plano{background:var(--neon);color:var(--bg);border-color:var(--neon);font-weight:700}
   .card.destaque .btn-plano:hover{transform:translateY(-2px);box-shadow:0 10px 28px var(--neon-glow);color:var(--bg)}
 
   /* FORMULARIO */
   .form-head{padding:38px 0 6px}
-  .voltar{background:none;border:none;color:var(--ink-soft);font-family:'Inter';font-weight:500;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;margin-bottom:22px;transition:color .2s}
+  .voltar{background:none;border:none;color:var(--ink-soft);font-family:'Figtree';font-weight:500;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;margin-bottom:22px;transition:color .2s}
   .voltar:hover{color:var(--neon)}
   .chip-plano{display:flex;flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between;background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:16px 22px}
   .chip-plano .info{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -83,7 +87,7 @@
   .chip-plano .preco-chip{font-weight:800;font-size:22px}
 
   .form-titulo{font-weight:800;font-size:clamp(26px,4.4vw,38px);letter-spacing:-.03em;margin:32px 0 8px;line-height:1.05;text-align:center}
-  .form-titulo .serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--neon)}
+  .form-titulo .serif{color:var(--neon-claro)}
   .form-intro{color:var(--ink-soft);font-size:15px;margin:0 auto 30px;max-width:60ch;text-align:center}
 
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -91,11 +95,11 @@
   .campo.full{grid-column:1/-1}
   label{font-size:13.5px;font-weight:600;color:var(--ink)}
   label .req{color:var(--neon)}
-  .hint{font-size:12px;color:var(--muted);font-weight:400;margin-top:-2px;line-height:1.45}
-  input[type=text],input[type=tel],input[type=email],textarea{width:100%;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:13px 15px;color:var(--ink);font-family:'Inter';font-size:15px;transition:border-color .2s,box-shadow .2s}
+  .hint{font-size:12px;color:var(--muted);font-weight:400;margin-top:-2px;line-height:1.45;text-align:justify}
+  input[type=text],input[type=tel],input[type=email],textarea{width:100%;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:13px 15px;color:var(--ink);font-family:'Figtree';font-size:15px;transition:border-color .2s,box-shadow .2s}
   textarea{resize:vertical;min-height:92px;line-height:1.6}
-  input::placeholder,textarea::placeholder{color:#5c5c63}
-  input:focus,textarea:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px var(--neon-soft)}
+  input::placeholder,textarea::placeholder{color:rgba(244,241,255,.5)}
+  input:focus,textarea:focus{outline:2px solid var(--neon);outline-offset:2px;border-color:var(--neon)}
 
   .campo.destaque-campo{grid-column:1/-1;background:linear-gradient(180deg,var(--neon-soft),transparent);border:1px dashed var(--line);border-radius:14px;padding:18px}
   .campo.destaque-campo label{display:flex;align-items:center;gap:8px;font-size:15px}
@@ -136,7 +140,7 @@
   .barra-preench{height:100%;width:0;background:var(--neon);border-radius:100px;transition:width .3s}
   .barra-texto{font-size:13px;color:var(--ink-soft);text-align:center}
 
-  .btn-enviar{grid-column:1/-1;margin-top:8px;width:100%;border:none;cursor:pointer;font-family:'Inter';font-weight:700;font-size:17px;color:var(--bg);background:var(--neon);padding:18px;border-radius:100px;box-shadow:0 14px 36px -10px var(--neon-glow);transition:transform .2s,box-shadow .2s}
+  .btn-enviar{grid-column:1/-1;margin-top:8px;width:100%;border:none;cursor:pointer;font-family:'Figtree';font-weight:700;font-size:17px;color:var(--bg);background:var(--neon);padding:18px;border-radius:100px;box-shadow:0 14px 36px -10px var(--neon-glow);transition:transform .2s,box-shadow .2s}
   .btn-enviar:hover{transform:translateY(-2px);box-shadow:0 18px 44px -10px var(--neon-glow)}
   .btn-enviar:disabled{opacity:.55;cursor:wait;transform:none}
   .seguro{grid-column:1/-1;text-align:center;font-size:12.5px;color:var(--muted);margin-top:2px}
@@ -148,10 +152,10 @@
   .check svg{width:40px;height:40px;color:var(--bg);stroke-dasharray:48;stroke-dashoffset:48;animation:draw .5s .35s ease forwards}
   @keyframes draw{to{stroke-dashoffset:0}}
   .obrigado h2{font-weight:800;font-size:clamp(30px,5vw,46px);letter-spacing:-.03em;margin-bottom:14px;line-height:1.05}
-  .obrigado h2 .serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--neon)}
+  .obrigado h2 .serif{color:var(--neon-claro)}
   .obrigado p{color:var(--ink-soft);font-size:16px;margin-bottom:8px}
   .prazo-box{margin:30px auto;background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:26px;display:inline-flex;flex-direction:column;gap:6px;min-width:290px}
-  .prazo-box .rotulo{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .prazo-box .rotulo{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
   .prazo-box .valor{font-weight:800;font-size:36px;color:var(--neon);letter-spacing:-.02em}
   .prazo-box .plano-conf{font-size:14px;color:var(--ink-soft)}
   .btn-wa{display:inline-flex;align-items:center;gap:10px;background:var(--whatsapp);color:var(--bg);text-decoration:none;font-weight:700;font-size:15px;padding:16px 28px;border-radius:100px;transition:transform .2s,box-shadow .2s;box-shadow:0 10px 28px rgba(37,211,102,.3)}
@@ -164,7 +168,7 @@
   .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px}
   .foot .marca{display:flex;flex-direction:column;gap:8px;max-width:340px}
   .foot .marca .logo-wordmark{cursor:default}
-  .foot .marca p{font-size:13px;color:var(--muted);text-align:left;line-height:1.5}
+  .foot .marca p{font-size:13px;color:var(--muted);text-align:justify;line-height:1.5}
   .foot .contato{display:flex;flex-wrap:wrap;align-items:center;gap:22px;font-size:14px}
   .foot .contato a{color:var(--ink-soft);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:color .2s}
   .foot .contato a:hover{color:var(--neon)}
@@ -184,17 +188,17 @@
   }
 
   /* botao ver escopo */
-  .btn-ver-escopo{grid-column:1/-1;width:100%;background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);font-family:'Inter';font-weight:600;font-size:15px;padding:15px;border-radius:100px;cursor:pointer;transition:all .2s;margin-top:4px;display:inline-flex;align-items:center;justify-content:center;gap:9px}
+  .btn-ver-escopo{grid-column:1/-1;width:100%;background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);font-family:'Figtree';font-weight:600;font-size:15px;padding:15px;border-radius:100px;cursor:pointer;transition:all .2s;margin-top:4px;display:inline-flex;align-items:center;justify-content:center;gap:9px}
   .btn-ver-escopo:hover{border-color:var(--neon);color:var(--neon)}
   .btn-ver-escopo svg{width:18px;height:18px}
 
   /* MODAL ESCOPO */
-  .escopo-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:26px 16px;overflow-y:auto}
+  .escopo-overlay{position:fixed;inset:0;z-index:200;background:rgba(10,12,32,.82);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:26px 16px;overflow-y:auto}
   .escopo-overlay.on{display:flex}
   .escopo-modal{position:relative;width:100%;max-width:640px;background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:30px 28px 24px;margin:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
   .escopo-x{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--muted);font-size:28px;line-height:1;cursor:pointer;transition:color .2s}
   .escopo-x:hover{color:var(--ink)}
-  .escopo-tag{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--neon)}
+  .escopo-tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--neon)}
   .escopo-titulo{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:8px 0 4px}
   .escopo-titulo span{color:var(--neon)}
   .escopo-prazo{font-size:13px;color:var(--muted);margin-bottom:20px}
@@ -208,7 +212,7 @@
   .esc-out li::before{content:"\2715";color:var(--hot)}
   .esc-term li::before{content:"\2022";color:var(--muted);font-size:16px;top:-3px}
   .escopo-termos{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
-  .escopo-acordo{background:var(--neon-soft);border:1px solid rgba(200,255,61,.3);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+  .escopo-acordo{background:var(--neon-soft);border:1px solid rgba(255,194,75,.3);border-radius:12px;padding:14px 16px;margin-bottom:16px}
   .escopo-check{display:flex;align-items:flex-start;gap:11px;cursor:pointer;user-select:none}
   .escopo-check input{position:absolute;opacity:0;pointer-events:none}
   .escopo-check-box{flex-shrink:0;margin-top:1px;width:20px;height:20px;border-radius:6px;border:1.8px solid var(--muted);transition:all .2s;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--bg)}
@@ -216,9 +220,9 @@
   .escopo-check input:checked + .escopo-check-box::after{content:"\2713"}
   .escopo-check-txt{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.4}
   .escopo-acoes{display:flex;gap:12px;flex-wrap:wrap}
-  .escopo-pdf{flex:0 0 auto;background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);font-family:'Inter';font-weight:600;font-size:14px;padding:13px 20px;border-radius:100px;cursor:pointer;transition:all .2s}
+  .escopo-pdf{flex:0 0 auto;background:transparent;border:1.5px solid var(--line);color:var(--ink-soft);font-family:'Figtree';font-weight:600;font-size:14px;padding:13px 20px;border-radius:100px;cursor:pointer;transition:all .2s}
   .escopo-pdf:hover{border-color:var(--neon);color:var(--neon)}
-  .escopo-confirma{flex:1;min-width:210px;background:var(--neon);border:none;color:var(--bg);font-family:'Inter';font-weight:700;font-size:15px;padding:14px;border-radius:100px;cursor:pointer;transition:all .2s}
+  .escopo-confirma{flex:1;min-width:210px;background:var(--neon);border:none;color:var(--bg);font-family:'Figtree';font-weight:700;font-size:15px;padding:14px;border-radius:100px;cursor:pointer;transition:all .2s}
   .escopo-confirma:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 28px var(--neon-glow)}
   .escopo-confirma:disabled{opacity:.45;cursor:not-allowed}
   @media(max-width:560px){.escopo-cols{grid-template-columns:1fr}.escopo-modal{padding:26px 20px 20px}}
@@ -477,7 +481,7 @@
         <ul id="esc-termos" class="esc-lista esc-term"></ul>
       </div>
       <div class="escopo-acordo" id="escopoAcordo">
-        <label class="escopo-check"><input type="checkbox" id="esc-aceite"><span class="escopo-check-box"></span><span class="escopo-check-txt">Li e sei exatamente o que vou receber neste plano — o que está incluso e o que não está.</span></label>
+        <label class="escopo-check"><input type="checkbox" id="esc-aceite"><span class="escopo-check-box"></span><span class="escopo-check-txt">Li e sei exatamente o que vou receber neste plano: o que está incluso e o que não está.</span></label>
       </div>
       <div class="escopo-acoes">
         <button class="escopo-pdf" id="escPdf" type="button">Baixar em PDF</button>
@@ -726,7 +730,7 @@ const NAO_INCLUI={
   premiumia:['Manutenção depois do 1º ano grátis (opcional: R$ 197/mês, sem fidelidade)']
 };
 const FORA_ESCOPO=['Gestão de tráfego e anúncios pagos','Produção de fotos ou vídeos profissionais (você envia o material)','Loja virtual / e-commerce com carrinho e checkout','Sistema de login ou área de membros','Criação de identidade visual (logo) do zero','Produção de conteúdo contínua (blog, posts de redes)'];
-const TERMOS=['Pagamento: 50% pra iniciar a produção + 50% na entrega, via Pix — ou em até 12x no cartão.','Garantia: se mesmo após as revisões inclusas você não aprovar o resultado, devolvo 100% do valor.','O prazo de entrega começa a contar após o pagamento da entrada e o envio do briefing completo.','As revisões valem dentro do prazo de produção do plano. Pedidos fora do que foi combinado são orçados à parte.','Após a entrega final (encerradas as revisões), alterações são cobradas à parte: R$ 49 por troca de palavra ou texto e R$ 97 por ajuste em uma seção. Ou manutenção mensal opcional de R$ 197 com ajustes ilimitados.'];
+const TERMOS=['Pagamento: 50% pra iniciar a produção + 50% na entrega, via Pix, ou em até 12x no cartão.','Garantia: se mesmo após as revisões inclusas você não aprovar o resultado, devolvo 100% do valor.','O prazo de entrega começa a contar após o pagamento da entrada e o envio do briefing completo.','As revisões valem dentro do prazo de produção do plano. Pedidos fora do que foi combinado são orçados à parte.','Após a entrega final (encerradas as revisões), alterações são cobradas à parte: R$ 49 por troca de palavra ou texto e R$ 97 por ajuste em uma seção. Ou manutenção mensal opcional de R$ 197 com ajustes ilimitados.'];
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function listaIncluso(){return PLANOS[planoAtual].inclui.map(it=>typeof it==='object'?it.t:it);}
 function listaNaoIncluso(){return (NAO_INCLUI[planoAtual]||[]).concat(FORA_ESCOPO);}
@@ -754,27 +758,27 @@ function baixarPDF(){
   const {jsPDF}=window.jspdf,p=PLANOS[planoAtual],doc=new jsPDF({unit:'pt',format:'a4'});
   const M=48,PW=595,W=PW-2*M;let y=142;
   // ===== cabecalho: faixa preta + logo da marca =====
-  doc.setFillColor(10,10,10);doc.rect(0,0,PW,104,'F');
+  doc.setFillColor(14,20,48);doc.rect(0,0,PW,104,'F');
   const bx=M,by=34,k=1.0625,F=(sx,sy)=>[bx+sx*k,by+sy*k];
-  doc.setFillColor(200,255,61);doc.roundedRect(bx,by,34,34,8,8,'F');
-  doc.setDrawColor(10,10,10);doc.setLineCap(1);doc.setLineJoin(1);
+  doc.setFillColor(255,194,75);doc.roundedRect(bx,by,34,34,8,8,'F');
+  doc.setDrawColor(14,20,48);doc.setLineCap(1);doc.setLineJoin(1);
   doc.setLineWidth(3.2);var L1=F(10,9),L2=F(10,22),L3=F(18,22);doc.line(L1[0],L1[1],L2[0],L2[1]);doc.line(L2[0],L2[1],L3[0],L3[1]);
   doc.setLineWidth(2.6);var A1=F(16,16),A2=F(23,9),A3=F(19,9),A4=F(23,13);doc.line(A1[0],A1[1],A2[0],A2[1]);doc.line(A3[0],A3[1],A2[0],A2[1]);doc.line(A2[0],A2[1],A4[0],A4[1]);
-  doc.setFont('helvetica','bold');doc.setFontSize(21);doc.setTextColor(245,245,245);doc.text('landingnow',bx+48,58);
-  doc.setTextColor(200,255,61);doc.text('.',bx+48+doc.getTextWidth('landingnow'),58);
+  doc.setFont('helvetica','bold');doc.setFontSize(21);doc.setTextColor(244,241,255);doc.text('landingnow',bx+48,58);
+  doc.setTextColor(255,194,75);doc.text('.',bx+48+doc.getTextWidth('landingnow'),58);
   doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(170,170,170);doc.text('Escopo do seu projeto - o que você vai receber',bx+48,76);
   // ===== plano + preco =====
-  doc.setFont('helvetica','bold');doc.setFontSize(15);doc.setTextColor(20,20,20);doc.text('Plano '+p.nome,M,y);
-  doc.setTextColor(96,150,20);doc.text(p.preco,M+doc.getTextWidth('Plano '+p.nome)+16,y);
-  doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(120,120,120);doc.text('Entrega em '+p.prazo,M,y+16);
-  y+=34;doc.setDrawColor(200,255,61);doc.setLineWidth(2.4);doc.line(M,y,M+46,y);y+=24;
+  doc.setFont('helvetica','bold');doc.setFontSize(15);doc.setTextColor(14,20,48);doc.text('Plano '+p.nome,M,y);
+  doc.setTextColor(150,95,0);doc.text(p.preco,M+doc.getTextWidth('Plano '+p.nome)+16,y);
+  doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(110,110,110);doc.text('Entrega em '+p.prazo,M,y+16);
+  y+=34;doc.setDrawColor(255,194,75);doc.setLineWidth(2.4);doc.line(M,y,M+46,y);y+=24;
   function head(t,c){if(y>765){doc.addPage();y=60;}doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(c[0],c[1],c[2]);doc.text(t,M,y);y+=17;}
   function itens(arr,pre,c){doc.setFont('helvetica','normal');doc.setFontSize(10.5);arr.forEach(function(t){if(y>772){doc.addPage();y=60;}doc.setTextColor(c[0],c[1],c[2]);doc.text(pre,M,y);doc.setTextColor(60,60,60);var ls=doc.splitTextToSize(t,W-16);doc.text(ls,M+16,y);y+=ls.length*14+2;});y+=12;}
-  head('Está incluso',[70,150,20]);itens(listaIncluso(),'+',[110,180,40]);
-  head('Não está incluso',[200,60,60]);itens(listaNaoIncluso(),'-',[200,90,90]);
-  head('Como funciona',[20,20,20]);itens(TERMOS,'*',[140,140,140]);
+  head('Está incluso',[150,95,0]);itens(listaIncluso(),'+',[176,118,10]);
+  head('Não está incluso',[176,58,30]);itens(listaNaoIncluso(),'-',[186,74,46]);
+  head('Como funciona',[14,20,48]);itens(TERMOS,'*',[110,110,110]);
   doc.setDrawColor(225,225,225);doc.setLineWidth(.6);doc.line(M,802,PW-M,802);
-  doc.setFontSize(8.6);doc.setTextColor(150,150,150);doc.text('landingnow.com.br    (61) 98597-0300    @landingnow.br    gerado em '+new Date().toLocaleDateString('pt-BR'),M,816);
+  doc.setFontSize(8.6);doc.setTextColor(110,110,110);doc.text('landingnow.com.br    (61) 98597-0300    @landingnow.br    gerado em '+new Date().toLocaleDateString('pt-BR'),M,816);
   doc.save('escopo-plano-'+p.nome.toLowerCase().replace(/\s+/g,'-')+'.pdf');
 }
 document.getElementById('escopoX').addEventListener('click',fecharEscopo);
