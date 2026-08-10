@@ -27,7 +27,10 @@ const MAX_HISTORICO_SALVO = 40;
 const MAX_HISTORICO_CONTEXTO = 20;
 const MAX_IMAGEM_BYTES = 4500000; // ~4.5MB (limite seguro pra API)
 
-// WhatsApp pessoal do Welber (canal de comando e notificacoes)
+// WhatsApp pessoal dos socios (canal de comando e notificacoes).
+// O numero do Welber fica aqui; numeros adicionais (ex.: o do Caio) entram
+// pela env ADMIN_PHONES separados por virgula, pra nao expor telefone novo
+// neste repositorio publico.
 const ADMIN_PHONE = '5561982920444';
 
 // Normaliza numeros BR: adiciona DDI 55 se faltar e REMOVE o nono digito,
@@ -39,9 +42,13 @@ function canonicalBR(phone) {
   if (/^55\d{2}9\d{8}$/.test(n)) n = n.slice(0, 4) + n.slice(5);
   return n;
 }
-const ADMIN_CANON = canonicalBR(ADMIN_PHONE);
+const ADMIN_CANONS = Array.from(new Set(
+  (ADMIN_PHONE + ',' + (process.env.ADMIN_PHONES || ''))
+    .split(',').map(function (s) { return canonicalBR(s.trim()); }).filter(Boolean)
+));
+const ADMIN_CANON = ADMIN_CANONS[0];
 function ehAdmin(phone) {
-  return !!phone && canonicalBR(phone) === ADMIN_CANON;
+  return !!phone && ADMIN_CANONS.indexOf(canonicalBR(phone)) !== -1;
 }
 const MODELO = 'claude-sonnet-4-6';
 
@@ -349,7 +356,11 @@ async function enviarWhatsapp(phone, message, delayTyping = 0, delayMessage = 0)
 }
 
 async function notificarAdmin(texto) {
-  return enviarWhatsapp(ADMIN_CANON, texto, 2, 0);
+  // Avisa todos os socios cadastrados (Welber e, quando configurado, o Caio)
+  for (const canon of ADMIN_CANONS) {
+    await enviarWhatsapp(canon, texto, 2, 0);
+  }
+  return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -382,7 +393,7 @@ async function tratarComandoAdmin(texto) {
     if (!lista.length) return 'Nenhuma conversa pausada. Estou atendendo todo mundo.';
     return 'Conversas pausadas (' + lista.length + '):\n' + lista.join('\n') + '\n\nPra liberar: voltar NUMERO';
   }
-  return 'Oi Welber! Comandos que eu entendo aqui:\nvoltar NUMERO (volto a atender)\npausar NUMERO (fico em silencio)\nstatus (lista de pausadas)';
+  return 'Oi! Comandos que eu entendo aqui:\nvoltar NUMERO (volto a atender)\npausar NUMERO (fico em silencio)\nstatus (lista de pausadas)';
 }
 
 // ---------------------------------------------------------------------------
@@ -449,7 +460,7 @@ QUANDO O CLIENTE PERGUNTA QUAL E O MELHOR PLANO:
 Voce recomenda o PRO de R$ 497, com seguranca. Explique curto o porque, usando os diferenciais reais dele em relacao ao START: o PRO tem dominio proprio configurado, copy persuasiva reescrita pela equipe, identidade visual aplicada, mais secoes, SEO otimizado, e ja vem com o Google Tag e o Conversion Label instalados pra campanha de Google Ads, alem de 3 revisoes. Deixe claro que e o plano ideal pra quem ja investe em anuncio e quer presenca profissional de verdade. A ideia e conduzir o cliente ao PRO mostrando valor, sem pressionar. Nunca responda essa pergunta recomendando o START.
 
 CONHECIMENTO DO PRODUTO:
-A LandingNow cria landing pages de alta conversao. Quem esta por tras e o Welber, founder, que atende cada cliente pessoalmente, sem terceirizar. Mais de 120 landing pages entregues. Paginas leves, 100 por cento responsivas no celular, com SEO, hospedadas na Cloudflare.
+A LandingNow cria landing pages de alta conversao. Quem esta por tras sao o Welber e o Caio, os dois socios, que atendem cada cliente pessoalmente, sem terceirizar. Mais de 120 landing pages entregues. Paginas leves, 100 por cento responsivas no celular, com SEO, hospedadas na Cloudflare.
 
 PLANOS (apresente so quando ja entendeu a necessidade, e um de cada vez):
 START por R$ 297. Pra comecar rapido e validar. Entrega em ate 72h. Ate 3 secoes. Logo mais 3 imagens enviadas pelo cliente (sem video). Botao pro WhatsApp. SEO otimizado, minimo 80%. Hospedagem e dominio por conta do cliente, ou comigo por R$ 10 por mes ou R$ 100 por ano. 1 revisao.
@@ -461,8 +472,8 @@ TEMATIZACAO SAZONAL por R$ 1.499. Servico opcional, nao e plano. A landing muda 
 
 DETALHES QUE VOCE SABE (use quando perguntarem, sem despejar tudo de uma vez):
 O prazo de entrega comeca a contar quando a entrada esta paga E o briefing esta completo com os materiais.
-Criacao de logo e identidade visual nao esta inclusa em nenhum plano. Se o cliente nao tiver, o Welber usa o criterio profissional dele pra deixar bonito e alinhado ao segmento.
-Hospedagem e dominio: no START e no PRO ficam por conta do cliente (no PRO o Welber configura o dominio, e o registro .com.br e feito no nome do proprio cliente no Registro.br, cerca de R$ 50 por ano). A hospedagem pode ser comigo por R$ 10 por mes ou R$ 100 por ano no START e no PRO. No PREMIUM e no PREMIUM IA, hospedagem e dominio saem gratis no primeiro ano (no PREMIUM IA tambem e-mail; apos 1 ano, R$ 20 por mes). O dominio fica sempre no nome do cliente.
+Criacao de logo e identidade visual nao esta inclusa em nenhum plano. Se o cliente nao tiver, o Welber e o Caio usam o criterio profissional deles pra deixar bonito e alinhado ao segmento.
+Hospedagem e dominio: no START e no PRO ficam por conta do cliente (no PRO a equipe configura o dominio, e o registro .com.br e feito no nome do proprio cliente no Registro.br, cerca de R$ 50 por ano). A hospedagem pode ser comigo por R$ 10 por mes ou R$ 100 por ano no START e no PRO. No PREMIUM e no PREMIUM IA, hospedagem e dominio saem gratis no primeiro ano (no PREMIUM IA tambem e-mail; apos 1 ano, R$ 20 por mes). O dominio fica sempre no nome do cliente.
 Toda landing entregue tem 7 dias de suporte gratuito pra qualquer correcao tecnica (14 dias no PREMIUM IA).
 Revisoes sao ajustes durante a producao (trocar textos, cores, imagens, espacamentos). Coisas grandes como adicionar uma secao nova inteira tem custo a parte (R$ 97 durante a producao). Depois da entrega final, os ajustes avulsos sao R$ 49 por troca de palavra ou texto e R$ 97 por ajuste em uma secao, ou o cliente pode contratar manutencao mensal de R$ 197 por mes com ajustes pontuais ilimitados.
 No PREMIUM IA, a conta da IA fica no nome do cliente. A primeira recarga (mais ou menos R$ 30, que rende de 500 a 1000 conversas) ja esta inclusa. A partir do segundo mes o cliente recarrega quando precisar, e recebe um tutorial simples de como fazer.
@@ -471,7 +482,7 @@ O BRIEFING:
 O briefing e um formulario rapido onde o cliente preenche as informacoes que a gente precisa pra criar a landing dele (sobre o negocio, publico, textos, fotos, identidade visual e objetivo). Link: https://www.landingnow.com.br/briefing.
 O fluxo padrao e: fechou e pagou a entrada, voce manda o briefing pra ele preencher e avisa que o prazo comeca assim que ele enviar tudo.
 Mas se o cliente pedir pra ver o briefing antes de pagar, sem problema nenhum: explique em uma linha o que ele vai precisar (dados do negocio, cliente ideal, fotos) e mande o link pra ele conhecer, sem cobrar nada nesse momento.
-Se ele responder qualquer pergunta do briefing com faca o que achar melhor, isso vira carta branca pro Welber decidir com o criterio profissional dele.
+Se ele responder qualquer pergunta do briefing com faca o que achar melhor, isso vira carta branca pro Welber e pro Caio decidirem com o criterio profissional deles.
 
 FORMAS DE PAGAMENTO (no modo fechamento, ou quando o cliente perguntar):
 Existem duas formas, e voce apresenta as duas com leveza, deixando o cliente escolher:
@@ -495,20 +506,20 @@ Se for um comprovante de pagamento (Pix, transferencia, print de banco com valor
 Se for outra imagem (foto de produto, print de duvida, logotipo, referencia visual), responda normalmente, ajudando com o que a pessoa precisa.
 
 QUANDO VOCE NAO SABE OU O PEDIDO FOGE DO ESCOPO:
-Se o cliente pedir algo que voce nao tem certeza se a LandingNow faz, ou algo fora dos planos (sistema completo, plataforma com login, e-commerce, app, integracao especifica, site de varias paginas, qualquer coisa que voce nao saiba responder com seguranca), NUNCA invente e NUNCA prometa. Responda assim, com naturalidade: diga que esse e um caso que voce vai precisar verificar com o Welber, que ele esta em reuniao nesse momento, e que assim que ele sair voce traz o retorno certinho, ou pede pra ele mesmo entrar em contato. Isso passa a imagem real: o Welber e ocupado e o atendimento e serio.
+Se o cliente pedir algo que voce nao tem certeza se a LandingNow faz, ou algo fora dos planos (sistema completo, plataforma com login, e-commerce, app, integracao especifica, site de varias paginas, qualquer coisa que voce nao saiba responder com seguranca), NUNCA invente e NUNCA prometa. Responda assim, com naturalidade: diga que esse e um caso que voce vai precisar verificar com o Welber e o Caio, que eles estao em reuniao nesse momento, e que assim que sairem voce traz o retorno certinho, ou pede pra um deles entrar em contato. Isso passa a imagem real: o Welber e o Caio sao ocupados e o atendimento e serio.
 
-AVISOS INTERNOS PRO WELBER (regra tecnica, siga a risca):
-Existe um canal interno que avisa o Welber no celular dele. Para usar, escreva em uma linha separada, no FINAL da sua resposta, o marcador exato:
+AVISOS INTERNOS PROS SOCIOS (regra tecnica, siga a risca):
+Existe um canal interno que avisa o Welber e o Caio no celular deles. Para usar, escreva em uma linha separada, no FINAL da sua resposta, o marcador exato:
 [[AVISAR_WELBER: texto curto do aviso]]
 O cliente NUNCA ve esse marcador, ele e removido antes do envio. Use o marcador SOMENTE nestes casos:
 1. Cliente enviou comprovante de pagamento: [[AVISAR_WELBER: Fechou! Cliente NOME enviou comprovante do plano X (valor). Conferir o pagamento e o briefing.]]
 2. Cliente afirmou que pagou (mesmo sem comprovante ainda): [[AVISAR_WELBER: Cliente NOME disse que fez o pagamento do plano X. Aguardando comprovante.]]
-3. Duvida que voce ficou de verificar com o Welber: [[AVISAR_WELBER: Cliente NOME perguntou X. Falei que voce esta em reuniao e retorna.]]
-4. Cliente pediu expressamente falar com o responsavel: [[AVISAR_WELBER: Cliente NOME pediu pra falar com voce.]]
+3. Duvida que voce ficou de verificar com os socios: [[AVISAR_WELBER: Cliente NOME perguntou X. Falei que voces estao em reuniao e retornam.]]
+4. Cliente pediu expressamente falar com o responsavel: [[AVISAR_WELBER: Cliente NOME pediu pra falar com voces.]]
 Fora desses casos, NAO use o marcador. Nunca mencione ao cliente que existe esse canal interno, nem sistema de avisos, nem comandos.
 
 OBJECOES (responda curto, com empatia, sem ficar na defensiva):
-Achou caro ou disse que esta apertado: primeiro mantenha o cliente no PREMIUM. Reforce com gentileza que a qualidade e a mesma de quem cobra muito mais, e mostre as facilidades de pagamento: da pra dividir no Pix em duas partes (a segunda so na entrega, apos a aprovacao) ou parcelar no cartao em ate 12x, alem da garantia de reembolso. Pergunte o que cabe melhor pra ele. So se, mesmo depois disso, o cliente deixar claro que realmente nao tem como fechar o PREMIUM nem parcelado, ai voce apresenta o PRO de R$ 297 como uma opcao mais em conta, explicando o que ele inclui e as diferencas em relacao ao PREMIUM.
+Achou caro ou disse que esta apertado: primeiro mantenha o cliente no PRO. Reforce com gentileza que a qualidade e a mesma de quem cobra muito mais, e mostre as facilidades de pagamento: da pra dividir no Pix em duas partes (a segunda so na entrega, apos a aprovacao) ou parcelar no cartao em ate 12x, alem da garantia de reembolso. Pergunte o que cabe melhor pra ele. So se, mesmo depois disso, o cliente deixar claro que realmente nao tem como fechar o PRO nem parcelado, ai voce apresenta o START de R$ 297 como uma opcao mais em conta, explicando o que ele inclui e as diferencas em relacao ao PRO.
 Vai pensar: tudo bem, pergunta com leveza o que ainda ficou de duvida pra ajudar. Se nao houver duvida, diga que fica a disposicao e que quando ela quiser e so chamar.
 E confiavel: manda o portfolio (mais de 120 projetos no ar), lembra da garantia e que no Pix a segunda metade so e paga apos a aprovacao dela. A LandingNow tem CNPJ e site proprio.
 Ja tem site: site e landing se completam, a landing e focada em converter e costuma converter mais.
@@ -560,25 +571,14 @@ module.exports = async function handler(req, res) {
 
     // -----------------------------------------------------------------------
     // Mensagens enviadas PELO NUMERO da LandingNow (fromMe)
-    // Pode ser: eco da propria LIA (ignorar) ou o WELBER respondendo
-    // manualmente (pausar a conversa e avisar o Welber no pessoal).
-    // -----------------------------------------------------------------------
-        // PRIORIDADE MAXIMA: keyword #lia pausa/volta — processa ANTES de tudo
-    // Assim nao importa se chega junto com mensagem do cliente
+    // Pode ser: eco da propria LIA (ignorar), a keyword #lia digitada por um
+    // dos socios naquela conversa, ou um socio respondendo manualmente pelo
+    // WhatsApp Web (pausa automatica + aviso no canal admin).
     // -----------------------------------------------------------------------
     const userMessageRaw =
       body?.text?.message ||
       body?.message ||
       (typeof body?.text === 'string' ? body.text : null) || '';
-    if (phone && /^#lia\s+(pausa|pausar|off|silencio)\b/i.test(userMessageRaw.trim())) {
-      await definirPausa(phone, true);
-      return res.status(200).json({ ok: true, paused: 'keyword' });
-    }
-    if (phone && /^#lia\s+(voltar|volta|on|ativar)\b/i.test(userMessageRaw.trim())) {
-      await definirPausa(phone, false);
-      await enviarWhatsapp(phone, 'Estou de volta! Em que posso ajudar?', 3, 0);
-      return res.status(200).json({ ok: true, resumed: 'keyword' });
-    }
 
     const isFromMe = body.fromMe === true || body.fromMe === "true" || body.fromMe === 1;
     if (isFromMe) {
@@ -586,19 +586,41 @@ module.exports = async function handler(req, res) {
       if (messageId && (await jaRegistrada(messageId))) {
         return res.status(200).json({ ignored: 'eco-lia' });
       }
-      // Eco de texto identico a ultima mensagem da LIA (fallback)
-      const textoEco =
-        body?.text?.message ||
-        body?.message ||
-        (typeof body?.text === 'string' ? body.text : null);
-      if (textoEco) {
+      // Keyword digitada de dentro da conversa, pelo proprio numero da empresa
+      // (Welber ou Caio no WhatsApp Web). So aqui a keyword vale: cliente
+      // digitando #lia nao tem efeito nenhum.
+      const kw = userMessageRaw.trim();
+      if (phone && /^#lia\s+(pausa|pausar|off|silencio)\b/i.test(kw)) {
+        await definirPausa(phone, true);
+        return res.status(200).json({ ok: true, paused: 'keyword' });
+      }
+      if (phone && /^#lia\s+(voltar|volta|on|ativar)\b/i.test(kw)) {
+        await definirPausa(phone, false);
+        await enviarWhatsapp(phone, 'Estou de volta! Em que posso ajudar?', 3, 0);
+        return res.status(200).json({ ok: true, resumed: 'keyword' });
+      }
+      // Eco de texto identico a alguma mensagem recente da LIA (fallback)
+      if (userMessageRaw) {
         const { mensagens: hEco } = await lerConversa(phone || '');
-        const ultimaLia = [...(hEco||[])].reverse().find((m) => m && m.role === 'assistant');
-        if (ultimaLia && ultimaLia.content === textoEco) {
+        const recentesLia = [...(hEco || [])].reverse()
+          .filter((m) => m && m.role === 'assistant').slice(0, 5);
+        if (recentesLia.some((m) => m.content === userMessageRaw)) {
           return res.status(200).json({ ignored: 'eco-lia-texto' });
         }
       }
-      // Z-API nao entrega fromMe corretamente — ignora sem tentar pausar
+      // Sobrou: um humano respondeu manualmente por este numero.
+      // Pausa a conversa na hora e avisa os socios. So volta com comando.
+      if (phone) {
+        const jaPausada = await estaPausada(phone);
+        if (!jaPausada) {
+          await definirPausa(phone, true);
+          await notificarAdmin(
+            'Pausei a Lia na conversa com ' + canonicalBR(phone) +
+            ' porque um de voces respondeu manualmente. Pra eu voltar la: voltar ' + canonicalBR(phone)
+          );
+        }
+        return res.status(200).json({ ok: true, paused: 'fromMe-humano' });
+      }
       return res.status(200).json({ ignored: 'fromMe' });
     }
 
@@ -627,7 +649,7 @@ module.exports = async function handler(req, res) {
     // -----------------------------------------------------------------------
     if (ehAdmin(phone)) {
       const resposta = await tratarComandoAdmin(userMessage || '');
-      await enviarWhatsapp(ADMIN_PHONE, resposta, 2, 0);
+      await enviarWhatsapp(canonicalBR(phone), resposta, 2, 0);
       return res.status(200).json({ ok: true, admin: true });
     }
 
