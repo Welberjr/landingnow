@@ -1,4 +1,4 @@
-﻿// ============================================================================
+// ============================================================================
 // LIA via WhatsApp - Z-API Webhook  |  v17
 // Tudo da v12 (memoria Supabase + audio Groq + anti-duplicacao + demora
 // humana + primeiro nome + visao de imagem) MAIS:
@@ -26,6 +26,64 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MAX_HISTORICO_SALVO = 40;
 const MAX_HISTORICO_CONTEXTO = 20;
 const MAX_IMAGEM_BYTES = 4500000; // ~4.5MB (limite seguro pra API)
+
+// ---------------------------------------------------------------------------
+// TRAVAS DE SEGURANCA (incidente de 10/08/2026)
+// Quando a instancia do Z-API fica desligada e volta, o WhatsApp entrega DE UMA
+// VEZ toda a fila atrasada. Sem trava, a LIA responde conversa de semanas atras
+// como se fosse nova, e foi exatamente o que aconteceu.
+//   LIA_ATIVA_DESDE : data ISO na env. Nada anterior a ela recebe resposta.
+//   FRESCOR_MAX_MS  : mesmo depois do corte, mensagem parada ha mais de 15 min
+//                     e considerada atrasada (fila represada) e fica sem
+//                     resposta automatica. So vale pra respostas do robo: o
+//                     humano continua vendo tudo no WhatsApp normalmente.
+// ---------------------------------------------------------------------------
+const CUTOFF_MS = Date.parse(process.env.LIA_ATIVA_DESDE || '') || 0;
+const FRESCOR_MAX_MS = 15 * 60 * 1000;
+
+// Freio de arranque: se a LIA disparar demais numa mesma conversa, ela para,
+// pausa a conversa e chama os socios em vez de continuar metralhando.
+const LIMITES_RAJADA = [
+  { ms: 5 * 60 * 1000, max: 8 },
+  { ms: 60 * 60 * 1000, max: 20 },
+];
+
+// Timestamp da mensagem no payload do Z-API (campo momment, epoch).
+// Aceita segundos ou milissegundos. Retorna null quando nao da pra saber.
+function momentoDaMensagem(body) {
+  const bruto = body?.momment ?? body?.moment ?? body?.messageTimestamp ?? body?.timestamp;
+  let n = Number(bruto);
+  if (!isFinite(n) || n <= 0) return null;
+  if (n < 1e11) n = n * 1000; // veio em segundos
+  return n;
+}
+
+function semAcento(texto) {
+  return String(texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+// O cliente pediu pra parar? Precisa ser explicito: "para" solto no meio de uma
+// frase ("landing page para minha loja") NAO conta.
+function pedeParaParar(texto) {
+  const t = semAcento(texto).replace(/\s+/g, ' ');
+  if (!t) return false;
+  if (/(par[ae]r?|pare) (de|com) (mandar|enviar|responder|falar|me mandar|me enviar)/.test(t)) return true;
+  if (/(me deixa em paz|nao me mande? mais|nao quero mais (falar|receber|nada)|descadastr|sai do meu|me tira d)/.test(t)) return true;
+  if (t.length <= 32 && /^(pare|para|parar|chega|stop|silencio|quieto)[\s!.,]*(ai|com isso|por favor|pfv|pf)?[\s!.,]*$/.test(t)) return true;
+  return false;
+}
+
+// Quantas respostas a LIA mandou nessa conversa dentro de cada janela
+function estourouRajada(historico) {
+  const agora = Date.now();
+  for (const lim of LIMITES_RAJADA) {
+    const n = (historico || []).filter(
+      (m) => m && m.role === 'assistant' && m.t && agora - m.t < lim.ms
+    ).length;
+    if (n >= lim.max) return lim;
+  }
+  return null;
+}
 
 // WhatsApp pessoal dos socios (canal de comando e notificacoes).
 // O numero do Welber fica aqui; numeros adicionais (ex.: o do Caio) entram
@@ -570,6 +628,23 @@ module.exports = async function handler(req, res) {
     }
 
     // -----------------------------------------------------------------------
+    // TRAVA 1: mensagem atrasada nao recebe resposta automatica.
+    // Cobre o caso da instancia do Z-API voltar do zero e despejar a fila
+    // inteira de conversas antigas. O humano continua vendo tudo no WhatsApp;
+    // quem fica em silencio e so o robo.
+    // -----------------------------------------------------------------------
+    const tsMensagem = momentoDaMensagem(body);
+    if (tsMensagem !== null) {
+      const idade = Date.now() - tsMensagem;
+      if (tsMensagem < CUTOFF_MS || idade > FRESCOR_MAX_MS) {
+        console.log('[zapi] mensagem atrasada ignorada', {
+          phone, idadeMin: Math.round(idade / 60000), antesDoCorte: tsMensagem < CUTOFF_MS,
+        });
+        return res.status(200).json({ ignored: 'mensagem-atrasada' });
+      }
+    }
+
+    // -----------------------------------------------------------------------
     // Mensagens enviadas PELO NUMERO da LandingNow (fromMe)
     // Pode ser: eco da propria LIA (ignorar), a keyword #lia digitada por um
     // dos socios naquela conversa, ou um socio respondendo manualmente pelo
@@ -690,6 +765,27 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ok: true, paused: true, silent: true });
     }
 
+    // -----------------------------------------------------------------------
+    // TRAVA 2: o cliente pediu pra parar. Isso vem antes de qualquer resposta:
+    // a LIA se desculpa UMA vez, pausa a conversa pra sempre e chama os socios.
+    // -----------------------------------------------------------------------
+    if (phone && userMessage && pedeParaParar(userMessage)) {
+      await definirPausa(phone, true);
+      const { mensagens: histP, nome: nomeP } = await lerConversa(phone);
+      const primeiro = primeiroNomeDe(nomeP || senderName);
+      const desculpa = (primeiro ? 'Desculpa, ' + primeiro + '! ' : 'Desculpa! ') +
+        'Parei por aqui. Se precisar de alguma coisa, e so me chamar.';
+      histP.push({ role: 'user', content: userMessage, t: Date.now() });
+      histP.push({ role: 'assistant', content: desculpa, t: Date.now() });
+      await salvarConversa(phone, histP, primeiro);
+      await enviarWhatsapp(phone, desculpa, 2, 0);
+      await notificarAdmin(
+        'O cliente ' + (primeiro ? primeiro + ' ' : '') + canonicalBR(phone) +
+        ' pediu pra LIA parar. Pausei a conversa pra sempre.\nhttps://wa.me/' + canonicalBR(phone)
+      );
+      return res.status(200).json({ ok: true, paused: 'pedido-do-cliente' });
+    }
+
     // Audio que nao deu pra transcrever
     if (foiAudio && !userMessage) {
       if (phone) {
@@ -715,6 +811,23 @@ module.exports = async function handler(req, res) {
     // 1. Le o historico persistido
     const { mensagens: historico, nome: nomeSalvo } = await lerConversa(phone);
     const primeiroNome = primeiroNomeDe(nomeSalvo || senderName);
+
+    // -----------------------------------------------------------------------
+    // TRAVA 3: freio de arranque. Se a LIA ja disparou demais nessa conversa,
+    // ela para de responder, pausa e passa a bola pros socios.
+    // -----------------------------------------------------------------------
+    const rajada = estourouRajada(historico);
+    if (rajada) {
+      await definirPausa(phone, true);
+      historico.push({ role: 'user', content: userMessage || '[o cliente enviou uma imagem]', t: Date.now() });
+      await salvarConversa(phone, historico, primeiroNome);
+      await notificarAdmin(
+        'Pausei sozinha a conversa com ' + (primeiroNome ? primeiroNome + ' ' : '') + canonicalBR(phone) +
+        ': ja eram ' + rajada.max + ' respostas minhas em ' + Math.round(rajada.ms / 60000) +
+        ' minutos e isso nao parece normal. Melhor um de voces assumir.\nhttps://wa.me/' + canonicalBR(phone)
+      );
+      return res.status(200).json({ ok: true, paused: 'rajada' });
+    }
 
     // 2. Monta as mensagens pra API e o registro de texto da mensagem do cliente
     let mensagensApi;
@@ -784,9 +897,11 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ok: true, paused: 'late-check' });
     }
 
-    // 4. Salva no historico (imagem vira placeholder de texto)
-    historico.push({ role: 'user', content: registroUser });
-    historico.push({ role: 'assistant', content: reply });
+    // 4. Salva no historico (imagem vira placeholder de texto).
+    // O carimbo t alimenta o freio de arranque da TRAVA 3 e e descartado por
+    // normalizar() antes de ir pra API, que so aceita role e content.
+    historico.push({ role: 'user', content: registroUser, t: Date.now() });
+    historico.push({ role: 'assistant', content: reply, t: Date.now() });
     await salvarConversa(phone, historico, primeiroNome);
 
     // 5. Envia UMA mensagem com demora humana
