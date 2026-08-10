@@ -413,6 +413,39 @@ async function enviarWhatsapp(phone, message, delayTyping = 0, delayMessage = 0)
   }
 }
 
+// ---------------------------------------------------------------------------
+// Fila de saida do Z-API. Mensagem que a LIA mandou enviar enquanto a instancia
+// estava desconectada fica represada la e dispara toda de uma vez quando religa,
+// mesmo que a conversa ja esteja pausada aqui. Foi o que aconteceu em 10/08.
+// ---------------------------------------------------------------------------
+function zapiBaseUrl() {
+  return `https://api.z-api.io/instances/${process.env.ZAPI_INSTANCE_ID}/token/${process.env.ZAPI_INSTANCE_TOKEN}`;
+}
+
+async function filaZapi(metodo) {
+  try {
+    const r = await fetch(`${zapiBaseUrl()}/queue`, {
+      method: metodo,
+      headers: { 'Content-Type': 'application/json', 'Client-Token': process.env.ZAPI_CLIENT_TOKEN },
+    });
+    const txt = await r.text();
+    let json = null;
+    try { json = txt ? JSON.parse(txt) : null; } catch (e) { json = null; }
+    return { ok: r.ok, status: r.status, json, txt };
+  } catch (e) {
+    console.error('[zapi] fila:', e);
+    return { ok: false, status: 0, json: null, txt: String(e) };
+  }
+}
+
+function contarFila(json) {
+  if (!json) return null;
+  const lista = Array.isArray(json) ? json : (json.queue || json.messages || json.data || null);
+  if (Array.isArray(lista)) return lista.length;
+  if (typeof json.total === 'number') return json.total;
+  return null;
+}
+
 async function notificarAdmin(texto) {
   // Avisa todos os socios cadastrados (Welber e, quando configurado, o Caio)
   for (const canon of ADMIN_CANONS) {
@@ -446,12 +479,28 @@ async function tratarComandoAdmin(texto) {
     await definirPausa(num, true);
     return 'Pausei o numero ' + num + '. Pra eu voltar: voltar ' + num;
   }
+  if (/\bfila\b/.test(t)) {
+    if (/\b(limpar|limpa|apagar|apaga|zerar|zera|esvaziar|esvazia|cancelar|cancela)\b/.test(t)) {
+      const antes = contarFila((await filaZapi('GET')).json);
+      const r = await filaZapi('DELETE');
+      if (!r.ok) return 'Nao consegui esvaziar a fila agora (erro ' + r.status + '). Da pra limpar tambem pelo painel do Z-API, em Fila de mensagens.';
+      const depois = contarFila((await filaZapi('GET')).json);
+      return 'Fila do Z-API esvaziada' + (antes !== null ? ' (' + antes + ' mensagem(ns) descartada(s))' : '') +
+        '. Agora sobrou ' + (depois === null ? 'nada que eu consiga ler' : depois) + '. Nenhuma mensagem represada vai mais sair.';
+    }
+    const r = await filaZapi('GET');
+    const n = contarFila(r.json);
+    if (!r.ok) return 'Nao consegui ler a fila agora (erro ' + r.status + ').';
+    if (n === 0) return 'A fila do Z-API esta vazia. Nada represado pra sair.';
+    if (n === null) return 'Li a fila mas nao entendi o formato. Resposta crua: ' + String(r.txt).slice(0, 200);
+    return 'Tem ' + n + ' mensagem(ns) esperando na fila do Z-API. Pra descartar tudo: limpar fila';
+  }
   if (/\bstatus\b/.test(t)) {
     const lista = await listarPausadas();
     if (!lista.length) return 'Nenhuma conversa pausada. Estou atendendo todo mundo.';
     return 'Conversas pausadas (' + lista.length + '):\n' + lista.join('\n') + '\n\nPra liberar: voltar NUMERO';
   }
-  return 'Oi! Comandos que eu entendo aqui:\nvoltar NUMERO (volto a atender)\npausar NUMERO (fico em silencio)\nstatus (lista de pausadas)';
+  return 'Oi! Comandos que eu entendo aqui:\nvoltar NUMERO (volto a atender)\npausar NUMERO (fico em silencio)\nstatus (lista de pausadas)\nfila (ve o que esta represado no Z-API)\nlimpar fila (descarta o represado)';
 }
 
 // ---------------------------------------------------------------------------
