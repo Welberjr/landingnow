@@ -1,36 +1,37 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="facebook-domain-verification" content="m4wcva4rxgumk070qw201p31jfazwz" />
-<title>Landing page que vende no WhatsApp | Pronta em 72h — landingnow</title>
-<meta name="description" content="Landing pages profissionais para pequenos negócios. Entrega a partir de 72h. Sem complicação técnica.">
+<title>landingnow | A página que muda seu jogo da noite pro dia</title>
+<meta name="description" content="Uma história em quatro capítulos: por que você perde vendas, como a página certa vira o jogo e o que custa colocar a sua no ar a partir de 72h.">
+<meta name="theme-color" content="#0E1430">
 
-<!-- Favicon -->
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="canonical" href="https://landingnow.com.br/">
 
-<!-- Open Graph (Facebook / WhatsApp / LinkedIn) -->
+<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://landingnow.com.br/">
 <meta property="og:site_name" content="landingnow">
-<meta property="og:title" content="landingnow | Páginas que vendem, a partir de 72h">
-<meta property="og:description" content="Landing pages profissionais para pequenos negócios. Entrega a partir de 72h. Sem complicação técnica.">
+<meta property="og:title" content="landingnow | A página que muda seu jogo da noite pro dia">
+<meta property="og:description" content="Uma história em quatro capítulos: a dor, a virada, a prova e a oferta. Sua landing page no ar a partir de 72h.">
 <meta property="og:image" content="https://landingnow.com.br/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="landingnow | Páginas que vendem, a partir de 72h">
+<meta property="og:image:alt" content="landingnow: a página que muda seu jogo da noite pro dia, no ar a partir de 72h">
 <meta property="og:locale" content="pt_BR">
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="landingnow | Páginas que vendem, a partir de 72h">
-<meta name="twitter:description" content="Landing pages profissionais para pequenos negócios. Entrega a partir de 72h.">
+<meta name="twitter:title" content="landingnow | A página que muda seu jogo da noite pro dia">
+<meta name="twitter:description" content="Uma história em quatro capítulos. Sua landing page no ar a partir de 72h.">
 <meta name="twitter:image" content="https://landingnow.com.br/og-image.png">
 
-<!-- Meta Pixel Code - diferido sem quebrar a fila (snippet oficial Meta dentro de setTimeout) -->
+<!-- Meta Pixel Code (diferido) -->
 <script>
 (function(){
   function loadPixel(){
@@ -62,977 +63,613 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 
-<!-- Preconnect pra acelerar quando o Pixel carregar (assincrono) -->
-<link rel="preconnect" href="https://connect.facebook.net" crossorigin>
-<link rel="dns-prefetch" href="https://www.facebook.com">
+<link rel="preload" as="font" type="font/woff2" href="fonts/bricolage-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/figtree-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/splinemono-500.woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script defer src="lib/gsap.min.js"></script>
+<script defer src="lib/ScrollTrigger.min.js"></script>
+<script defer src="app.js"></script>
+<script defer src="config.js"></script>
+<script defer src="analytics.js"></script>
 
-<!-- Preload SOMENTE das fontes do above-the-fold (h1 usa Inter 800, acento usa Instrument Serif 400 italic) -->
-<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-800.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/fonts/instrumentserif-400-italic.woff2" crossorigin>
-<style>@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/instrumentserif-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/inter-600.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face{font-family:'Inter';font-style:normal;font-weight:800;font-display:swap;src:url(/fonts/inter-800.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}</style>
-<link rel="preload" href="/fonts-deferred.css?v=13" as="style" onload="this.onload=null;this.rel='stylesheet'">
-
-<style id="critical-css">:root{--bg:#0A0A0A;--bg-soft:#131313;--bg-card:#1A1A1A;--line:#2A2A2A;--ink:#FAFAFA;--ink-soft:#B8B8B8;--muted:#B8B8B8;--neon:#C8FF3D;--neon-soft:rgba(200,255,61,0.15);--neon-glow:rgba(200,255,61,0.4);--hot:#FF4D6D;--whatsapp:#25D366;--shadow-neon:0 0 60px rgba(200,255,61,0.3)}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-weight:400;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(140% 100% at 50% 0%,rgba(255,255,255,0.02),transparent 55%)}body::after{content:'';position:fixed;top:-20%;left:-10%;width:800px;height:800px;background:radial-gradient(circle,rgba(200,255,61,0.08) 0%,transparent 60%);pointer-events:none;z-index:0;filter:blur(80px)}.container{max-width:1280px;margin:0 auto;padding:0 32px;position:relative;z-index:2}.logo-symbol{width:32px;height:32px;flex-shrink:0}.logo-wordmark{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}.logo-text{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;letter-spacing:-0.02em}.logo-text span{color:var(--neon)}nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 32px;background:rgba(10,10,10,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}.nav-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}.nav-links{display:flex;align-items:center;gap:32px}.nav-links a{color:var(--ink-soft);text-decoration:none;font-size:14px;font-weight:400;padding:10px 4px;transition:color 0.2s}.nav-links a:hover{color:var(--neon)}.nav-cta{background:var(--neon);color:var(--bg)!important;padding:14px 22px!important;border-radius:100px;font-weight:600!important;transition:all 0.3s}.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px var(--neon-glow)}@media (max-width:768px){.nav-links a:not(.nav-cta){display:none}}.hero{padding:160px 0 80px;position:relative}.hero-grid{display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:center}@media (max-width:980px){.hero-grid{grid-template-columns:1fr;gap:32px}}.hero-tag{display:inline-flex;align-items:center;gap:10px;padding:10px 20px;background:transparent;border:1.5px solid var(--neon);border-radius:100px;font-size:13px;font-weight:600;color:var(--neon);margin-bottom:32px;font-family:'Inter',sans-serif;letter-spacing:0.08em;text-transform:uppercase}.hero-tag .pulse{width:6px;height:6px;background:var(--neon);border-radius:50%;box-shadow:0 0 12px var(--neon);animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}.hero h1{font-family:'Inter',sans-serif;font-size:clamp(48px,7.5vw,96px);line-height:0.98;letter-spacing:-0.04em;margin-bottom:28px;font-weight:800}.hero h1 .accent-word{font-family:'Instrument Serif',serif;font-style:italic;color:var(--bg);font-weight:400;position:relative;display:inline-block;padding:0 18px;background:var(--neon);border-radius:4px;margin:0 4px;line-height:0.9;box-shadow:0 0 32px rgba(200,255,61,0.4)}.hero h1 .strikethrough{position:relative;display:inline-block}.hero h1 .strikethrough::after{content:'';position:absolute;top:55%;left:-4px;right:-4px;height:6px;background:var(--hot);border-radius:3px;transform:rotate(-3deg);transform-origin:left;animation:drawLine 1s ease-out 0.8s backwards}@keyframes drawLine{from{transform:rotate(-3deg) scaleX(0)}to{transform:rotate(-3deg) scaleX(1)}}.hero p.lead{font-size:19px;color:var(--ink-soft);max-width:460px;margin-bottom:40px;line-height:1.5}.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:32px}.btn-primary{background:var(--whatsapp);color:var(--bg);padding:17px 28px;border-radius:100px;text-decoration:none;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:10px;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);border:none;cursor:pointer;box-shadow:0 8px 24px rgba(37,211,102,0.3)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(37,211,102,0.5)}.btn-primary svg{width:18px;height:18px;fill:var(--bg)}.btn-secondary{color:var(--ink);padding:17px 28px;text-decoration:none;font-weight:500;font-size:15px;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:100px;transition:all 0.3s;background:transparent;cursor:pointer}.btn-secondary:hover{border-color:var(--neon);color:var(--neon)}.hero-checks{display:flex;align-items:center;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--ink-soft)}.hero-check{display:inline-flex;align-items:center;gap:6px}.hero-check svg{width:14px;height:14px;fill:var(--neon)}@media (max-width:980px){.hero-cards{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px}}body.modal-open{overflow:hidden}@media (max-width:768px){.container{padding:0 20px}nav{padding:14px 20px}.logo-symbol{width:28px;height:28px}.logo-text{font-size:16px}.nav-cta{padding:8px 14px!important;font-size:13px!important}.hero{padding:110px 0 60px}.hero h1{font-size:44px!important;line-height:1.0!important;letter-spacing:-0.03em!important;margin-bottom:24px!important;word-break:break-word}.hero h1 .accent-word{padding:0 12px!important;margin:0 2px!important;font-size:0.85em!important}.hero h1 .strikethrough::after{height:4px!important;top:60%!important}.hero-tag{font-size:10px!important;padding:7px 14px!important;letter-spacing:0.06em!important;text-align:center}.hero p.lead{font-size:16px!important;margin-bottom:32px!important}.hero-ctas{flex-direction:column;align-items:stretch;gap:10px!important;margin-bottom:28px!important}.btn-primary,.btn-secondary,.btn-neon{padding:14px 18px!important;font-size:13px!important;justify-content:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.btn-primary svg,.btn-neon svg{flex-shrink:0}.hero-checks{gap:10px!important;font-size:11px!important;flex-wrap:nowrap!important;white-space:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}.hero-checks::-webkit-scrollbar{display:none}.hero-check{flex-shrink:0;gap:5px!important}.hero-check svg{width:12px!important;height:12px!important}.hero-cards{display:none!important}}body.lia-open-mobile{overflow:hidden;position:fixed;width:100%}/* reveal-guard-v10 */@media(max-width:768px){.reveal,.reveal.is-visible{opacity:1!important;transform:none!important;transition:none!important;animation:none!important}}</style>
-<!-- styles.css carregado sem bloquear renderizacao -->
-<link rel="preload" href="/styles.css?v=13" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/styles.css?v=13"></noscript>
-<script defer src="/app.js?v=13"></script>
-<!-- ============================================================ -->
-<!-- Tematizacao sazonal DESATIVADA (visual base/profissional)     -->
-<!-- Para reativar, recolocar calendar.js + engine.js abaixo.      -->
-<!-- ============================================================ -->
-<link rel="stylesheet" href="/themes/base.css?v=13">
-<link rel="stylesheet" href="/alignment-fixes.css?v=13">
+<!-- Dados estruturados (somente informações reais do negócio) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://landingnow.com.br/#business",
+      "name": "landingnow",
+      "description": "Criação de landing pages profissionais para pequenos negócios, com entrega a partir de 72 horas e atendimento direto pelo WhatsApp.",
+      "url": "https://landingnow.com.br/",
+      "telephone": "+5561985970300",
+      "image": "https://landingnow.com.br/og-image.png",
+      "logo": "https://landingnow.com.br/icon-512.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Brasília",
+        "addressRegion": "DF",
+        "addressCountry": "BR"
+      },
+      "sameAs": ["https://www.instagram.com/landingnow.br/"],
+      "priceRange": "R$ 297 a R$ 1.497",
+      "founder": [
+        { "@type": "Person", "name": "Welber Júnior" },
+        { "@type": "Person", "name": "Caio Gomes" }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://landingnow.com.br/#website",
+      "url": "https://landingnow.com.br/",
+      "name": "landingnow",
+      "inLanguage": "pt-BR",
+      "publisher": { "@id": "https://landingnow.com.br/#business" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://landingnow.com.br/#webpage",
+      "url": "https://landingnow.com.br/",
+      "name": "landingnow | A página que muda seu jogo da noite pro dia",
+      "description": "Uma história em quatro capítulos: por que você perde vendas, como a página certa vira o jogo e o que custa colocar a sua no ar a partir de 72h.",
+      "isPartOf": { "@id": "https://landingnow.com.br/#website" },
+      "about": { "@id": "https://landingnow.com.br/#business" },
+      "primaryImageOfPage": "https://landingnow.com.br/og-image.png",
+      "inLanguage": "pt-BR"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://landingnow.com.br/#service",
+      "serviceType": "Criação de landing pages",
+      "provider": { "@id": "https://landingnow.com.br/#business" },
+      "areaServed": { "@type": "Country", "name": "Brasil" },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Planos da landingnow",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Start",
+            "description": "Landing de até 3 seções, SEO otimizado e 1 rodada de revisão. No ar em 72h.",
+            "price": "297",
+            "priceCurrency": "BRL"
+          },
+          {
+            "@type": "Offer",
+            "name": "Pro",
+            "description": "Landing completa de até 5 seções com copy persuasiva reescrita e 3 rodadas de revisão. Em até 5 dias úteis.",
+            "price": "497",
+            "priceCurrency": "BRL"
+          },
+          {
+            "@type": "Offer",
+            "name": "Premium",
+            "description": "Até 7 seções com animações, 10 imagens e 2 vídeos, hospedagem e domínio grátis no primeiro ano. Em até 7 dias úteis.",
+            "price": "997",
+            "priceCurrency": "BRL"
+          },
+          {
+            "@type": "Offer",
+            "name": "Premium IA",
+            "description": "Tudo do Premium mais chatbot de IA 24h com triagem e captura automática de leads. Em até 10 dias úteis.",
+            "price": "1497",
+            "priceCurrency": "BRL"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://landingnow.com.br/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Preciso entender de tecnologia pra contratar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não. Você manda um oi no WhatsApp, conta sobre o seu negócio e a landingnow cuida do resto: design, texto, domínio, hospedagem e configuração técnica. Você recebe o link pronto pra divulgar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como funciona o pagamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pix de 50% pra iniciar e 50% somente na entrega, depois que você aprovar o resultado, ou cartão em até 12x. Tudo combinado por escrito no próprio WhatsApp."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "E se eu quiser mudar algo depois da entrega?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Durante a produção, as revisões do seu plano já estão inclusas. Depois da entrega, os ajustes ficam sob demanda: R$ 49 por troca de texto e R$ 97 por ajuste em uma seção."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "E se eu não gostar do resultado?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Você aprova antes de pagar a segunda metade. Se, mesmo depois das revisões, o resultado não atender ao combinado, a landingnow devolve 100% do valor pago."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
-<!-- LOGO SVG SYMBOL -->
-<svg width="0" height="0" style="position:absolute">
+<!-- Simbolo do logo -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="logoSymbol" viewBox="0 0 32 32">
-      <rect x="2" y="2" width="28" height="28" rx="8" fill="#C8FF3D"/>
-      <path d="M10 9 L10 22 L18 22" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <path d="M16 16 L23 9 M19 9 L23 9 L23 13" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect x="2" y="2" width="28" height="28" rx="8" fill="#FFC24B"/>
+      <path d="M10 9 L10 22 L18 22" stroke="#0E1430" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M16 16 L23 9 M19 9 L23 9 L23 13" stroke="#0E1430" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </symbol>
+    <symbol id="zapIcon" viewBox="0 0 24 24">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
     </symbol>
   </defs>
 </svg>
 
+<!-- CEU CONTINUO (a viagem da noite pro dia) -->
+<div class="sky" aria-hidden="true">
+  <div class="sky-layer sky-night" id="skyNight"></div>
+  <div class="sky-layer sky-dawn" id="skyDawn"></div>
+  <div class="sky-layer sky-day" id="skyDay"></div>
+  <div class="sky-layer sky-dusk" id="skyDusk"></div>
+  <div class="stars" id="stars"></div>
+  <div class="clouds" id="clouds">
+    <span class="cloud cloud-a"></span>
+    <span class="cloud cloud-b"></span>
+    <span class="cloud cloud-c"></span>
+  </div>
+  <div class="astro" id="astro">
+    <span class="astro-disc astro-lua" id="lua"></span>
+    <span class="astro-disc astro-sol" id="sol"></span>
+  </div>
+  <div class="horizon">
+    <svg class="horizon-svg" viewBox="0 0 1440 180" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path id="skylinePath" d="M0,180 L0,120 L60,120 L60,84 L96,84 L96,120 L150,120 L150,64 L160,64 L160,50 L172,50 L172,64 L216,64 L216,120 L280,120 L280,96 L336,96 L336,140 L400,140 L400,74 L410,74 L410,58 L418,58 L418,74 L470,74 L470,128 L540,128 L540,92 L600,92 L600,140 L660,140 L660,60 L672,60 L672,42 L682,42 L682,60 L740,60 L740,120 L800,120 L800,88 L860,88 L860,132 L920,132 L920,70 L980,70 L980,120 L1040,120 L1040,96 L1050,96 L1050,80 L1060,80 L1060,96 L1120,96 L1120,140 L1180,140 L1180,84 L1240,84 L1240,120 L1300,120 L1300,64 L1310,64 L1310,48 L1322,48 L1322,64 L1380,64 L1380,110 L1440,110 L1440,180 Z"/>
+      <g class="horizon-windows">
+        <rect x="70" y="94" width="6" height="6"/><rect x="82" y="106" width="6" height="6"/>
+        <rect x="158" y="74" width="5" height="5"/><rect x="196" y="86" width="6" height="6"/>
+        <rect x="296" y="104" width="6" height="6"/><rect x="404" y="88" width="5" height="5"/>
+        <rect x="436" y="100" width="6" height="6"/><rect x="556" y="102" width="6" height="6"/>
+        <rect x="666" y="76" width="5" height="5"/><rect x="700" y="92" width="6" height="6"/>
+        <rect x="816" y="98" width="6" height="6"/><rect x="936" y="84" width="6" height="6"/>
+        <rect x="1046" y="106" width="5" height="5"/><rect x="1196" y="96" width="6" height="6"/>
+        <rect x="1256" y="128" width="6" height="6"/><rect x="1336" y="78" width="6" height="6"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
 <!-- NAV -->
-<nav>
+<nav class="nav" aria-label="Navegação principal">
   <div class="nav-inner">
-    <a href="#" class="logo-wordmark">
-      <svg class="logo-symbol"><use href="#logoSymbol"/></svg>
-      <span class="logo-text">landingnow<span>.</span></span>
+    <a href="#topo" class="brand" aria-label="landingnow, voltar ao topo">
+      <svg class="brand-mark" aria-hidden="true"><use href="#logoSymbol"/></svg>
+      <span class="brand-name">landingnow<span class="brand-dot">.</span></span>
     </a>
     <div class="nav-links">
-      <a href="/briefing" class="nav-link">Briefing</a>
-      <a href="/portfolio" class="nav-link">Portfólio</a>
-      <a href="/painel" class="nav-link nav-link-login">Login</a>
-      <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20minha%20landing%20page" class="nav-cta">Quero a minha</a>
+      <a class="nav-link" href="/briefing">Briefing</a>
+      <a class="nav-link" href="/portfolio">Portfólio</a>
+      <a class="nav-link" href="/painel">Login</a>
+      <a class="nav-cta" href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Vi%20a%20hist%C3%B3ria%20da%20landingnow%20e%20quero%20a%20minha%20p%C3%A1gina">Chamar no WhatsApp</a>
     </div>
   </div>
 </nav>
 
 <main id="main">
-<!-- HERO -->
-<section class="hero">
-  <style>
-  .accent-word{transition:opacity .25s ease;display:inline-block}
-  .accent-word.swap{opacity:0}
-  .hero-visual{position:relative;display:flex;align-items:center;justify-content:center;padding:10px}
-  .hero-mockup{position:relative;width:100%;max-width:430px;background:#0c0c0c;border:1px solid #2A2A2A;border-radius:16px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.85);animation:heroFloat 6s ease-in-out infinite}
-  .mockup-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#161616;border-bottom:1px solid #2A2A2A}
-  .mockup-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-  .mockup-url{margin-left:8px;font-size:11px;color:#8A8A8A;background:#0c0c0c;border-radius:6px;padding:4px 12px;flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mockup-screen{position:relative;width:100%;height:430px;background:#000;overflow:hidden}
-  .mockup-shot{position:absolute;inset:0;width:100%;height:auto;object-fit:cover;object-position:top;opacity:0;transition:opacity 1s ease}
-  .mockup-shot.on{opacity:1}
-  .mockup-badge{position:absolute;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid #2A2A2A;border-radius:100px;padding:9px 15px;font-size:13px;font-weight:600;color:#fff;box-shadow:0 14px 34px -10px rgba(0,0,0,.7);white-space:nowrap;z-index:2}
-  .mockup-badge-1{top:26px;right:-12px;color:#C8FF3D;animation:heroFloat 6s ease-in-out infinite .6s}
-  .mockup-badge-2{bottom:32px;left:-16px;animation:heroFloat 7s ease-in-out infinite .2s}
-  @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-  .hero-proof{display:flex;align-items:center;gap:14px;margin-top:20px;flex-wrap:wrap}
-  .hero-avatars{display:flex}
-  .hero-av{width:36px;height:36px;border-radius:50%;border:2px solid #0A0A0A;margin-left:-10px;object-fit:cover;background:#1A1A1A}
-  .hero-av:first-child{margin-left:0}
-  .hero-proof-txt{font-size:13.5px;color:#8A8A8A;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .hero-proof-txt .sep{opacity:.4}
-  .hero-stars{color:#FFB830;text-decoration:none;letter-spacing:1px}
-  .hero-stars strong,.hero-proof-txt strong{color:#FAFAFA}
-  @media(max-width:900px){.hero-mockup{max-width:330px}.mockup-screen{height:330px}.mockup-badge{font-size:12px;padding:7px 13px}.mockup-badge-1{right:-4px}.mockup-badge-2{left:-4px}}
-  @media(prefers-reduced-motion:reduce){.hero-mockup,.mockup-badge{animation:none}}
-  </style>
-  <div class="container">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <div class="hero-tag">
-          <span class="pulse"></span>
-          <span>A partir de 72h. Em até 10 dias.</span>
+
+<!-- PROLOGO / HERO -->
+<header class="ch ch-hero" id="topo" data-phase="night">
+  <div class="ch-frame">
+    <p class="stamp">23:47 · enquanto a cidade dorme</p>
+    <h1 class="hero-title">Tem cliente te<br>procurando <em>agora.</em></h1>
+    <p class="hero-lead">Neste exato momento, alguém pesquisa o que você vende. A pergunta que decide a sua semana é simples: o que essa pessoa encontra quando chega até você?</p>
+    <div class="hero-ctas">
+      <a class="btn btn-zap" href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Vi%20a%20hist%C3%B3ria%20da%20landingnow%20e%20quero%20a%20minha%20p%C3%A1gina">
+        <svg class="btn-ico" aria-hidden="true"><use href="#zapIcon"/></svg>
+        Quero minha página no ar
+      </a>
+      <a class="btn btn-ghost" href="#oferta">Ver planos e prazos</a>
+    </div>
+    <p class="hero-facts">No ar a partir de 72h · Pix 50% + 50% ou 12x · Nota 5,0 no Google</p>
+  </div>
+  <div class="scroll-cue" aria-hidden="true">
+    <span class="scroll-cue-text">role, a noite passa</span>
+    <span class="scroll-cue-bar"><span class="scroll-cue-dot"></span></span>
+  </div>
+</header>
+
+<!-- CAPITULO 1: A DOR -->
+<section class="ch ch-dor" id="dor" data-phase="night" aria-label="Capítulo 1: a dor">
+  <div class="ch-frame dor-frame">
+    <div class="ch-head">
+      <p class="stamp">01:30 · capítulo um</p>
+      <h2 class="ch-title">Você atrai. E perde<br><em>na hora de fechar.</em></h2>
+    </div>
+    <div class="dor-stage">
+      <div class="dor-beats">
+        <div class="dor-beat" data-beat="1">
+          <h3>O anúncio funciona. O clique acontece.</h3>
+          <p class="prose">Você paga pra aparecer e o cliente chega curioso, com o problema na mão e disposição pra resolver. Até aqui, o investimento está fazendo a parte dele.</p>
         </div>
-        <h1>
-          Sua página que <span class="accent-word" id="heroWord">vende</span><br>
-          enquanto você <span class="strikethrough">dorme.</span>
-        </h1>
-        <p class="lead">
-          Landing pages profissionais com foco total em conversão direta no <strong style="color:var(--ink)">WhatsApp</strong>. Estratégia, design e domínio próprio configurado, tudo pronto pra começar a faturar.
-        </p>
-        <div class="hero-ctas">
-          <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20minha%20p%C3%A1gina%20agora" class="btn-primary">
-            <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-            Quero minha página agora
-          </a>
-          <a href="#planos" class="btn-secondary">Ver o que tá incluso →</a>
+        <div class="dor-beat" data-beat="2">
+          <h3>Mas o clique cai num lugar que não conduz.</h3>
+          <p class="prose">Perfil desorganizado, link genérico, site lento no celular. O interesse esfria em poucos segundos, e ninguém aparece pra te avisar do que acabou de escapar.</p>
         </div>
-        <p class="hero-microcopy" style="margin-top:14px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <span>⚡ Resposta rápida</span><span style="opacity:.4">·</span><span>sem compromisso</span><span style="opacity:.4">·</span><span>você só paga se fechar</span>
-        </p>
-        <div class="hero-proof">
-          <div class="hero-avatars">
-            <img class="hero-av" src="avatars/daniele.webp" alt="Daniele Leão" width="36" height="36" loading="lazy" decoding="async">
-            <img class="hero-av" src="avatars/thiago.webp" alt="Thiago Coutinho" width="36" height="36" loading="lazy" decoding="async">
-            <img class="hero-av" src="avatars/bruno.webp" alt="Dr. Bruno Rabello" width="36" height="36" loading="lazy" decoding="async">
-            <img class="hero-av" src="avatars/renata.webp" alt="Renata Collodetti" width="36" height="36" loading="lazy" decoding="async">
-          </div>
-          <div class="hero-proof-txt">
-            <a href="https://share.google/1TsT9adJlcnkYTW7H" target="_blank" rel="noopener" class="hero-stars">★★★★★ <strong>5,0</strong> no Google</a>
-            <span class="sep">·</span>
-            <span><strong>+120</strong> páginas no ar</span>
-          </div>
+        <div class="dor-beat" data-beat="3">
+          <h3>E a venda morre em silêncio.</h3>
+          <p class="prose">Essa perda não entra em relatório nenhum: é o cliente que ia fechar com você e terminou comprando de quem apresentou melhor a mesma solução.</p>
         </div>
       </div>
-
-      <div class="hero-visual">
-        <div class="hero-mockup">
-          <div class="mockup-bar">
-            <span class="mockup-dot" style="background:#FF5F57"></span>
-            <span class="mockup-dot" style="background:#FEBC2E"></span>
-            <span class="mockup-dot" style="background:#28C840"></span>
-            <span class="mockup-url">seunegocio.com.br</span>
-          </div>
-          <div class="mockup-screen">
-            <img src="cases/case-02.webp" class="mockup-shot on" alt="Exemplo de landing page criada pela landingnow" loading="eager" decoding="async">
-            <img src="cases/case-06.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-04.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-03.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-13.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-05.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-12.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-07.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-14.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-01.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-11.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-            <img src="cases/case-09.webp" class="mockup-shot" alt="" loading="lazy" decoding="async">
-          </div>
-        </div>
-        <div class="mockup-badge mockup-badge-1">★ 5,0 no Google</div>
-        <div class="mockup-badge mockup-badge-2">⚡ No ar em 72h</div>
+      <div class="dor-scene" aria-hidden="true">
+        <svg class="dor-svg" viewBox="0 0 420 540">
+          <g class="dor-chip dor-chip-top">
+            <rect x="120" y="16" width="180" height="46" rx="23"/>
+            <text x="210" y="45" text-anchor="middle">Seu anúncio</text>
+          </g>
+          <line class="dor-gap-line" x1="60" y1="300" x2="360" y2="300"/>
+          <text class="dor-gap-text" x="210" y="290" text-anchor="middle">aqui não tem página</text>
+          <g class="dor-leads">
+            <circle class="lead" cx="180" cy="80" r="7"/>
+            <circle class="lead" cx="210" cy="80" r="7"/>
+            <circle class="lead" cx="240" cy="80" r="7"/>
+            <circle class="lead" cx="165" cy="80" r="7"/>
+            <circle class="lead" cx="255" cy="80" r="7"/>
+            <circle class="lead" cx="195" cy="80" r="7"/>
+            <circle class="lead" cx="225" cy="80" r="7"/>
+          </g>
+          <g class="dor-chip dor-chip-bottom">
+            <rect x="105" y="452" width="210" height="52" rx="26"/>
+            <text x="210" y="478" text-anchor="middle">Seu WhatsApp</text>
+            <text class="dor-chip-sub" x="210" y="494" text-anchor="middle">nenhuma conversa nova</text>
+          </g>
+        </svg>
+        <p class="dor-counter" aria-hidden="true"><span id="dorNum">27</span> conversas que não aconteceram</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROVA SOCIAL --><section class="social-proof"><div class="container"><div class="proof-grid"><div class="proof-item"><span class="proof-number">+120</span><span class="proof-label">Landing pages no ar</span></div><div class="proof-item"><span class="proof-number">100%</span><span class="proof-label">Dinheiro de volta</span></div><a class="proof-item proof-link" href="https://share.google/1TsT9adJlcnkYTW7H" target="_blank" rel="noopener"><span class="proof-number">5,0</span><span class="proof-stars"><svg class="g-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>★★★★★</span></a></div></div></section>
-<!-- Marquee de beneficios removido a pedido (reduz repeticao e altura) -->
-
-<!-- DOR / POR QUE PERDE VENDAS -->
-<section class="pain-section">
-  <div class="container">
-    <div class="section-header section-header-centered">
-      <div class="section-label">Por que você perde vendas</div>
-      <h2>Você atrai o cliente.<br><em class="italic">Mas perde na hora de fechar.</em></h2>
-      <p>Investir em tráfego e anúncio não resolve se a sua página não conduz a venda. É aí que a maioria perde dinheiro sem perceber.</p>
+<!-- CAPITULO 2: A VIRADA -->
+<section class="ch ch-virada" id="virada" data-phase="dawn" aria-label="Capítulo 2: a virada">
+  <div class="ch-frame virada-frame">
+    <div class="ch-head">
+      <p class="stamp">05:58 · capítulo dois</p>
+      <h2 class="ch-title">A página certa muda o jogo<br><em>da noite pro dia.</em></h2>
+      <p class="ch-sub">Entre o anúncio e o WhatsApp entra uma página com um único trabalho: transformar o clique em conversa.</p>
     </div>
-
-    <div class="pain-stage">
-      <svg class="pain-links" viewBox="0 0 1200 520" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M600,205 C515,205 470,158 408,152"/>
-        <path d="M600,330 C515,330 470,378 408,384"/>
-        <path d="M600,265 C690,265 720,262 792,260"/>
-        <circle class="pl-dot" cx="495" cy="178" r="5"/>
-        <circle class="pl-dot" cx="495" cy="358" r="5"/>
-        <circle class="pl-dot" cx="700" cy="263" r="5"/>
-      </svg>
-
-      <div class="pain-col pain-col-left">
-        <article class="pain-card">
-          <span class="pain-num">01</span>
-          <div class="pain-head">
-            <div class="pain-icon">🧭</div>
-            <h3>Cliente sem direção</h3>
-          </div>
-          <p>Ele clica no anúncio e cai num perfil ou conversa bagunçada. Sem uma página que conduz, a venda esfria.</p>
-          <span class="pain-result"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Resultado: visitante perdido</span>
-        </article>
-
-        <article class="pain-card">
-          <span class="pain-num">02</span>
-          <div class="pain-head">
-            <div class="pain-icon">⏳</div>
-            <h3>Página lenta que espanta</h3>
-          </div>
-          <p>Site que demora pra abrir ou trava no celular faz o visitante desistir antes de ver a sua oferta.</p>
-          <span class="pain-result"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Resultado: oportunidades desperdiçadas</span>
-        </article>
-      </div>
-
-      <div class="pain-phone">
-        <div class="phone-frame">
-          <span class="phone-notch"></span>
-          <div class="phone-screen">
-            <div class="ps-top">
-              <span class="ps-brand"><span class="ps-dot"></span>sua marca</span>
-              <span class="ps-menu"><i></i><i></i><i></i></span>
-            </div>
-            <h4 class="ps-title">Solução que <span>transforma</span> o seu negócio</h4>
-            <p class="ps-sub">Uma oferta clara, direta e que mostra o valor para o cliente.</p>
-            <div class="ps-cta">Quero transformar meu negócio →</div>
-            <div class="ps-social">
-              <span class="ps-avatars"><i></i><i></i><i></i><i></i></span>
-              <span class="ps-social-text">+1.200 empresas já confiam</span>
-            </div>
-            <div class="ps-results">
-              <div class="ps-results-title">Resultados reais</div>
-              <div class="ps-metrics">
-                <div><strong>+42%</strong><span>Mais conversões</span></div>
-                <div><strong>-58%</strong><span>Taxa de rejeição</span></div>
-                <div><strong>+67%</strong><span>Leads qualificados</span></div>
-              </div>
-            </div>
-          </div>
+    <div class="virada-stage">
+      <div class="mock" aria-hidden="true">
+        <div class="mock-bar">
+          <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+          <span class="mock-url">suapagina.com.br</span>
+        </div>
+        <div class="mock-screen">
+          <span class="mock-pill">Sua promessa em uma linha</span>
+          <span class="mock-line mock-line-a"></span>
+          <span class="mock-line mock-line-b"></span>
+          <span class="mock-text"></span>
+          <span class="mock-text mock-text-short"></span>
+          <span class="mock-cta">Chamar no WhatsApp</span>
+          <span class="mock-badges"><i>★ 5,0</i><i>no ar em 72h</i></span>
+          <span class="mock-shade"></span>
         </div>
       </div>
-
-      <div class="pain-col pain-col-right">
-        <article class="pain-card">
-          <span class="pain-num">03</span>
-          <div class="pain-head">
-            <div class="pain-icon">📉</div>
-            <h3>Visual amador derruba o preço</h3>
-          </div>
-          <p>Layout genérico e sem identidade passa insegurança e faz o cliente questionar quanto você cobra.</p>
-          <span class="pain-result"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Resultado: desvalorização da sua oferta</span>
-        </article>
-      </div>
+      <ul class="virada-list">
+        <li class="virada-item">
+          <strong>Um objetivo só</strong>
+          <span>Cada bloco empurra o visitante pra mesma ação: a conversa no seu WhatsApp.</span>
+        </li>
+        <li class="virada-item">
+          <strong>Rápida em qualquer celular</strong>
+          <span>Feita pra rede móvel do mundo real e pro cliente sem paciência.</span>
+        </li>
+        <li class="virada-item">
+          <strong>Visual que sustenta o seu preço</strong>
+          <span>Design sob medida que passa segurança antes de você dizer o valor.</span>
+        </li>
+        <li class="virada-item">
+          <strong>Texto que conduz até o sim</strong>
+          <span>Copy que responde a objeção antes de ela travar a venda.</span>
+        </li>
+      </ul>
     </div>
+  </div>
+</section>
 
-    <div class="pain-bridge">
-      <div class="pain-bridge-icon">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="14" width="3" height="3"/></svg>
-      </div>
-      <h3 class="pain-bridge-title">No fim, o problema não é tráfego. <em>É a página que não converte.</em></h3>
-      <div class="pain-bridge-cta">
-        <p>Uma página estratégica transforma cliques em clientes e investimento em lucro.</p>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20uma%20p%C3%A1gina%20que%20converte" class="btn-neon">Quero uma página que converte →</a>
+<!-- CAPITULO 3: A PROVA -->
+<section class="ch ch-prova" id="prova" data-phase="day" aria-label="Capítulo 3: a prova">
+  <div class="prova-inner">
+    <div class="ch-head">
+      <p class="stamp">09:12 · capítulo três</p>
+      <h2 class="ch-title">Quem virou a chave<br><em>acordou na frente.</em></h2>
+      <p class="ch-sub">Páginas reais, de negócios reais, vendendo agora. Role pela manhã e veja cada uma delas no ar.</p>
+    </div>
+    <div class="prova-stats">
+      <div class="stat"><strong>+120</strong><span>páginas no ar</span></div>
+      <div class="stat"><strong>5,0</strong><span>nota no Google</span></div>
+      <div class="stat"><strong>72h</strong><span>entrega mais rápida</span></div>
+    </div>
+    <div class="cases-viewport">
+      <div class="cases-track">
+        <a class="case-card" href="https://real-glass-vidracaria.pages.dev" target="_blank" rel="noopener">
+          <span class="case-bar"><span class="case-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="case-url">real-glass-vidracaria.pages.dev</span></span>
+          <span class="case-shot"><img src="assets/cases/real-glass-vidracaria.webp" alt="Landing page da Real Glass Vidraçaria" loading="lazy" decoding="async" width="880" height="880"></span>
+          <span class="case-meta"><span class="case-tag">Vidraçaria</span><span class="case-name">Real Glass</span><span class="case-desc">Vidros sob medida na Grande Vitória.</span></span>
+        </a>
+        <a class="case-card" href="https://dr-bruno-rabello.pages.dev" target="_blank" rel="noopener">
+          <span class="case-bar"><span class="case-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="case-url">dr-bruno-rabello.pages.dev</span></span>
+          <span class="case-shot"><img src="assets/cases/dr-bruno-rabello.webp" alt="Landing page do Dr. Bruno Rabello" loading="lazy" decoding="async" width="880" height="880"></span>
+          <span class="case-meta"><span class="case-tag">Saúde</span><span class="case-name">Dr. Bruno Rabello</span><span class="case-desc">Cirurgião de quadril no Rio de Janeiro.</span></span>
+        </a>
+        <a class="case-card" href="https://renata-collodetti-arquitetura.pages.dev" target="_blank" rel="noopener">
+          <span class="case-bar"><span class="case-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="case-url">renata-collodetti-arquitetura.pages.dev</span></span>
+          <span class="case-shot"><img src="assets/cases/renata-collodetti-arquitetura.webp" alt="Landing page da arquiteta Renata Collodetti" loading="lazy" decoding="async" width="880" height="880"></span>
+          <span class="case-meta"><span class="case-tag">Arquitetura</span><span class="case-name">Renata Collodetti</span><span class="case-desc">Arquitetura e urbanismo no Espírito Santo.</span></span>
+        </a>
+        <a class="case-card" href="https://sakuraprime.base44.app" target="_blank" rel="noopener">
+          <span class="case-bar"><span class="case-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="case-url">sakuraprime.base44.app</span></span>
+          <span class="case-shot"><img src="assets/cases/sakuraprime.webp" alt="Landing page do restaurante Sakura Prime" loading="lazy" decoding="async" width="880" height="880"></span>
+          <span class="case-meta"><span class="case-tag">Gastronomia</span><span class="case-name">Sakura Prime</span><span class="case-desc">Sushi premium com pedido direto.</span></span>
+        </a>
+        <a class="case-card" href="https://taf-elite.pages.dev" target="_blank" rel="noopener">
+          <span class="case-bar"><span class="case-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="case-url">taf-elite.pages.dev</span></span>
+          <span class="case-shot"><img src="assets/cases/taf-elite-pro.webp" alt="Landing page do TAF Elite Pro" loading="lazy" decoding="async" width="880" height="880"></span>
+          <span class="case-meta"><span class="case-tag">Educação</span><span class="case-name">TAF Elite Pro</span><span class="case-desc">Preparação física pra concursos.</span></span>
+        </a>
+        <a class="case-card" href="https://vivendo-aventuras-luciana.pages.dev" target="_blank" rel="noopener">
+          <span class="case-bar"><span class="case-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="case-url">vivendo-aventuras-luciana.pages.dev</span></span>
+          <span class="case-shot"><img src="assets/cases/vivendo-aventuras-luciana.webp" alt="Landing page da agência Vivendo Aventuras com Luciana" loading="lazy" decoding="async" width="880" height="880"></span>
+          <span class="case-meta"><span class="case-tag">Turismo</span><span class="case-name">Vivendo Aventuras</span><span class="case-desc">Agência de viagens com identidade própria.</span></span>
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CASES -->
-<section class="cases-section" id="cases">
-  <div class="container">
-    <div class="section-header section-header-centered">
-      <div class="section-label">Cases reais</div>
-      <h2>Trabalhos que <em class="italic">já estão no ar.</em></h2>
-      <p>Cada projeto entregue com cuidado, copy estratégica e design pensado pro nicho. Passe o mouse pra pausar e clique pra abrir a página.</p>
+<!-- CAPITULO 4: A OFERTA -->
+<section class="ch ch-oferta" id="oferta" data-phase="day" aria-label="Capítulo 4: a oferta">
+  <div class="ch-frame">
+    <div class="ch-head">
+      <p class="stamp">12:00 · capítulo quatro</p>
+      <h2 class="ch-title">Escolha o tamanho<br><em>do próximo passo.</em></h2>
+      <p class="ch-sub">Quatro planos, um combinado só: Pix de 50% pra começar e 50% na entrega, ou cartão em até 12x.</p>
     </div>
-
-    <style>
-    .cases-marquee{position:relative;left:50%;right:50%;width:100vw;margin-left:-50vw;margin-right:-50vw;overflow:hidden;padding:6px 0 10px;-webkit-mask:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);mask:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%)}
-    .cases-track{display:flex;width:max-content;padding:0 16px;animation:casesScroll 85s linear infinite;will-change:transform}
-    .cases-marquee:hover .cases-track{animation-play-state:paused}
-    .cases-track .case-card{flex:0 0 360px;margin-right:20px;text-decoration:none;color:inherit}
-    .cases-track .case-image img{width:100%;height:auto;transform:translateY(0);transition:transform 7s ease-in-out}
-    .cases-track .case-card:hover .case-image img{transform:translateY(calc(320px - 100%))}
-    @keyframes casesScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    @media(max-width:768px){.cases-track .case-card{flex:0 0 280px}.cases-track .case-image img{transition-duration:5s}}
-    @media(prefers-reduced-motion:reduce){.cases-track{animation:none}}
-    </style>
-    <div class="cases-marquee"><div class="cases-track">
-      <a href="https://real-glass-vidracaria.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-01.webp" alt="Real Glass Vidraçaria" width="600" height="1261" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Vidraçaria</div>
-          <div class="case-name">Real Glass Vidraçaria</div>
-          <div class="case-desc">Vidros sob medida na Grande Vitória.</div>
-        </div>
-      </a>
-      <a href="https://vivendo-aventuras-luciana.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-02.webp" alt="Vivendo Aventuras com Luciana" width="600" height="1131" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Turismo</div>
-          <div class="case-name">Vivendo Aventuras com Luciana</div>
-          <div class="case-desc">Agência de viagens com identidade marcante.</div>
-        </div>
-      </a>
-      <a href="https://dr-bruno-rabello.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-03.webp" alt="Dr. Bruno Rabello" width="600" height="3346" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Saúde</div>
-          <div class="case-name">Dr. Bruno Rabello</div>
-          <div class="case-desc">Cirurgião de quadril no Rio de Janeiro.</div>
-        </div>
-      </a>
-      <a href="https://tarmakeullin.base44.app" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-04.webp" alt="Dra. Tarma Keullin" width="600" height="1789" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Saúde</div>
-          <div class="case-name">Dra. Tarma Keullin</div>
-          <div class="case-desc">Saúde íntima feminina com atendimento integrado.</div>
-        </div>
-      </a>
-      <a href="https://renata-collodetti-arquitetura.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-05.webp" alt="Renata Collodetti" width="600" height="2756" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Arquitetura</div>
-          <div class="case-name">Renata Collodetti</div>
-          <div class="case-desc">Arquitetura e urbanismo no Espírito Santo.</div>
-        </div>
-      </a>
-      <a href="https://sakuraprime.base44.app" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-06.webp" alt="Sakura Prime" width="600" height="2248" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Gastronomia</div>
-          <div class="case-name">Sakura Prime</div>
-          <div class="case-desc">Sushi premium com cardápio e pedido direto.</div>
-        </div>
-      </a>
-      <a href="https://andrade-veiculos.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-07.webp" alt="Andrade Veículos" width="600" height="1773" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Automotivo</div>
-          <div class="case-name">Andrade Veículos</div>
-          <div class="case-desc">Seminovos com procedência na Serra, ES.</div>
-        </div>
-      </a>
-      <a href="https://daniele-leao.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-09.webp" alt="Daniele Leão" width="600" height="1418" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Psicologia</div>
-          <div class="case-name">Daniele Leão</div>
-          <div class="case-desc">Psicóloga clínica com presença acolhedora.</div>
-        </div>
-      </a>
-      <a href="https://insulfilm-glass.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-11.webp" alt="Insulfilm Glass" width="600" height="1532" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Automotivo</div>
-          <div class="case-name">Insulfilm Glass</div>
-          <div class="case-desc">Película residencial e automotiva na Grande Vitória.</div>
-        </div>
-      </a>
-      <a href="https://taf-elite.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-12.webp" alt="TAF Elite Pro" width="600" height="3243" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Educação</div>
-          <div class="case-name">TAF Elite Pro</div>
-          <div class="case-desc">Preparação física pra concursos, do zero à aprovação.</div>
-        </div>
-      </a>
-      <a href="https://maisonfilipeia.pages.dev" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-13.webp" alt="Maison Filipeia" width="600" height="3551" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Eventos</div>
-          <div class="case-name">Maison Filipeia</div>
-          <div class="case-desc">Espaço de eventos em João Pessoa.</div>
-        </div>
-      </a>
-      <a href="https://atlasaprova.com.br" target="_blank" rel="noopener" class="case-card">
-        <div class="case-image"><img src="cases/case-14.webp" alt="Atlas Aprova x AFYA" width="600" height="3863" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Educação médica</div>
-          <div class="case-name">Atlas Aprova x AFYA</div>
-          <div class="case-desc">Plataforma de aprovação em Medicina.</div>
-        </div>
-      </a>
-      <a href="https://real-glass-vidracaria.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-01.webp" alt="Real Glass Vidraçaria" width="600" height="1261" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Vidraçaria</div>
-          <div class="case-name">Real Glass Vidraçaria</div>
-          <div class="case-desc">Vidros sob medida na Grande Vitória.</div>
-        </div>
-      </a>
-      <a href="https://vivendo-aventuras-luciana.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-02.webp" alt="Vivendo Aventuras com Luciana" width="600" height="1131" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Turismo</div>
-          <div class="case-name">Vivendo Aventuras com Luciana</div>
-          <div class="case-desc">Agência de viagens com identidade marcante.</div>
-        </div>
-      </a>
-      <a href="https://dr-bruno-rabello.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-03.webp" alt="Dr. Bruno Rabello" width="600" height="3346" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Saúde</div>
-          <div class="case-name">Dr. Bruno Rabello</div>
-          <div class="case-desc">Cirurgião de quadril no Rio de Janeiro.</div>
-        </div>
-      </a>
-      <a href="https://tarmakeullin.base44.app" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-04.webp" alt="Dra. Tarma Keullin" width="600" height="1789" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Saúde</div>
-          <div class="case-name">Dra. Tarma Keullin</div>
-          <div class="case-desc">Saúde íntima feminina com atendimento integrado.</div>
-        </div>
-      </a>
-      <a href="https://renata-collodetti-arquitetura.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-05.webp" alt="Renata Collodetti" width="600" height="2756" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Arquitetura</div>
-          <div class="case-name">Renata Collodetti</div>
-          <div class="case-desc">Arquitetura e urbanismo no Espírito Santo.</div>
-        </div>
-      </a>
-      <a href="https://sakuraprime.base44.app" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-06.webp" alt="Sakura Prime" width="600" height="2248" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Gastronomia</div>
-          <div class="case-name">Sakura Prime</div>
-          <div class="case-desc">Sushi premium com cardápio e pedido direto.</div>
-        </div>
-      </a>
-      <a href="https://andrade-veiculos.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-07.webp" alt="Andrade Veículos" width="600" height="1773" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Automotivo</div>
-          <div class="case-name">Andrade Veículos</div>
-          <div class="case-desc">Seminovos com procedência na Serra, ES.</div>
-        </div>
-      </a>
-      <a href="https://daniele-leao.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-09.webp" alt="Daniele Leão" width="600" height="1418" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Psicologia</div>
-          <div class="case-name">Daniele Leão</div>
-          <div class="case-desc">Psicóloga clínica com presença acolhedora.</div>
-        </div>
-      </a>
-      <a href="https://insulfilm-glass.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-11.webp" alt="Insulfilm Glass" width="600" height="1532" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Automotivo</div>
-          <div class="case-name">Insulfilm Glass</div>
-          <div class="case-desc">Película residencial e automotiva na Grande Vitória.</div>
-        </div>
-      </a>
-      <a href="https://taf-elite.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-12.webp" alt="TAF Elite Pro" width="600" height="3243" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Educação</div>
-          <div class="case-name">TAF Elite Pro</div>
-          <div class="case-desc">Preparação física pra concursos, do zero à aprovação.</div>
-        </div>
-      </a>
-      <a href="https://maisonfilipeia.pages.dev" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-13.webp" alt="Maison Filipeia" width="600" height="3551" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Eventos</div>
-          <div class="case-name">Maison Filipeia</div>
-          <div class="case-desc">Espaço de eventos em João Pessoa.</div>
-        </div>
-      </a>
-      <a href="https://atlasaprova.com.br" target="_blank" rel="noopener" class="case-card" aria-hidden="true" tabindex="-1">
-        <div class="case-image"><img src="cases/case-14.webp" alt="Atlas Aprova x AFYA" width="600" height="3863" loading="lazy" decoding="async"></div>
-        <div class="case-meta">
-          <div class="case-tag">Educação médica</div>
-          <div class="case-name">Atlas Aprova x AFYA</div>
-          <div class="case-desc">Plataforma de aprovação em Medicina.</div>
-        </div>
-      </a>
-    </div></div>
-
+    <div class="plans">
+      <article class="plan">
+        <p class="plan-name">Start</p>
+        <p class="plan-for">Pra sair do zero com presença profissional.</p>
+        <p class="plan-price"><span>R$</span>297</p>
+        <p class="plan-meta">no ar em 72h</p>
+        <ul class="plan-list">
+          <li>Landing de até 3 seções</li>
+          <li>SEO otimizado desde a base</li>
+          <li>1 rodada de revisão inclusa</li>
+        </ul>
+        <details class="plan-more">
+          <summary>Tudo que vem no Start</summary>
+          <ul>
+            <li>100% otimizada pro celular</li>
+            <li>Botão direto pro seu WhatsApp</li>
+            <li>Logo e 3 imagens enviadas por você</li>
+            <li>Entrega em até 72h após pagamento e briefing</li>
+            <li>7 dias de suporte grátis pós-entrega</li>
+          </ul>
+        </details>
+        <a class="btn btn-plan" href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%20297">Quero o Start</a>
+      </article>
+      <article class="plan">
+        <p class="plan-name">Pro</p>
+        <p class="plan-for">Pra vender de verdade com copy estratégica.</p>
+        <p class="plan-price"><span>R$</span>497</p>
+        <p class="plan-meta">no ar em até 5 dias úteis</p>
+        <ul class="plan-list">
+          <li>Landing completa, até 5 seções</li>
+          <li>Copy persuasiva reescrita</li>
+          <li>3 rodadas de revisão inclusas</li>
+        </ul>
+        <details class="plan-more">
+          <summary>Tudo que vem no Pro</summary>
+          <ul>
+            <li>Tudo do Start incluso</li>
+            <li>Identidade visual aplicada com refinamento</li>
+            <li>Domínio próprio configurado</li>
+            <li>Logo e 5 imagens enviadas por você</li>
+            <li>Google Ads configurado (Tag e Conversion Label)</li>
+            <li>SEO otimizado, mínimo 90%</li>
+          </ul>
+        </details>
+        <a class="btn btn-plan" href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Pro%20de%20R%24%20497">Quero o Pro</a>
+      </article>
+      <article class="plan plan-featured">
+        <p class="plan-badge">mais escolhido</p>
+        <p class="plan-name">Premium</p>
+        <p class="plan-for">Pra crescer com narrativa e animações.</p>
+        <p class="plan-price"><span>R$</span>997</p>
+        <p class="plan-meta">no ar em até 7 dias úteis</p>
+        <ul class="plan-list">
+          <li>Até 7 seções, 10 imagens e 2 vídeos</li>
+          <li>Tudo do Pro incluso</li>
+          <li>Hospedagem e domínio grátis no 1º ano</li>
+        </ul>
+        <details class="plan-more">
+          <summary>Tudo que vem no Premium</summary>
+          <ul>
+            <li>Design diferenciado com animações sutis</li>
+            <li>Copy estratégica com narrativa completa</li>
+            <li>Formulário avançado e página de obrigado</li>
+            <li>Seção de depoimentos e FAQ com accordion</li>
+            <li>Google Ads e Meta Pixel configurados</li>
+            <li>SEO 100% e desempenho acima de 85</li>
+            <li>5 rodadas de revisão inclusas</li>
+          </ul>
+        </details>
+        <a class="btn btn-plan" href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20de%20R%24%20997">Quero o Premium</a>
+      </article>
+      <article class="plan">
+        <p class="plan-name">Premium IA</p>
+        <p class="plan-for">Pra capturar e qualificar leads 24h por dia.</p>
+        <p class="plan-price"><span>R$</span>1.497</p>
+        <p class="plan-meta">no ar em até 10 dias úteis</p>
+        <ul class="plan-list">
+          <li>Tudo do Premium incluso</li>
+          <li>Chatbot de IA na página, 24h no ar</li>
+          <li>Triagem e captura automática de leads</li>
+        </ul>
+        <details class="plan-more">
+          <summary>Tudo que vem no Premium IA</summary>
+          <ul>
+            <li>IA com personalidade e treinamento pela equipe</li>
+            <li>Leads capturados e enviados no seu e-mail</li>
+            <li>Primeira recarga de créditos da IA inclusa</li>
+            <li>Hospedagem, domínio e e-mail grátis por 1 ano</li>
+            <li>Revisões livres dentro do prazo</li>
+            <li>14 dias de suporte estendido</li>
+          </ul>
+        </details>
+        <a class="btn btn-plan" href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20IA%20de%20R%24%201.497">Quero o Premium IA</a>
+      </article>
+    </div>
+    <p class="plans-note">Precisa de algo maior, como sistema, login ou dashboard? A gente monta o orçamento juntos no WhatsApp.</p>
   </div>
 </section>
 
-<!-- Calculadora de meta removida a pedido -->
-
-<!-- PRICING -->
-<section class="pricing-section" id="planos">
-  <div class="container">
-    <div class="section-header section-header-centered">
-      <div class="section-label">Planos e investimento</div>
-      <h2>Quatro caminhos, <em class="italic">um resultado.</em></h2>
+<!-- QUEM ATENDE -->
+<section class="ch ch-quem" id="quem" data-phase="day" aria-label="Quem atende você">
+  <div class="ch-frame quem-frame">
+    <div class="quem-foto">
+      <img src="assets/dupla.webp" alt="Welber e Caio, a dupla que desenha e entrega cada página da landingnow" loading="lazy" decoding="async" width="1000" height="1668">
+      <p class="quem-foto-tag">Welber e Caio · landingnow</p>
     </div>
-
-    <div class="pricing-grid">
-
-      <div class="price-card" style="--pc:#6CB4FF">
-        <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
-        <div class="price-card-name">Plano Start</div>
-        <div class="price-card-title">Pra começar com presença online.</div>
-        <div class="price-card-desc">Presença profissional na internet, rápido e simples.</div>
-        <div class="price-amount"><span class="cur">R$</span> 297</div>
-        <div class="price-meta">Pix 50% + 50% ou 12x no cartão · em 72h</div>
-        <ul class="price-features">
-          <li class="price-feature">Landing até 3 seções</li>
-          <li class="price-feature">SEO otimizado, mínimo 80%</li>
-          <li class="price-feature">1 rodada de revisão inclusa</li>
-        </ul>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Start%20de%20R%24%20297" class="price-cta">Quero o Start &rarr;</a>
-        <button type="button" class="price-details-btn" data-plan="start">ver detalhes</button>
-      </div>
-
-      <div class="price-card" style="--pc:#B98CFF">
-        <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-        <div class="price-card-name">Plano Pro</div>
-        <div class="price-card-title">Pra vender de verdade.</div>
-        <div class="price-card-desc">Pra quem leva o negócio a sério e quer cara de empresa.</div>
-        <div class="price-amount"><span class="cur">R$</span> 497</div>
-        <div class="price-meta">Pix 50% + 50% ou 12x no cartão · em 5 dias</div>
-        <ul class="price-features">
-          <li class="price-feature">Landing completa, até 5 seções</li>
-          <li class="price-feature">Copy persuasiva reescrita pela equipe</li>
-          <li class="price-feature">3 rodadas de revisão inclusas</li>
-        </ul>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Pro%20de%20R%24%20497" class="price-cta">Quero o Pro &rarr;</a>
-        <button type="button" class="price-details-btn" data-plan="pro">ver detalhes</button>
-      </div>
-
-      <div class="price-card featured" style="--pc:#C8FF3D">
-        <div class="featured-badge">Mais escolhido</div>
-        <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></svg></div>
-        <div class="price-card-name">Plano Premium</div>
-        <div class="price-card-title">Pra crescer no próximo nível.</div>
-        <div class="price-card-desc">Página completa com narrativa, animações e SEO 100%.</div>
-        <div class="price-amount"><span class="cur">R$</span> 997</div>
-        <div class="price-meta">Pix 50% + 50% ou 12x no cartão · em 7 dias</div>
-        <ul class="price-features">
-          <li class="price-feature">Tudo do plano Pro, e mais:</li>
-          <li class="price-feature">Landing até 7 seções, 10 imagens e 2 vídeos</li>
-          <li class="price-feature">Hospedagem e domínio grátis por 1 ano</li>
-        </ul>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20de%20R%24%20997" class="price-cta">Quero o Premium &rarr;</a>
-        <button type="button" class="price-details-btn" data-plan="premium">ver detalhes</button>
-      </div>
-
-      <div class="price-card" style="--pc:#30FFCE">
-        <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></div>
-        <div class="price-card-name">Plano Premium IA</div>
-        <div class="price-card-title">Pra capturar leads dormindo.</div>
-        <div class="price-card-desc">Chatbot de IA que qualifica seus leads 24h por dia.</div>
-        <div class="price-amount"><span class="cur">R$</span> 1.497</div>
-        <div class="price-meta">Pix 50% + 50% ou 12x no cartão · em 10 dias</div>
-        <ul class="price-features">
-          <li class="price-feature">Tudo do plano Premium, e mais:</li>
-          <li class="price-feature">IA integrada na landing (chatbot 24h)</li>
-          <li class="price-feature">Triagem e captura automática de leads</li>
-        </ul>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20o%20plano%20Premium%20IA%20de%20R%24%201.497" class="price-cta">Quero o Premium IA &rarr;</a>
-        <button type="button" class="price-details-btn" data-plan="premium-ia">ver detalhes</button>
-      </div>
-
-      <div class="price-card price-card--custom" style="--pc:#FF6B9D">
-        <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
-        <div class="price-card-name">Sob orçamento</div>
-        <div class="price-card-title">Precisa de algo maior?</div>
-        <div class="price-card-desc">SaaS, login, integração com IA e dashboard sob medida.</div>
-        <div class="price-amount price-amount--custom">Sob orçamento</div>
-        <div class="price-meta">A gente monta o orçamento juntos</div>
-        <ul class="price-features">
-          <li class="price-feature">Plataforma com login e área de membros</li>
-          <li class="price-feature">Integração com IA e automações</li>
-          <li class="price-feature">Dashboard administrativo sob medida</li>
-        </ul>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Preciso%20de%20um%20projeto%20personalizado%20al%C3%A9m%20da%20landing%20page" class="price-cta">Conversar sobre projeto &rarr;</a>
-      </div>
-
-    </div>
-    <!-- infos de pagamento/hospedagem ficam no FAQ -->
-
-
-<!-- add-on sazonal (tema comemorativo) removido a pedido -->
-  </div>
-</section>
-
-<!-- PLAN DETAILS MODAL -->
-<div class="plan-modal-overlay" id="planModal" inert>
-  <div class="plan-modal" role="dialog" aria-modal="true" aria-labelledby="planModalTitle">
-    <button type="button" class="plan-modal-close" id="planModalClose" aria-label="Fechar">&times;</button>
-    <div class="plan-modal-name" id="planModalName"></div>
-    <h3 class="plan-modal-title" id="planModalTitle"></h3>
-    <div class="plan-modal-price" id="planModalPrice"></div>
-    <div class="plan-modal-cols">
-      <div class="plan-modal-col plan-modal-col--in">
-        <div class="plan-modal-col-head plan-modal-col-head--in">Incluso no plano</div>
-        <ul id="planModalIncluded"></ul>
-      </div>
-      <div class="plan-modal-col plan-modal-col--out">
-        <div class="plan-modal-col-head plan-modal-col-head--out">Não incluso</div>
-        <ul id="planModalExcluded"></ul>
-      </div>
-    </div>
-    <a class="plan-modal-cta" id="planModalCta" href="#" target="_blank" rel="noopener">Quero esse plano &rarr;</a>
-  </div>
-</div>
-
-<!-- secao custom virou o 5o card dos planos -->
-
-<!-- FOUNDER -->
-<section class="founder-section" id="fundador">
-  <div class="container">
-    <div class="founder-wrapper">
-      <div class="founder-image">
-        <img src="welber.webp" alt="Welber Júnior, Fundador da landingnow." width="600" height="600" decoding="async" loading="lazy">
-        <div class="founder-badge">⚡ FOUNDER</div>
-        <div class="founder-tag">
-          <span class="founder-tag-dot"></span>
-          <span>Disponível agora</span>
-        </div>
-      </div>
-      <div class="founder-content">
-        <div class="label">Quem faz</div>
-        <h2>Você não tá contratando uma agência. Tá contratando <em>uma pessoa.</em></h2>
-        <p>
-          Sou o <strong>Welber</strong>, desenvolvedor por trás da landingnow. Cada página que sai daqui é feita por mim, do zero, com foco total em <strong>conversão real</strong>, não em template bonitinho que não vende.
-        </p>
-        <p>
-          Atendimento direto comigo no WhatsApp, sem intermediário, sem reunião chata, sem proposta de 12 páginas. Você fala o que precisa, eu entrego a partir de 72h, no máximo em 10 dias.
-        </p>
-        <div class="founder-stats">
-          <div>
-            <div class="founder-stat-value">72h+</div>
-            <div class="founder-stat-label">a partir do plano Start</div>
-          </div>
-          <div>
-            <div class="founder-stat-value">1:1</div>
-            <div class="founder-stat-label">atendimento direto</div>
-          </div>
-          <div>
-            <div class="founder-stat-value">100%</div>
-            <div class="founder-stat-label">feito sob medida</div>
-          </div>
-        </div>
-      </div>
+    <div class="quem-texto">
+      <p class="stamp">15:40 · quem faz</p>
+      <h2 class="ch-title ch-title-left ch-title-quem">Duas pessoas. <em>Um combinado claro.</em></h2>
+      <p class="prose">Aqui não tem agência, fila de tickets nem reunião que podia ser uma mensagem. Quem conversa com você no WhatsApp é o Welber ou o Caio, os mesmos que desenham, escrevem e publicam a sua página, do primeiro oi até o link no ar. E o combinado não muda no meio do caminho:</p>
+      <ul class="quem-lista">
+        <li><strong>72h a 10 dias</strong><span>prazo fechado por plano, combinado antes</span></li>
+        <li><strong>Pix 50% + 50%</strong><span>ou cartão em até 12x, sem pegadinha</span></li>
+        <li><strong>Pós-entrega</strong><span>R$ 49 troca de texto, R$ 97 ajuste de seção</span></li>
+      </ul>
     </div>
   </div>
 </section>
-
-<!-- "Como funciona" foi movido para o FAQ (primeira pergunta) -->
 
 <!-- FAQ -->
-<section class="faq-section" id="faq">
-  <div class="container">
-    <div class="section-header" style="text-align: center; margin-left: auto; margin-right: auto;">
-      <div class="section-label" style="justify-content: center;">Dúvidas frequentes</div>
-      <h2>Antes de começar, <em class="italic">algumas respostas.</em></h2>
+<section class="ch ch-faq" id="faq" data-phase="day" aria-label="Perguntas frequentes">
+  <div class="ch-frame ch-frame-narrow">
+    <div class="ch-head">
+      <p class="stamp">17:10 · antes de fechar</p>
+      <h2 class="ch-title">O que todo mundo<br><em>pergunta primeiro.</em></h2>
     </div>
-    <div class="faq-wrapper">
-
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Como funciona, na prática? (e preciso entender de tecnologia?)</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">
-          São três passos simples. 1) Você manda um oi no WhatsApp e me conta sobre o seu negócio, sem formulário gigante e sem reunião desnecessária. 2) Eu crio a sua landing em 72h a 10 dias úteis (depende do plano), com design profissional, copy estratégica e tudo otimizado pro celular. 3) Sua página vai pro ar: você recebe o link, divulga e começa a receber clientes, com 7 dias de suporte. E não, você não precisa entender nada de tecnologia: é só me mandar as informações do seu negócio que eu cuido de todo o resto (design, copy, configuração técnica e hospedagem).
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Como é o pagamento, parcelamento e domínio?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">
-          O pagamento é via Pix (50% pra iniciar e 50% só na entrega, depois que você aprovar) ou no cartão em até 12x. A gente combina tudo direto no WhatsApp. Sobre o domínio: nos planos Start e Pro, o registro do .com.br sai por cerca de R$ 50 por ano no Registro.br (pago direto por você) e a hospedagem pode ficar comigo por R$ 10/mês ou R$ 100/ano. Nos planos Premium e Premium IA, hospedagem e domínio saem grátis no primeiro ano.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>E se eu quiser fazer alterações depois?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">
-          Cada plano inclui um número de revisões durante a produção. Após a entrega, as alterações ficam disponíveis sob demanda: R$ 49 por troca de palavra ou texto e R$ 97 por ajuste em uma seção. Você só paga se precisar.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>E se eu não gostar do resultado?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">
-          Trabalho com revisões inclusas em cada plano justamente pra garantir que você fique satisfeito. Você paga só 50% pra começar e os outros 50% quando aprovar. Caso, mesmo após as revisões, o resultado não atenda, devolvo 100% do valor. Sem perguntas.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Vocês usam IA? E fazem mais que landing page?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-answer">
-          Uso inteligência artificial como parte do processo pra ganhar velocidade e otimizar estrutura, copy e desenvolvimento — mas nenhuma landing é entregue no automático: todo projeto passa por estratégia, ajustes manuais e revisão final. E sim, também faço além de landing page: sistemas completos, SaaS, plataformas com login, dashboards e integrações com IA, sob orçamento personalizado. É só me chamar.
-        </div>
-      </div>
-
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Preciso entender de tecnologia pra contratar?</summary>
+        <p class="prose">Não. Você manda um oi no WhatsApp, conta sobre o seu negócio e a gente cuida do resto: design, texto, domínio, hospedagem e configuração técnica. Você recebe o link pronto pra divulgar.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Como funciona o pagamento?</summary>
+        <p class="prose">Pix de 50% pra iniciar e 50% somente na entrega, depois que você aprovar o resultado, ou cartão em até 12x. Tudo combinado por escrito no próprio WhatsApp, sem contrato confuso.</p>
+      </details>
+      <details class="faq-item">
+        <summary>E se eu quiser mudar algo depois da entrega?</summary>
+        <p class="prose">Durante a produção, as revisões do seu plano já estão inclusas. Depois da entrega, os ajustes ficam sob demanda: R$ 49 por troca de texto e R$ 97 por ajuste em uma seção. Você só paga se precisar.</p>
+      </details>
+      <details class="faq-item">
+        <summary>E se eu não gostar do resultado?</summary>
+        <p class="prose">Você aprova antes de pagar a segunda metade. Se, mesmo depois das revisões, o resultado não atender ao combinado, devolvo 100% do valor pago. Sem letra miúda e sem perguntas.</p>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- FINAL CTA -->
-<section class="final-cta">
-  <div class="container">
-    <div class="final-cta-content">
-      <h2>Bora <em>parar</em><br>de perder venda?</h2>
-      <p>Sua próxima página, no ar a partir de 72h. A partir de R$ 297.</p>
-      <div class="final-cta-checks" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin:18px 0 26px;font-size:13.5px;color:var(--muted);">
-        <span>✅ Conversa grátis e sem compromisso</span>
-        <span>✅ Paga só 50% pra começar</span>
-        <span>✅ Garantia de 100% do dinheiro de volta</span>
-        <span>✅ Nota 5,0 no Google</span>
-      </div>
-      <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20minha%20landing%20page" class="btn-primary">
-        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-        Chamar no WhatsApp agora
-      </a>
-    </div>
+<!-- FECHAMENTO -->
+<section class="ch ch-final" id="final" data-phase="dusk" aria-label="Chamada final">
+  <div class="ch-frame">
+    <p class="stamp stamp-final">18:47 · o dia rendeu</p>
+    <h2 class="final-title">Amanhã cedo tem gente<br>procurando <em>de novo.</em></h2>
+    <p class="final-sub">Da próxima vez, ela pode encontrar uma página pronta pra fechar por você. A partir de R$ 297, no ar a partir de 72h.</p>
+    <a class="btn btn-zap btn-final" href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20colocar%20minha%20p%C3%A1gina%20no%20ar">
+      <svg class="btn-ico" aria-hidden="true"><use href="#zapIcon"/></svg>
+      Começar minha página agora
+    </a>
+    <p class="final-facts">Conversa sem compromisso · Você só paga a segunda metade quando aprovar</p>
   </div>
 </section>
 
 </main>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="#" class="logo-wordmark">
-          <svg class="logo-symbol" style="width:32px;height:32px"><use href="#logoSymbol"/></svg>
-          <span class="logo-text" style="font-size:20px">landingnow<span>.</span></span>
-        </a>
-        <p>Páginas profissionais que vendem, feitas sob medida pra pequenos negócios em todo o Brasil.</p>
-        <div class="footer-social">
-          <a href="https://wa.me/5561985970300" target="_blank" aria-label="WhatsApp">
-            <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-          </a>
-          <a href="https://www.instagram.com/landingnow.br/" target="_blank" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </a>
-        </div>
-      </div>
+<!-- FOOTER (a noite volta) -->
+<footer class="footer" id="fim" data-phase="night">
+  <div class="ch-frame footer-frame">
+    <div class="footer-brand">
+      <a href="#topo" class="brand">
+        <svg class="brand-mark" aria-hidden="true"><use href="#logoSymbol"/></svg>
+        <span class="brand-name">landingnow<span class="brand-dot">.</span></span>
+      </a>
+      <p class="footer-line prose-center">A noite voltou. A diferença é que agora a sua página continua acordada.</p>
+    </div>
+    <div class="footer-cols">
       <div class="footer-col">
         <h3>Navegue</h3>
+        <a href="/briefing">Briefing</a>
         <a href="/portfolio">Portfólio</a>
-        <a href="#planos">Planos</a>
-        <a href="#fundador">Sobre mim</a>
+        <a href="/painel">Login</a>
       </div>
       <div class="footer-col">
-        <h3>Suporte</h3>
-        <a href="#faq">Perguntas frequentes</a>
-        <a href="#planos">Como funciona</a>
-        <a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida" target="_blank">Falar comigo</a>
+        <h3>A história</h3>
+        <a href="#dor">Capítulo 1 · A dor</a>
+        <a href="#virada">Capítulo 2 · A virada</a>
+        <a href="#prova">Capítulo 3 · A prova</a>
+        <a href="#oferta">Capítulo 4 · A oferta</a>
       </div>
       <div class="footer-col">
         <h3>Contato</h3>
-        <a href="https://wa.me/5561985970300" target="_blank">(61) 98597-0300</a>
-        <a href="https://www.instagram.com/landingnow.br/" target="_blank">@landingnow.br</a>
-        <a>Brasília, DF</a>
+        <a href="https://wa.me/5561985970300" target="_blank" rel="noopener">(61) 98597-0300</a>
+        <a href="https://www.instagram.com/landingnow.br/" target="_blank" rel="noopener">@landingnow.br</a>
+        <span>Brasília, DF</span>
       </div>
     </div>
-
     <div class="footer-bottom">
-      <div>© 2026 landingnow. Todos os direitos reservados.</div>
-      <div class="made-with">
-        <span class="neon-dot"></span>
-        Feito com cuidado em Brasília
-      </div>
-      <!-- botoes movidos pro topo -->
+      <span>© 2026 landingnow. Todos os direitos reservados.</span>
+      <span>Feito com cuidado em Brasília</span>
     </div>
   </div>
 </footer>
 
-<!-- CTA fixo de WhatsApp no mobile (90% do trafego vem de anuncio no celular) -->
-<style>
-.ln-mcta{display:none}
-
-/* ===== FAQ enxuto (todos os tamanhos) ===== */
-.faq-section{padding:80px 0}
-.faq-wrapper{margin-top:32px}
-.faq-item{padding:18px 0}
-.faq-question{font-size:19px}
-.faq-answer{font-size:15px;line-height:1.55}
-
-/* ===== Icone dos planos ===== */
-.price-icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:14px;background:rgba(200,255,61,.1);background:color-mix(in srgb,var(--pc,var(--neon)) 14%,transparent);color:var(--pc,var(--neon))}
-.price-icon svg{width:24px;height:24px}
-.price-card.featured .price-icon{background:var(--neon);color:var(--bg)}
-/* ===== Cards de plano coloridos + 5 colunas (estilo AV) ===== */
-@media(min-width:981px){.pricing-section .container{max-width:1500px;padding:0 24px}.pricing-grid{grid-template-columns:repeat(5,1fr) !important;gap:14px}.price-card-title{min-height:56px}.price-card-desc{min-height:46px}.price-amount{min-height:44px;display:flex;align-items:flex-end;justify-content:center}.price-amount .cur{margin-bottom:4px}.price-meta{min-height:36px}}
-.price-card{border-top:3px solid var(--pc,var(--line));padding:26px 20px}
-.price-card-title{font-size:24px;line-height:1.1}
-.price-card:hover{border-color:var(--pc,var(--neon));box-shadow:0 24px 56px rgba(0,0,0,.5),0 0 0 1.5px var(--pc,transparent)}
-.price-card-name{color:var(--pc,var(--muted))}
-.price-amount .cur{color:var(--pc,var(--neon));font-size:.6em;font-weight:700;margin-right:2px;letter-spacing:0}
-.price-feature::before{background:var(--pc,var(--neon))}
-.featured-badge{background:var(--pc,var(--neon))}
-.price-card.featured{background:linear-gradient(180deg,rgba(200,255,61,.08) 0%,transparent 50%),var(--bg-card);border-color:var(--pc,var(--neon))}
-.price-card:not(.featured) .price-cta{background:transparent;color:var(--pc,var(--ink));border:1.5px solid var(--pc,var(--line))}
-.price-card:not(.featured) .price-cta:hover{background:var(--pc,var(--neon));color:#0a0a0a;border-color:var(--pc,var(--neon))}
-.price-card.featured .price-cta{background:var(--pc,var(--neon));color:#0a0a0a}
-.price-amount--custom{font-size:30px !important;font-weight:400;color:var(--pc);font-family:'Instrument Serif',serif;font-style:italic;line-height:1.1}
-.price-card-desc{margin-bottom:14px}
-.price-meta{margin-bottom:16px}
-.price-features{margin-bottom:16px;padding-top:16px}
-.price-amount{font-size:42px;margin-bottom:2px}
-.price-feature{margin-bottom:8px;font-size:13.5px}
-.price-details-btn{padding:11px;font-size:12.5px}
-.price-card .price-cta{padding:13px 18px}
-/* ===== Menu do topo: links limpos + 1 CTA ===== */
-.nav-links{gap:30px}
-.nav-link{position:relative;color:var(--ink-soft) !important;font-size:14px;font-weight:500;text-decoration:none;transition:color .2s;padding:6px 0}
-.nav-link:hover{color:var(--ink) !important}
-.nav-link::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--neon);transition:right .25s ease}
-.nav-link:hover::after{right:0}
-.nav-link-login{margin-right:6px}
-/* ===== Espacamento enxuto / premium ===== */
-.cases-section{padding:84px 0}
-.pricing-section{padding:84px 0}
-.founder-section{padding:88px 0}
-.faq-section{padding:76px 0}
-.final-cta{padding:96px 0}
-.hero{padding-top:128px}
-.section-header{margin-bottom:40px}
-.founder-wrapper{gap:52px}
-
-/* clones do carrossel de precos: so aparecem no mobile */
-@media(min-width:769px){
-  .price-card[data-clone]{display:none !important}
-}
-
-@media(max-width:768px){
-  /* ===== Barra fixa de WhatsApp ===== */
-  .ln-mcta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:70;align-items:center;justify-content:center;gap:9px;background:#25D366;color:#fff;font-family:inherit;font-weight:700;font-size:15px;padding:13px 16px;padding-bottom:calc(13px + env(safe-area-inset-bottom));text-decoration:none;box-shadow:0 -6px 22px rgba(0,0,0,.4)}
-  .ln-mcta svg{width:20px;height:20px;fill:currentColor;flex-shrink:0}
-  .ln-mcta:active{filter:brightness(.95)}
-  /* ===== Lia: circulo so de icone, acima da barra ===== */
-  .lia-bubble{bottom:calc(70px + env(safe-area-inset-bottom)) !important;right:14px !important;width:54px !important;height:54px !important;min-width:0 !important;padding:0 !important;border-radius:50% !important;justify-content:center !important;gap:0 !important;z-index:75 !important}
-  .lia-bubble span:not(.lia-bubble-dot){display:none !important}
-  .lia-bubble svg{width:24px;height:24px}
-  .lia-window{z-index:9999 !important}
-  body:has(.lia-window.open) .ln-mcta{display:none !important}
-  body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-
-  /* ===== Hero centralizado ===== */
-  .hero-text{text-align:center}
-  .hero-tag{margin-left:auto;margin-right:auto}
-  .hero p.lead{margin-left:auto;margin-right:auto}
-  .hero-microcopy{justify-content:center}
-  .hero-proof{justify-content:center;flex-direction:column;gap:12px}
-  .hero-proof-txt{justify-content:center}
-  .hero-avatars{justify-content:center}
-
-  /* ===== Menu topo no mobile: links de texto, sem CTA ===== */
-  nav{padding:12px 16px}
-  .nav-links{display:flex !important;gap:18px !important;align-items:center}
-  .nav-links a:not(.nav-cta){display:inline-flex !important;font-size:13px !important;padding:4px 0 !important}
-  .nav-link::after{display:none}
-  .nav-links .nav-cta{display:none !important}
-  /* ===== Espacamento enxuto no mobile ===== */
-  .cases-section,.pricing-section,.founder-section{padding:48px 0 !important}
-  .final-cta{padding:52px 0 !important}
-  .hero{padding-top:92px !important}
-  .section-header{margin-bottom:26px !important}
-  /* ===== Card de preco mais compacto no mobile (cabe na tela) ===== */
-  .pricing-grid .price-card{padding:24px 20px !important}
-  .pricing-grid .price-card-title{font-size:21px !important;line-height:1.15 !important}
-  .pricing-grid .price-card-desc{font-size:13px !important;line-height:1.4 !important;min-height:0 !important;margin-bottom:16px !important}
-  .pricing-grid .price-amount{font-size:38px !important}
-  .pricing-grid .price-meta{margin-bottom:14px !important}
-  .pricing-grid .price-features{padding-top:16px !important;margin-bottom:16px !important}
-  .pricing-grid .price-feature{font-size:13.5px !important;margin-bottom:8px !important;line-height:1.35 !important}
-  .pricing-grid .price-cta{padding:13px !important}
-  .pricing-grid .price-details-btn{margin-top:10px !important}
-  .pricing-grid .price-icon{width:42px !important;height:42px !important;margin-bottom:10px !important}
-
-  /* ===== Precos: carrossel que desliza (Pro no centro, loop) ===== */
-  .pricing-grid{display:flex !important;grid-template-columns:none !important;flex-wrap:nowrap !important;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:14px !important;margin-top:24px !important;padding-bottom:8px;scrollbar-width:none}
-  .pricing-grid::-webkit-scrollbar{display:none}
-  .pricing-grid .price-card{flex:0 0 82% !important;scroll-snap-align:center;margin:0 !important}
-
-  /* ===== FAQ ainda menor no cel ===== */
-  .faq-section{padding:44px 0}
-  .faq-item{padding:14px 0}
-  .faq-question{font-size:16px !important;line-height:1.3 !important}
-  .faq-answer{font-size:13.5px !important;line-height:1.55 !important}
-
-  /* ===== Checklist verde do CTA final: oculto no cel ===== */
-  .final-cta-checks{display:none !important}
-
-  /* ===== Polish ===== */
-  .price-details-btn{padding:14px !important;font-size:13px !important;min-height:46px;margin-top:12px !important}
-  .nav-cta{padding:11px 18px !important;min-height:44px;display:inline-flex;align-items:center}
-  .faq-toggle{width:34px !important;height:34px !important;font-size:18px !important}
-  .footer-col a{font-size:13px !important;line-height:1.5 !important;padding:5px 0;display:inline-block}
-  .founder-stats{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
-  .founder-stat-value{overflow-wrap:anywhere}
-  .final-cta h2{font-size:42px !important;line-height:1.05 !important}
-  .hero h1{word-break:normal !important;overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}
-}
-@media(max-width:380px){
-  .hero h1{font-size:38px !important}
-  .final-cta h2{font-size:36px !important}
-  .pricing-grid .price-card{flex-basis:86% !important}
-}
-</style>
-<a href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Quero%20minha%20landing%20page" class="ln-mcta" aria-label="Falar no WhatsApp agora">
-  <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-  Falar no WhatsApp agora
+<!-- Botao flutuante de WhatsApp (mobile) -->
+<a class="float-zap" href="https://wa.me/5561985970300?text=Ol%C3%A1!%20Vi%20a%20hist%C3%B3ria%20da%20landingnow%20e%20quero%20a%20minha%20p%C3%A1gina" aria-label="Falar no WhatsApp agora">
+  <svg aria-hidden="true"><use href="#zapIcon"/></svg>
 </a>
 
-<!-- wa-float removido: Lia agora ocupa o canto direito -->
-
-
-
-<!-- ============================================================ -->
-<!-- LIA - Atendente IA da landingnow (canto inferior esquerdo) -->
-<!-- ============================================================ -->
-
-<div class="lia-root" id="liaRoot">
-  <button class="lia-bubble" id="liaBubble" aria-label="Abrir chat com a Lia">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-    <span>Pergunte à Lia</span>
-    <span class="lia-bubble-dot" id="liaBubbleDot"></span>
-  </button>
-
-  <div class="lia-window" id="liaWindow" role="dialog" aria-label="Chat com a Lia">
-    <div class="lia-header">
-      <div class="lia-avatar">L</div>
-      <div class="lia-header-text">
-        <strong>Lia</strong>
-        <span><span class="lia-status-dot"></span> Atendimento landingnow · IA</span>
-      </div>
-      <button class="lia-close" id="liaClose" aria-label="Fechar chat">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-
-    <div class="lia-messages" id="liaMessages"></div>
-
-    <div class="lia-input-area">
-      <input type="text" id="liaInput" placeholder="Pergunte qualquer coisa sobre as landings..." maxlength="500" autocomplete="off">
-      <button class="lia-send" id="liaSend" aria-label="Enviar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      </button>
-    </div>
-
-    <div class="lia-footer">Powered by IA · Atendimento landingnow</div>
-  </div>
-</div>
-
-<!-- FIM LIA -->
-
-
-<!-- PLAN DETAILS MODAL JS -->
-<!-- FIM PLAN DETAILS MODAL JS -->
-
-<!-- Meta Pixel - Eventos personalizados (Lead em clique WhatsApp + Scroll milestones) -->
+<!-- Eventos do Meta Pixel (Lead + scroll) -->
 <script>
 (function(){
-  function whenReady(fn){ if(document.readyState!=='loading')fn(); else document.addEventListener('DOMContentLoaded',fn); }
+  function whenReady(fn){ if(document.readyState!=='loading'){fn();} else {document.addEventListener('DOMContentLoaded',fn);} }
   whenReady(function(){
-    // === EVENTO LEAD: clique em qualquer link de WhatsApp ===
     var planMap = [
-      { match: 'Start',       plan: 'Start',       value: 297    },
-      { match: 'Pro%20de',    plan: 'Pro',         value: 497    },
-      { match: 'Premium%20IA',plan: 'Premium IA',  value: 1497   },
-      { match: 'Premium',     plan: 'Premium',     value: 997    }
+      { match: 'Start',        plan: 'Start',      value: 297  },
+      { match: 'Pro%20de',     plan: 'Pro',        value: 497  },
+      { match: 'Premium%20IA', plan: 'Premium IA', value: 1497 },
+      { match: 'Premium',      plan: 'Premium',    value: 997  }
     ];
     function detectPlan(href){
       for(var i=0;i<planMap.length;i++){ if(href.indexOf(planMap[i].match)>-1) return planMap[i]; }
       return { plan:'Generico', value: 0 };
     }
     function detectLocation(el){
-      var sec = el.closest('section');
+      var sec = el.closest('section, header, footer, nav');
       if(sec){ return sec.id || sec.className.split(' ')[0] || 'unknown'; }
-      if(el.closest('header')) return 'header';
-      if(el.closest('footer')) return 'footer';
-      if(el.classList.contains('wa-float')) return 'whatsapp-float';
       return 'unknown';
     }
     var links = document.querySelectorAll('a[href*="wa.me"]');
@@ -1040,11 +677,10 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
       a.addEventListener('click', function(){
         try {
           var p = detectPlan(a.href);
-          var loc = detectLocation(a);
           if(typeof fbq !== 'undefined'){
             fbq('track', 'Lead', {
               content_name: 'Click WhatsApp - ' + p.plan,
-              content_category: loc,
+              content_category: detectLocation(a),
               value: p.value,
               currency: 'BRL'
             });
@@ -1052,28 +688,19 @@ src="https://www.facebook.com/tr?id=746976351217041&ev=PageView&noscript=1"
         } catch(e){}
       }, { passive: true });
     });
-
-    // === EVENTOS SCROLL: 50% e 80% (so dispara uma vez cada) ===
     var fired = { s50:false, s80:false };
     function onScroll(){
       var docH = document.documentElement.scrollHeight - window.innerHeight;
       if(docH<=0) return;
       var pct = (window.scrollY / docH) * 100;
-      if(!fired.s50 && pct >= 50){
-        fired.s50 = true;
-        if(typeof fbq !== 'undefined') fbq('trackCustom', 'Scroll50');
-      }
-      if(!fired.s80 && pct >= 80){
-        fired.s80 = true;
-        if(typeof fbq !== 'undefined') fbq('trackCustom', 'Scroll80');
-      }
+      if(!fired.s50 && pct >= 50){ fired.s50 = true; if(typeof fbq!=='undefined') fbq('trackCustom','Scroll50'); }
+      if(!fired.s80 && pct >= 80){ fired.s80 = true; if(typeof fbq!=='undefined') fbq('trackCustom','Scroll80'); }
       if(fired.s50 && fired.s80) window.removeEventListener('scroll', onScroll);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
   });
 })();
 </script>
-<!-- End Meta Pixel - Eventos -->
 
 </body>
 </html>

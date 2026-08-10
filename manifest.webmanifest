@@ -1,0 +1,14 @@
+{
+  "name": "landingnow",
+  "short_name": "landingnow",
+  "description": "Landing pages profissionais para pequenos negócios, no ar a partir de 72h.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0E1430",
+  "theme_color": "#0E1430",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

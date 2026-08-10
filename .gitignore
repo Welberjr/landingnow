@@ -21,3 +21,17 @@ Contrato.*
 # screenshots de origem pesados
 cases/Portif*.png
 cases/*.png
+
+# Protecoes do repo publico: nada disso pode subir
+bot-whatsapp/
+landing-v2/
+landing-v3/
+docs/
+Criativos/
+Logo/
+.claude/
+.wrangler/
+*.py
+_logo*
+logo-landingnow-gmn.png
+api/lia.v4.backup.js
