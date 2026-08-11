@@ -90,6 +90,14 @@ class HomeConversionContractTests(unittest.TestCase):
         self.assertIn("Entrega em até 72h após pagamento e briefing", self.html)
         self.assertIn("no ar em até 5 dias úteis", self.html)
 
+    def test_lost_click_scene_shows_the_missing_next_step(self):
+        self.assertEqual(len(self.dom.find_by_class("dor-page-missing")), 1)
+        self.assertEqual(len(self.dom.find_by_class("dor-click-path")), 1)
+        self.assertEqual(len(self.dom.find_by_class("dor-route-break")), 1)
+        self.assertIn("Sem uma página, o interesse", self.html)
+        self.assertIn("não encontra um próximo passo.", self.html)
+        self.assertIn("0 conversas iniciadas", self.html)
+
 
 if __name__ == "__main__":
     unittest.main()
