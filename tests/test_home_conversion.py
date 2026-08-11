@@ -116,6 +116,12 @@ class HomeConversionContractTests(unittest.TestCase):
         self.assertIn('offer-team-actions', self.html)
         self.assertIn('text-align:center', self.css)
 
+    def test_direct_team_copy_and_mobile_footer_keep_a_clean_hierarchy(self):
+        self.assertNotIn('offer-team-names">Welber e Caio</strong>,', self.html)
+        self.assertIn('Welber e Caio.</strong> Eles', self.html)
+        self.assertIn('.footer-bottom span:last-child{', self.css)
+        self.assertIn('.footer-col{padding:22px 0', self.css)
+
     def test_portfolio_starts_with_the_requested_stronger_examples(self):
         cards = re.findall(r'<a class="case-card" href="([^"]+)"', self.html)
         self.assertEqual(
