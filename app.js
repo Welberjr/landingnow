@@ -278,8 +278,10 @@
     dor.classList.add('pin-mode');
 
     var beats = gsap.utils.toArray('.dor-beat');
-    var leads = gsap.utils.toArray('.lead');
+    var dorSceneParts = gsap.utils.toArray('.dor-click-path, .dor-click, .dor-page-missing, .dor-route-break, .dor-route-x, .dor-counter');
     gsap.set(beats, { opacity: 0, y: 30 });
+    gsap.set(dorSceneParts, { opacity: 0 });
+    gsap.set('.dor-chip-bottom', { opacity: 0.28, y: 12 });
 
     var dorTl = gsap.timeline({
       scrollTrigger: {
@@ -289,23 +291,16 @@
     });
 
     dorTl.to(beats[0], { opacity: 1, y: 0, duration: 0.6 }, 0)
+      .to('.dor-click-path', { opacity: 1, duration: 0.4 }, 0.25)
+      .fromTo('.dor-click', { opacity: 0, scale: 0.45 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, 0.5)
       .to(beats[0], { opacity: 0, y: -26, duration: 0.5 }, 2.2)
       .to(beats[1], { opacity: 1, y: 0, duration: 0.6 }, 2.7)
-      .to(beats[1], { opacity: 0, y: -26, duration: 0.5 }, 4.7)
-      .to(beats[2], { opacity: 1, y: 0, duration: 0.6 }, 5.2);
-
-    leads.forEach(function (dot, i) {
-      var dir = (i % 2 ? 1 : -1) * (24 + i * 14);
-      dorTl.fromTo(dot, { y: -12, opacity: 0 }, { y: 155, opacity: 1, duration: 1.1, ease: 'none' }, i * 0.55 + 0.3)
-        .to(dot, { y: 215, x: dir, opacity: 0, fill: '#6C7BD9', duration: 0.9, ease: 'power1.in' }, i * 0.55 + 1.4);
-    });
-
-    var dorNumEl = document.getElementById('dorNum');
-    var dorCount = { v: 0 };
-    dorTl.to(dorCount, {
-      v: 27, duration: 1.1, ease: 'none',
-      onUpdate: function () { dorNumEl.textContent = Math.round(dorCount.v); }
-    }, 5.2);
+      .to('.dor-page-missing', { opacity: 1, duration: 0.55 }, 2.9)
+      .to(beats[1], { opacity: 0, y: -26, duration: 0.5 }, 3.65)
+      .to(beats[2], { opacity: 1, y: 0, duration: 0.6 }, 4.05)
+      .to('.dor-route-break, .dor-route-x', { opacity: 1, duration: 0.35 }, 4.15)
+      .to('.dor-chip-bottom', { opacity: 0.9, y: 0, duration: 0.4 }, 4.3)
+      .to('.dor-counter', { opacity: 1, duration: 0.4 }, 4.5);
 
     /* --- Capítulo 2: a virada (a página nasce como o sol) --- */
     gsap.set('.mock', { y: '58vh' });
@@ -341,7 +336,6 @@
     return function () {
       dor.classList.remove('pin-mode');
       prova.classList.remove('rail');
-      if (dorNumEl) dorNumEl.textContent = '0';
     };
   });
 
@@ -355,29 +349,7 @@
       });
     });
 
-    // Os cliques caem em loop enquanto a cena está visível
-    var leadLoop = gsap.timeline({
-      repeat: -1,
-      scrollTrigger: {
-        trigger: '.dor-scene', start: 'top 95%', end: 'bottom 5%',
-        toggleActions: 'play pause resume pause'
-      }
-    });
-    gsap.utils.toArray('.lead').forEach(function (dot, i) {
-      var dir = (i % 2 ? 1 : -1) * (22 + i * 10);
-      leadLoop.fromTo(dot, { y: -12, opacity: 0, x: 0 },
-        { y: 150, opacity: 1, duration: 1.1, ease: 'none' }, i * 0.45)
-        .to(dot, { y: 210, x: dir, opacity: 0, fill: '#6C7BD9', duration: 0.9, ease: 'power1.in' }, i * 0.45 + 1.1);
-    });
-
-    var dorNumEl = document.getElementById('dorNum');
-    var dorCount = { v: 0 };
-    gsap.to(dorCount, {
-      v: 27, duration: 1.4, ease: 'power1.out',
-      onUpdate: function () { dorNumEl.textContent = Math.round(dorCount.v); },
-      scrollTrigger: { trigger: '.dor-counter', start: 'top 92%', once: true }
-    });
-
+    // No mobile, o painel fica legível sem depender de um gatilho de animação.
     /* --- Capítulo 2: a página sobe sem pin --- */
     gsap.from('.mock', {
       y: 70, opacity: 0, duration: 0.9, ease: 'power2.out',
@@ -390,10 +362,7 @@
       });
     });
 
-    return function () {
-      var el = document.getElementById('dorNum');
-      if (el) el.textContent = '0';
-    };
+    return function () {};
   });
 
   /* ============================================================

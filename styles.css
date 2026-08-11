@@ -303,9 +303,16 @@ html.fx [data-phase]{background:none}
 .dor-chip-bottom rect{stroke:rgba(244,241,255,.14)}
 .dor-chip-bottom text{fill:var(--luz-suave)}
 .dor-chip-sub{font-size:11px !important;fill:rgba(244,241,255,.45) !important}
-.dor-gap-line{stroke:rgba(255,107,74,.6);stroke-width:1.5;stroke-dasharray:7 8}
-.dor-gap-text{fill:#FF9A7E;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em}
-.lead{fill:var(--sol)}
+.dor-click-path,.dor-route-break{fill:none;stroke-linecap:round;stroke-dasharray:7 9;stroke-width:2}
+.dor-click-path{stroke:var(--sol)}
+.dor-route-break{stroke:#FF9A7E}
+.dor-route-x{fill:none;stroke:#FF6B4A;stroke-width:2.5;stroke-linecap:round}
+.dor-click{fill:var(--sol);stroke:#FFEDB8;stroke-width:3;filter:drop-shadow(0 0 8px rgba(255,194,75,.75))}
+.dor-page-missing>rect:first-child{fill:rgba(7,11,28,.72);stroke:rgba(255,154,126,.78);stroke-width:1.5}
+.dor-page-bar{fill:rgba(244,241,255,.06);stroke:none !important}
+.dor-page-missing circle{fill:rgba(244,241,255,.28)}
+.dor-page-label{fill:var(--luz);font-family:var(--f-display);font-size:20px;font-weight:700;letter-spacing:-.01em}
+.dor-page-empty{fill:#FFB09D;font-family:var(--f-mono);font-size:11px;letter-spacing:.02em}
 .dor-counter{
   font-family:var(--f-mono);font-size:13px;letter-spacing:.05em;color:#FF9A7E;
   text-align:center;
