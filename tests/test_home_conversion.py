@@ -107,6 +107,11 @@ class HomeConversionContractTests(unittest.TestCase):
         self.assertIn("astronomy.faq.top", self.js)
         self.assertNotIn("var astroSegs = []", self.js)
 
+    def test_astronomy_uses_a_subtle_moon_dusk_curve(self):
+        self.assertIn("var moonDuskOpacity = 0.06 + 0.94 * Math.pow(sunset, 2.4);", self.js)
+        self.assertIn("var sunDuskOpacity = 1 - sunset * 0.15;", self.js)
+        self.assertIn("sunOpacity = sunDuskOpacity", self.js)
+
 
 if __name__ == "__main__":
     unittest.main()

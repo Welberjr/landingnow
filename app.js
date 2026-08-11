@@ -160,6 +160,8 @@
     var sunrise = progressBetween(y, astronomy.virada.top - h, astronomy.virada.top);
     var sunset = progressBetween(y, astronomy.faq.top - h * 0.65, astronomy.fim.bottom - h);
     var moonFade = progressBetween(moonSet, 0.92, 1);
+    var moonDuskOpacity = 0.06 + 0.94 * Math.pow(sunset, 2.4);
+    var sunDuskOpacity = 1 - sunset * 0.15;
 
     var moonX = blend(moonStartX(), moonSetX(), moonSet);
     var moonY = blend(moonStartY(), sunHorizonY(), moonSet);
@@ -167,7 +169,7 @@
     if (sunset > 0) {
       moonX = blend(moonSetX(), moonStartX(), sunset);
       moonY = blend(sunHorizonY(), moonStartY(), sunset);
-      moonOpacity = sunset;
+      moonOpacity = moonDuskOpacity;
     }
 
     var sunX = blend(sunRiseX(), sunDayX(), sunrise);
@@ -176,7 +178,10 @@
     if (sunset > 0) {
       sunX = blend(sunDayX(), sunSetX(), sunset);
       sunY = blend(sunDayY(), sunHorizonY(), sunset);
-      sunOpacity = 1 - sunset;
+      sunOpacity = sunDuskOpacity;
+    }
+    if (sunset > 0.82) {
+      sunOpacity = sunDuskOpacity * (1 - progressBetween(sunset, 0.82, 1));
     }
 
     gsap.set('#lua', { x: moonX, y: moonY, opacity: moonOpacity, scale: 1 });
