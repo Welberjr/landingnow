@@ -90,6 +90,13 @@ class HomeConversionContractTests(unittest.TestCase):
         self.assertIn("Entrega em até 72h após pagamento e briefing", self.html)
         self.assertIn("no ar em até 5 dias úteis", self.html)
 
+    def test_delivery_average_explains_that_each_plan_has_its_own_deadline(self):
+        self.assertGreaterEqual(
+            self.html.count("Start e Pro: média de 24h; prazo máximo conforme o plano."),
+            2,
+        )
+        self.assertNotIn("<span>Brasília, DF</span>", self.html)
+
     def test_lost_click_scene_shows_the_missing_next_step(self):
         self.assertEqual(len(self.dom.find_by_class("dor-page-missing")), 1)
         self.assertEqual(len(self.dom.find_by_class("dor-click-path")), 1)
