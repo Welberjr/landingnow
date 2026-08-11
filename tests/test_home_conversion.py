@@ -116,6 +116,10 @@ class HomeConversionContractTests(unittest.TestCase):
         self.assertIn('offer-team-actions', self.html)
         self.assertIn('text-align:center', self.css)
 
+    def test_mobile_benefit_numbers_keep_contrast_on_the_dawn_background(self):
+        self.assertIn('background:rgba(244,241,255,.62);border:1px solid rgba(23,34,61,.48);', self.css)
+        self.assertIn('color:var(--tinta);font-family:var(--f-mono);font-size:10.5px', self.css)
+
     def test_direct_team_copy_and_mobile_footer_keep_a_clean_hierarchy(self):
         self.assertNotIn('offer-team-names">Welber e Caio</strong>,', self.html)
         self.assertIn('Welber e Caio.</strong> Eles', self.html)

@@ -749,8 +749,8 @@ html.fx [data-phase]{background:none}
   .virada-item::before{
     counter-increment:virada;content:'0' counter(virada);position:absolute;left:0;top:15px;
     width:31px;height:31px;display:grid;place-items:center;border-radius:50%;
-    background:rgba(255,194,75,.14);border:1px solid rgba(255,194,75,.55);
-    color:var(--sol);font-family:var(--f-mono);font-size:10px;font-weight:700;letter-spacing:.04em;
+    background:rgba(244,241,255,.62);border:1px solid rgba(23,34,61,.48);
+    color:var(--tinta);font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.04em;
   }
   .virada-item strong{font-size:19px}
   .virada-item span{font-size:15px;text-align:left}
