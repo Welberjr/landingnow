@@ -106,6 +106,9 @@ class HomeConversionContractTests(unittest.TestCase):
         self.assertIn('O anúncio chama', self.html)
         self.assertIn('O cliente clica interessado', self.html)
         self.assertIn('Sem página, a conversa não acontece', self.html)
+        self.assertNotIn('class="dor-mobile-break"', self.html)
+        self.assertIn('class="dor-mobile-line dor-mobile-line-lost"', self.html)
+        self.assertIn('.dor-mobile-line-lost{', self.css)
 
     def test_mobile_virada_and_team_note_gain_visual_hierarchy(self):
         self.assertIn('counter-reset:virada', self.css)

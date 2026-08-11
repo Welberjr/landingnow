@@ -733,10 +733,8 @@ html.fx [data-phase]{background:none}
   .dor-mobile-step strong{font-family:var(--f-display);font-size:19px;line-height:1.12}
   .dor-mobile-step small{margin-top:5px;font-size:14px;line-height:1.4;color:var(--luz-suave)}
   .dor-mobile-line{height:28px;margin:8px 0 8px 12px;border-left:2px dashed var(--sol)}
-  .dor-mobile-break{
-    width:34px;height:34px;margin:16px 0 12px 8px;display:grid;place-items:center;
-    border-radius:50%;background:rgba(255,107,74,.15);border:1px solid rgba(255,107,74,.65);
-    color:#FF9A7E;font-family:var(--f-display);font-size:26px;font-weight:700;
+  .dor-mobile-line-lost{
+    height:22px;margin:12px 0 12px 12px;border-left-color:rgba(255,154,126,.85);
   }
   .dor-mobile-result{padding:15px 14px;border-radius:12px;background:rgba(255,107,74,.1);border:1px solid rgba(255,107,74,.3)}
   .dor-mobile-result span{display:block;font-family:var(--f-display);font-size:17px;font-weight:700;line-height:1.15}
