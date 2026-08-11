@@ -452,8 +452,8 @@ html.fx [data-phase]{background:none}
 .offer-team-kicker,.offer-team-link{font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .offer-team-kicker{color:var(--queimado)}
 .offer-team-link{color:var(--tinta);white-space:nowrap}
-.plan-guide-title{margin:44px 0 14px;text-align:center;font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-suave)}
-.plan-guide{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;list-style:none}
+.plan-guide-title{display:none;margin:44px 0 14px;text-align:center;font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-suave)}
+.plan-guide{display:none;grid-template-columns:repeat(4,1fr);gap:10px;list-style:none}
 .plan-guide li{padding:13px 14px;border-left:2px solid var(--sol);background:rgba(244,241,255,.55)}
 .plan-guide strong,.plan-guide span{display:block}
 .plan-guide strong{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--queimado);margin-bottom:5px}
@@ -717,8 +717,8 @@ html.fx [data-phase]{background:none}
   .case-shot{height:280px}
   .offer-team-note{margin-top:30px;padding:17px;grid-template-columns:1fr;gap:8px;text-align:left}
   .offer-team-link{margin-top:2px}
-  .plan-guide-title{margin-top:36px}
-  .plan-guide{grid-template-columns:1fr 1fr;gap:8px}
+  .plan-guide-title{display:block;margin-top:36px}
+  .plan-guide{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .plan-guide li{padding:12px}
   .plan-guide span{font-size:12.5px}
   .plans{

@@ -77,6 +77,13 @@ class HomeConversionContractTests(unittest.TestCase):
         self.assertEqual(self.dom.plan_guide_items, 4)
         self.assertRegex(self.html, re.compile(r'href="#quem"[^>]*>.*(?:Welber|Caio)', re.DOTALL))
 
+    def test_plan_guide_is_reserved_for_the_mobile_breakpoint(self):
+        self.assertRegex(self.css, r"\.plan-guide\{display:none")
+        self.assertRegex(
+            self.css,
+            re.compile(r"@media \(max-width:680px\)\{.*?\.plan-guide\{display:grid", re.DOTALL),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
