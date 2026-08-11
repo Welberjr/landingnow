@@ -97,6 +97,59 @@ class HomeConversionContractTests(unittest.TestCase):
         )
         self.assertNotIn("<span>Brasília, DF</span>", self.html)
 
+    def test_mobile_hero_keeps_compact_facts_on_one_line(self):
+        self.assertIn('class="hero-facts-mobile"', self.html)
+        self.assertIn('white-space:nowrap', self.css)
+
+    def test_mobile_pain_uses_a_compact_visual_story_instead_of_three_copy_cards(self):
+        self.assertIn('class="dor-mobile-story"', self.html)
+        self.assertIn('O anúncio chama', self.html)
+        self.assertIn('O cliente clica interessado', self.html)
+        self.assertIn('Sem página, a conversa não acontece', self.html)
+
+    def test_mobile_virada_and_team_note_gain_visual_hierarchy(self):
+        self.assertIn('counter-reset:virada', self.css)
+        self.assertIn('offer-team-names', self.html)
+        self.assertIn('offer-team-actions', self.html)
+        self.assertIn('text-align:center', self.css)
+
+    def test_portfolio_starts_with_the_requested_stronger_examples(self):
+        cards = re.findall(r'<a class="case-card" href="([^"]+)"', self.html)
+        self.assertEqual(
+            cards[:4],
+            [
+                'https://dr-bruno-rabello.pages.dev',
+                'https://sakuraprime.base44.app',
+                'https://vivendo-aventuras-luciana.pages.dev',
+                'https://taf-elite.pages.dev',
+            ],
+        )
+
+    def test_pro_is_the_highlighted_mobile_plan_between_start_and_premium(self):
+        self.assertRegex(
+            self.html,
+            re.compile(
+                r'<article class="plan">.*?plan-name">Start.*?'
+                r'<article class="plan plan-featured">.*?plan-name">Pro.*?'
+                r'<article class="plan">.*?plan-name">Premium.*?'
+                r'<article class="plan">.*?plan-name">Premium IA',
+                re.DOTALL,
+            ),
+        )
+        self.assertNotIn('.plan-featured{order:-1}', self.css)
+        self.assertIn('focusProPlanOnMobile', self.js)
+
+    def test_scroll_return_does_not_dim_the_hero_or_rebase_sunset_on_faq_height(self):
+        self.assertNotIn("y: -60, opacity: 0.25", self.js)
+        self.assertNotIn("astronomy.fim.bottom - h", self.js)
+        self.assertIn("astronomy.faq.top + h * 1.8", self.js)
+        self.assertIn("if (d.closest('#faq')) return;", self.js)
+
+    def test_mobile_final_cta_uses_a_compact_horizontal_contract(self):
+        self.assertIn('.btn-final{', self.css)
+        self.assertIn('white-space:nowrap', self.css)
+        self.assertIn('width:auto', self.css)
+
     def test_lost_click_scene_shows_the_missing_next_step(self):
         self.assertEqual(len(self.dom.find_by_class("dor-page-missing")), 1)
         self.assertEqual(len(self.dom.find_by_class("dor-click-path")), 1)

@@ -158,7 +158,9 @@
     var h = window.innerHeight;
     var moonSet = progressBetween(y, astronomy.dor.top - h, astronomy.dor.bottom - h);
     var sunrise = progressBetween(y, astronomy.virada.top - h, astronomy.virada.top);
-    var sunset = progressBetween(y, astronomy.faq.top - h * 0.65, astronomy.fim.bottom - h);
+    // A transição final é ancorada no início do FAQ, não na altura variável dele.
+    // Assim, abrir uma resposta não faz o sol subir ou o céu clarear de repente.
+    var sunset = progressBetween(y, astronomy.faq.top - h * 0.35, astronomy.faq.top + h * 1.8);
     var moonFade = progressBetween(moonSet, 0.92, 1);
     var moonDuskOpacity = 0.06 + 0.94 * Math.pow(sunset, 2.4);
     var sunDuskOpacity = 1 - sunset * 0.15;
@@ -206,10 +208,7 @@
     .from('.hero-facts', { opacity: 0, duration: 0.7 }, 0.8)
     .from('.scroll-cue', { opacity: 0, duration: 0.8 }, 1.0);
 
-  gsap.to('.ch-hero .ch-frame', {
-    y: -60, opacity: 0.25, ease: 'none',
-    scrollTrigger: { trigger: '#topo', start: 'top top', end: 'bottom 30%', scrub: true }
-  });
+  // A hero não escurece durante a saída: isso preserva a mesma leitura ao voltar ao topo.
   gsap.to('.scroll-cue', {
     opacity: 0, ease: 'none',
     scrollTrigger: { trigger: '#topo', start: 'top top', end: '18% top', scrub: true }
@@ -220,6 +219,18 @@
      ============================================================ */
 
   var mm = gsap.matchMedia();
+
+  function focusProPlanOnMobile() {
+    var plans = document.querySelector('.plans');
+    var pro = plans && plans.children[1];
+    if (!plans || !pro || window.innerWidth > 680 || plans.dataset.initialPlan === 'pro') return;
+    requestAnimationFrame(function () {
+      var target = pro.offsetLeft - (plans.clientWidth - pro.offsetWidth) / 2;
+      plans.scrollLeft = Math.max(0, target);
+      plans.dataset.initialPlan = 'pro';
+    });
+  }
+  window.addEventListener('load', focusProPlanOnMobile, { once: true });
 
   mm.add('(min-width: 981px)', function () {
 
@@ -351,8 +362,12 @@
     document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   }
 
-  // Abrir ou fechar qualquer expansor (FAQ, detalhes de plano) muda a altura da página
+  // Os detalhes dos planos mudam o fluxo da oferta. Já o FAQ não deve forçar um
+  // refresh global, pois isso reposiciona a pessoa e faz o céu parecer voltar no tempo.
   gsap.utils.toArray('details').forEach(function (d) {
-    d.addEventListener('toggle', function () { ScrollTrigger.refresh(); });
+    d.addEventListener('toggle', function () {
+      if (d.closest('#faq')) return;
+      ScrollTrigger.refresh();
+    });
   });
 })();
