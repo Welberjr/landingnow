@@ -6,6 +6,9 @@
 <title>Briefing · landingnow</title>
 <meta name="theme-color" content="#0E1430">
 <meta name="description" content="Preencha seu briefing e comece sua landing page com a landingnow.">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -495,7 +498,7 @@
 const SB_URL = "https://hubxacojvgoepowsgbas.supabase.co";
 const SB_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1YnhhY29qdmdvZXBvd3NnYmFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxOTEwNjMsImV4cCI6MjA5Mzc2NzA2M30.MdjhqdZDywBVwh-V54CoacsB-sBHsQPVwH8i6NzP2eU";
 const SB_BUCKET = "briefings";
-const LOGO_SRC = "/apple-touch-icon.png";
+const LOGO_SRC = "/assets/marca.png";
 
 /* ====== PLANOS ====== */
 const PLANOS = {
@@ -758,14 +761,14 @@ function baixarPDF(){
   const {jsPDF}=window.jspdf,p=PLANOS[planoAtual],doc=new jsPDF({unit:'pt',format:'a4'});
   const M=48,PW=595,W=PW-2*M;let y=142;
   // ===== cabecalho: faixa preta + logo da marca =====
-  doc.setFillColor(14,20,48);doc.rect(0,0,PW,104,'F');
+  doc.setFillColor(13,20,49);doc.rect(0,0,PW,104,'F');
   const bx=M,by=34,k=1.0625,F=(sx,sy)=>[bx+sx*k,by+sy*k];
-  doc.setFillColor(255,194,75);doc.roundedRect(bx,by,34,34,8,8,'F');
-  doc.setDrawColor(14,20,48);doc.setLineCap(1);doc.setLineJoin(1);
+  doc.setFillColor(254,203,80);doc.roundedRect(bx,by,34,34,9.5,9.5,'F');
+  doc.setDrawColor(13,20,49);doc.setLineCap(1);doc.setLineJoin(1);
   doc.setLineWidth(3.2);var L1=F(10,9),L2=F(10,22),L3=F(18,22);doc.line(L1[0],L1[1],L2[0],L2[1]);doc.line(L2[0],L2[1],L3[0],L3[1]);
   doc.setLineWidth(2.6);var A1=F(16,16),A2=F(23,9),A3=F(19,9),A4=F(23,13);doc.line(A1[0],A1[1],A2[0],A2[1]);doc.line(A3[0],A3[1],A2[0],A2[1]);doc.line(A2[0],A2[1],A4[0],A4[1]);
   doc.setFont('helvetica','bold');doc.setFontSize(21);doc.setTextColor(244,241,255);doc.text('landingnow',bx+48,58);
-  doc.setTextColor(255,194,75);doc.text('.',bx+48+doc.getTextWidth('landingnow'),58);
+  doc.setTextColor(254,203,80);doc.text('.',bx+48+doc.getTextWidth('landingnow'),58);
   doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(170,170,170);doc.text('Escopo do seu projeto - o que você vai receber',bx+48,76);
   // ===== plano + preco =====
   doc.setFont('helvetica','bold');doc.setFontSize(15);doc.setTextColor(14,20,48);doc.text('Plano '+p.nome,M,y);
