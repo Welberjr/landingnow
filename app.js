@@ -163,11 +163,6 @@
         scrub: true, invalidateOnRefresh: true
       }
     }));
-  gsap.fromTo('#sol', { opacity: 0 }, {
-    opacity: 1, ease: 'none', immediateRender: false,
-    scrollTrigger: { trigger: '#virada', start: 'top top', end: '+=40%', scrub: true }
-  });
-
   // O sol atravessa o dia devagar
   astroSegs.push(gsap.fromTo('#astro',
     { x: solRiseX, y: function () { return vh(0.2); } },
@@ -219,12 +214,35 @@
       gsap.set('#astro', { x: luaX(), y: luaY(), scale: 1 });
     }
   }
-  ScrollTrigger.addEventListener('refresh', placeAstro);
-  placeAstro();
-  gsap.fromTo('#sol', { opacity: 1 }, {
-    opacity: 0, ease: 'none', immediateRender: false,
-    scrollTrigger: { trigger: '#fim', start: 'top 30%', end: 'bottom bottom', scrub: true }
-  });
+  // Cada segmento escreve no mesmo astro. Durante a volta, o último tween
+  // que rodou pode deixar um valor antigo. Este é o único estado final: ele
+  // reaplica o segmento ativo e calcula a visibilidade do sol pelas cenas.
+  function sceneBounds(id) {
+    var el = document.getElementById(id);
+    var box = el && (el.closest('.pin-spacer') || el);
+    if (!box) return null;
+    var rect = box.getBoundingClientRect();
+    return { top: rect.top + window.scrollY, bottom: rect.bottom + window.scrollY };
+  }
+  function between(value, start, end) {
+    if (end <= start) return value >= end ? 1 : 0;
+    return Math.max(0, Math.min(1, (value - start) / (end - start)));
+  }
+  function syncAstroState() {
+    placeAstro();
+    var viradaBounds = sceneBounds('virada');
+    var fimBounds = sceneBounds('fim');
+    if (!viradaBounds || !fimBounds) return;
+    var y = window.scrollY;
+    var rise = between(y, viradaBounds.top, viradaBounds.top + window.innerHeight * 0.4);
+    var maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    var setStart = Math.min(fimBounds.top - window.innerHeight * 0.3, maxScroll - window.innerHeight * 0.28);
+    var set = between(y, Math.max(0, setStart), maxScroll);
+    gsap.set('#sol', { opacity: rise * (1 - set) });
+  }
+  ScrollTrigger.addEventListener('refresh', syncAstroState);
+  ScrollTrigger.create({ start: 0, end: 'max', onUpdate: syncAstroState });
+  syncAstroState();
 
   /* ============================================================
      PRÓLOGO: entrada do herói + saída suave
