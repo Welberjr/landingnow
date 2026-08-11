@@ -1,6 +1,6 @@
 # landingnow
 
-> Serviço de criação de landing pages profissionais para pequenos negócios brasileiros, tocado por dois sócios (Welber Júnior, em Brasília, DF, e Caio Gomes), com entrega a partir de 72 horas e no máximo 10 dias úteis. Todo o atendimento acontece pelo WhatsApp, sem agência e sem intermediários.
+> Serviço de criação de landing pages profissionais para pequenos negócios brasileiros, tocado por dois sócios (Welber Júnior, em Brasília, DF, e Caio Gomes). Os planos Start e Pro ficam prontos em média em 24 horas, e cada plano tem um prazo máximo garantido, de 72 horas a 10 dias úteis. Todo o atendimento acontece pelo WhatsApp, sem agência e sem intermediários.
 
 ## O que a landingnow faz
 
@@ -10,8 +10,8 @@
 
 ## Planos e preços (valores reais)
 
-- Start: R$ 297, landing de até 3 seções, no ar em 72h.
-- Pro: R$ 497, até 5 seções com copy persuasiva, em até 5 dias úteis.
+- Start: R$ 297, landing de até 3 seções, média de 24h e prazo máximo de 72h.
+- Pro: R$ 497, até 5 seções com copy persuasiva, média de 24h e prazo máximo de 5 dias úteis.
 - Premium: R$ 997, até 7 seções com animações, hospedagem e domínio grátis no primeiro ano, em até 7 dias úteis.
 - Premium IA: R$ 1.497, tudo do Premium mais chatbot de IA com captura de leads, em até 10 dias úteis.
 - Pagamento: Pix de 50% no início e 50% na entrega, ou cartão em até 12x. Garantia de devolução total se o combinado não for atendido.
