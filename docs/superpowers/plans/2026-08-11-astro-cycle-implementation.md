@@ -4,7 +4,7 @@
 
 **Goal:** Fazer lua e sol seguirem trajetórias independentes e contínuas, sincronizadas ao scroll em ambos os sentidos.
 
-**Architecture:** A camada `#astro` continuará apenas como agrupador visual, sem receber transformações. `#lua` e `#sol` receberão seus próprios `fromTo` com limites sequenciais de scroll: noite, amanhecer, dia e encerramento. Assim, as duas trajetórias não concorrem no refresh e podem se cruzar no horizonte.
+**Architecture:** A camada `#astro` continuará apenas como agrupador visual, sem receber transformações. Um único `syncAstronomy()` calcula as propriedades independentes de `#lua` e `#sol` para cada posição do scroll: noite, amanhecer, dia e encerramento. Assim, nenhum tween futuro reaplica um estado inicial fora de sua fase e os dois astros podem se cruzar no horizonte.
 
 **Tech Stack:** HTML estático, CSS, JavaScript ES5, GSAP 3 e ScrollTrigger; testes `unittest` em Python.
 
@@ -75,24 +75,24 @@ git commit -m "fix: synchronize independent sun and moon cycle"
 
 - [ ] **Step 1: Substituir o estado compartilhado por estados iniciais independentes**
 
-Remover `gsap.set('#astro'...)`, `astroSegs`, `placeAstro`, `sceneBounds`, `between`, `syncAstroState` e o `ScrollTrigger.create` global desse bloco. Definir as coordenadas como funções e inicializar:
+Remover `astroSegs`, `placeAstro`, `sceneBounds`, `between`, `syncAstroState` e o `ScrollTrigger.create` global desse bloco. Definir as coordenadas como funções e inicializar:
 
 ```javascript
 gsap.set('#lua', { x: moonStartX(), y: moonStartY(), opacity: 1, scale: 1 });
 gsap.set('#sol', { x: sunRiseX(), y: sunHorizonY(), opacity: 0, scale: 1 });
 ```
 
-- [ ] **Step 2: Fazer a lua se pôr sem fade prematuro**
+- [ ] **Step 2: Criar o cálculo determinístico da lua**
 
-Criar um `gsap.fromTo('#lua', ...)` disparado por `#dor`, de `top bottom` até `bottom bottom`, levando-a de sua posição noturna até `y: vh(1.04)` e reduzindo a opacidade apenas quando já estiver abaixo da linha dos prédios. Criar uma segunda sequência curta, sobre `#virada`, para garantir `opacity: 0` só depois de cruzar o horizonte.
+Medir as seções `#dor`, `#virada`, `#faq` e `#fim`, e usar `progressBetween()` para levar a lua da posição noturna até `y: vh(1.08)` durante o capítulo um. Reduzir a opacidade apenas nos 8% finais da descida, quando ela já está abaixo da linha dos prédios.
 
-- [ ] **Step 3: Fazer o sol nascer e permanecer no dia**
+- [ ] **Step 3: Criar o cálculo determinístico do sol**
 
-Criar `gsap.fromTo('#sol', ...)` antes do capítulo dois (`#virada`, `top bottom` até `top top`), de `y: vh(1.08)` a `y: vh(0.18)`, com `opacity: 1`. Em seguida, criar a travessia lenta até `sunDayX()`/`vh(0.14)` iniciada em `#virada` e concluída só no fim de `#quem`; ela mantém o sol visível em oferta, prova e FAQ e deslocado à esquerda do título.
+Usar o mesmo cálculo para fazer o sol nascer entre `#virada` entrar na viewport e atingir o topo. Ao fim da subida, posicioná-lo em `sunDayX()`/`sunDayY()`, à esquerda do título em desktop, mantendo-o visível até o FAQ.
 
 - [ ] **Step 4: Fazer pôr do sol e retorno da lua no fechamento**
 
-Com `#final` como início, mover o sol do céu até `y: vh(1.08)` no fim de `#fim` e reduzir a opacidade somente no horizonte. No mesmo intervalo, mover a lua de abaixo do horizonte até sua posição noturna e elevar sua opacidade. Os dois `fromTo` devem usar `scrub: 0.6` e `invalidateOnRefresh: true`.
+Iniciar o encerramento quando `#faq` cruza 65% da viewport e terminar no fim de `#fim`. Nesse mesmo progresso, mover o sol até `y: vh(1.08)` e reduzir sua opacidade, enquanto a lua faz o caminho inverso até sua posição noturna e recupera a opacidade. Conectar `syncAstronomy()` a um único ScrollTrigger global e ao refresh.
 
 - [ ] **Step 5: Verificar sintaxe**
 

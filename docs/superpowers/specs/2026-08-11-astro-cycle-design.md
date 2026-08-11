@@ -48,8 +48,9 @@ documento sempre produzirá a mesma cena, inclusive ao rolar de volta.
   `#lua` e `#sol` em `app.js`.
 - Remover a sincronização manual que escolhe um único segmento ativo, pois ela
   é a origem da competição entre os dois astros ao rolar de volta.
-- Usar funções de coordenadas responsivas e gatilhos de scroll sem sobreposição
-  contraditória entre as fases.
+- Usar funções de coordenadas responsivas e um cálculo único do estado dos
+  astros para cada posição do scroll, sem sobreposição contraditória entre as
+  fases.
 - Atualizar o teste de contrato da home para garantir que a lua e o sol tenham
   trajetórias independentes e que o ciclo inclua o retorno noturno.
 

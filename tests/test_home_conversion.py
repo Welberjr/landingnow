@@ -98,6 +98,15 @@ class HomeConversionContractTests(unittest.TestCase):
         self.assertIn("não encontra um próximo passo.", self.html)
         self.assertIn("0 conversas iniciadas", self.html)
 
+    def test_astronomy_uses_independent_sun_and_moon_cycles(self):
+        self.assertIn("gsap.set('#lua'", self.js)
+        self.assertIn("gsap.set('#sol'", self.js)
+        self.assertIn("function moonSetX()", self.js)
+        self.assertIn("function sunDayX()", self.js)
+        self.assertIn("function syncAstronomy()", self.js)
+        self.assertIn("astronomy.faq.top", self.js)
+        self.assertNotIn("var astroSegs = []", self.js)
+
 
 if __name__ == "__main__":
     unittest.main()

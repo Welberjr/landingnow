@@ -119,130 +119,75 @@
      O ASTRO: uma lua que se põe, um sol que nasce e se põe
      ============================================================ */
 
-  // No celular a lua começa mais alta e mais à direita pra não encostar no título
-  function luaX() { return window.innerWidth <= 680 ? vw(0.8) : vw(0.72); }
-  function luaY() { return window.innerWidth <= 680 ? vh(0.06) : vh(0.16); }
+  // Lua e sol têm trajetórias próprias. O contêiner fica parado, evitando que
+  // um refresh escolha um estado do outro quando a pessoa rola de volta.
+  function moonStartX() { return window.innerWidth <= 680 ? vw(0.8) : vw(0.72); }
+  function moonStartY() { return window.innerWidth <= 680 ? vh(0.06) : vh(0.16); }
+  function moonSetX() { return window.innerWidth <= 680 ? vw(0.72) : vw(0.6); }
+  function sunRiseX() { return window.innerWidth <= 680 ? vw(0.68) : vw(0.15); }
+  function sunDayX() { return window.innerWidth <= 680 ? vw(0.7) : vw(0.14); }
+  function sunSetX() { return window.innerWidth <= 680 ? vw(0.72) : vw(0.74); }
+  function sunHorizonY() { return vh(1.08); }
+  function sunDayY() { return window.innerWidth <= 680 ? vh(0.12) : vh(0.14); }
 
-  gsap.set('#astro', { x: luaX(), y: luaY() });
+  gsap.set('#astro', { x: 0, y: 0 });
+  gsap.set('#lua', { x: moonStartX(), y: moonStartY(), opacity: 1, scale: 1 });
+  gsap.set('#sol', { x: sunRiseX(), y: sunHorizonY(), opacity: 0, scale: 1 });
 
-  // Segmentos da viagem do astro, na ordem do scroll (pra reposicionar após cada refresh)
-  var astroSegs = [];
-
-  // A lua desce ao longo do capítulo da dor. No celular ela quase não
-  // sai do alto do céu: fica de fundo, sem passar por cima do texto.
-  astroSegs.push(gsap.fromTo('#astro',
-    { x: luaX, y: luaY },
-    {
-      x: function () { return window.innerWidth <= 680 ? vw(0.86) : vw(0.58); },
-      y: function () { return window.innerWidth <= 680 ? vh(0.14) : vh(0.68); },
-      ease: 'none', immediateRender: false,
-      scrollTrigger: {
-        trigger: '#dor', start: 'top bottom', end: 'bottom bottom',
-        scrub: true, invalidateOnRefresh: true
-      }
-    }));
-
-  // A lua some quando o amanhecer chega
-  gsap.fromTo('#lua', { opacity: 1 }, {
-    opacity: 0, ease: 'none', immediateRender: false,
-    scrollTrigger: { trigger: '#virada', start: 'top bottom', end: 'top 55%', scrub: true }
-  });
-
-  // O sol nasce durante a virada. No desktop ele sobe ATRÁS do mockup
-  // da página (vira um halo nas bordas do card escuro) e nunca cruza a
-  // coluna de argumentos à direita; no tablet/celular, onde os itens
-  // ficam abaixo da dobra, mantém a subida central.
-  function solRiseX() { return window.innerWidth > 980 ? vw(0.24) : vw(0.46); }
-  astroSegs.push(gsap.fromTo('#astro',
-    { x: function () { return vw(0.42); }, y: function () { return vh(1.08); } },
-    {
-      x: solRiseX, y: function () { return vh(0.2); },
-      ease: 'none', immediateRender: false,
-      scrollTrigger: {
-        trigger: '#virada', start: 'top top', end: 'bottom top',
-        scrub: true, invalidateOnRefresh: true
-      }
-    }));
-  // O sol atravessa o dia devagar
-  astroSegs.push(gsap.fromTo('#astro',
-    { x: solRiseX, y: function () { return vh(0.2); } },
-    {
-      x: function () { return vw(0.3); }, y: function () { return vh(0.13); },
-      ease: 'none', immediateRender: false,
-      scrollTrigger: {
-        trigger: '#oferta', start: 'top bottom', end: 'bottom top',
-        scrub: true, invalidateOnRefresh: true
-      }
-    }));
-
-  // O sol desce no fim de tarde
-  astroSegs.push(gsap.fromTo('#astro',
-    { x: function () { return vw(0.3); }, y: function () { return vh(0.13); } },
-    {
-      x: function () { return vw(0.5); }, y: function () { return vh(0.62); }, scale: 1.18,
-      ease: 'none', immediateRender: false,
-      scrollTrigger: {
-        trigger: '#final', start: 'top 85%', end: 'bottom bottom',
-        scrub: true, invalidateOnRefresh: true
-      }
-    }));
-
-  // E mergulha no horizonte quando a noite volta
-  astroSegs.push(gsap.fromTo('#astro',
-    { y: function () { return vh(0.62); } },
-    {
-      y: function () { return vh(1.15); },
-      ease: 'none', immediateRender: false,
-      scrollTrigger: {
-        trigger: '#fim', start: 'top 40%', end: 'bottom bottom',
-        scrub: true, invalidateOnRefresh: true
-      }
-    }));
-
-  // O refresh do ScrollTrigger renderiza o "from" de cada segmento na ordem de criação,
-  // e o último atropela a posição real do astro. Depois de cada refresh, reaplica o
-  // estado do último segmento já alcançado (ou o ponto de partida da lua no topo).
-  function placeAstro() {
-    var active = null;
-    for (var i = 0; i < astroSegs.length; i++) {
-      var st = astroSegs[i].scrollTrigger;
-      if (st && st.progress > 0) active = astroSegs[i];
-    }
-    if (active) {
-      active.progress(active.scrollTrigger.progress, true);
-    } else {
-      gsap.set('#astro', { x: luaX(), y: luaY(), scale: 1 });
-    }
+  // Há apenas um escritor para cada astro: um estado calculado da posição do
+  // scroll. Assim, um gatilho futuro nunca aplica o seu "from" fora da cena e
+  // a imagem fica igual tanto na descida quanto na volta.
+  var astronomy = {};
+  function measureAstronomy() {
+    ['dor', 'virada', 'faq', 'fim'].forEach(function (id) {
+      var element = document.getElementById(id);
+      var box = element && (element.closest('.pin-spacer') || element);
+      if (!box) return;
+      var rect = box.getBoundingClientRect();
+      astronomy[id] = { top: rect.top + window.scrollY, bottom: rect.bottom + window.scrollY };
+    });
   }
-  // Cada segmento escreve no mesmo astro. Durante a volta, o último tween
-  // que rodou pode deixar um valor antigo. Este é o único estado final: ele
-  // reaplica o segmento ativo e calcula a visibilidade do sol pelas cenas.
-  function sceneBounds(id) {
-    var el = document.getElementById(id);
-    var box = el && (el.closest('.pin-spacer') || el);
-    if (!box) return null;
-    var rect = box.getBoundingClientRect();
-    return { top: rect.top + window.scrollY, bottom: rect.bottom + window.scrollY };
-  }
-  function between(value, start, end) {
+  function progressBetween(value, start, end) {
     if (end <= start) return value >= end ? 1 : 0;
     return Math.max(0, Math.min(1, (value - start) / (end - start)));
   }
-  function syncAstroState() {
-    placeAstro();
-    var viradaBounds = sceneBounds('virada');
-    var fimBounds = sceneBounds('fim');
-    if (!viradaBounds || !fimBounds) return;
+  function blend(from, to, progress) { return from + (to - from) * progress; }
+  function syncAstronomy() {
+    if (!astronomy.dor || !astronomy.virada || !astronomy.faq || !astronomy.fim) return;
     var y = window.scrollY;
-    var rise = between(y, viradaBounds.top, viradaBounds.top + window.innerHeight * 0.4);
-    var maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    var setStart = Math.min(fimBounds.top - window.innerHeight * 0.3, maxScroll - window.innerHeight * 0.28);
-    var set = between(y, Math.max(0, setStart), maxScroll);
-    gsap.set('#sol', { opacity: rise * (1 - set) });
+    var h = window.innerHeight;
+    var moonSet = progressBetween(y, astronomy.dor.top - h, astronomy.dor.bottom - h);
+    var sunrise = progressBetween(y, astronomy.virada.top - h, astronomy.virada.top);
+    var sunset = progressBetween(y, astronomy.faq.top - h * 0.65, astronomy.fim.bottom - h);
+    var moonFade = progressBetween(moonSet, 0.92, 1);
+
+    var moonX = blend(moonStartX(), moonSetX(), moonSet);
+    var moonY = blend(moonStartY(), sunHorizonY(), moonSet);
+    var moonOpacity = 1 - moonFade;
+    if (sunset > 0) {
+      moonX = blend(moonSetX(), moonStartX(), sunset);
+      moonY = blend(sunHorizonY(), moonStartY(), sunset);
+      moonOpacity = sunset;
+    }
+
+    var sunX = blend(sunRiseX(), sunDayX(), sunrise);
+    var sunY = blend(sunHorizonY(), sunDayY(), sunrise);
+    var sunOpacity = sunrise;
+    if (sunset > 0) {
+      sunX = blend(sunDayX(), sunSetX(), sunset);
+      sunY = blend(sunDayY(), sunHorizonY(), sunset);
+      sunOpacity = 1 - sunset;
+    }
+
+    gsap.set('#lua', { x: moonX, y: moonY, opacity: moonOpacity, scale: 1 });
+    gsap.set('#sol', { x: sunX, y: sunY, opacity: sunOpacity, scale: 1 + sunset * 0.1 });
   }
-  ScrollTrigger.addEventListener('refresh', syncAstroState);
-  ScrollTrigger.create({ start: 0, end: 'max', onUpdate: syncAstroState });
-  syncAstroState();
+  ScrollTrigger.create({
+    start: 0, end: 'max',
+    onUpdate: syncAstronomy,
+    onRefresh: function () { measureAstronomy(); syncAstronomy(); }
+  });
+  requestAnimationFrame(function () { measureAstronomy(); syncAstronomy(); });
 
   /* ============================================================
      PRÓLOGO: entrada do herói + saída suave
