@@ -84,6 +84,12 @@ class HomeConversionContractTests(unittest.TestCase):
             re.compile(r"@media \(max-width:680px\)\{.*?\.plan-guide\{display:grid", re.DOTALL),
         )
 
+    def test_general_delivery_copy_uses_the_24_hour_average(self):
+        self.assertIn("Start e Pro com entrega média em 24 horas.", self.html)
+        self.assertNotIn("a partir de 72h", self.html)
+        self.assertIn("Entrega em até 72h após pagamento e briefing", self.html)
+        self.assertIn("no ar em até 5 dias úteis", self.html)
+
 
 if __name__ == "__main__":
     unittest.main()
