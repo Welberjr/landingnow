@@ -1,0 +1,82 @@
+import re
+import unittest
+from html.parser import HTMLParser
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class HomeParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.tags = []
+        self.depth = 0
+        self.plan_guide_depth = None
+        self.plan_guide_items = 0
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        self.tags.append((tag, attrs))
+        if attrs.get("class") == "plan-guide":
+            self.plan_guide_depth = self.depth
+        elif tag == "li" and self.plan_guide_depth is not None:
+            self.plan_guide_items += 1
+        self.depth += 1
+
+    def handle_endtag(self, tag):
+        self.depth -= 1
+        if self.plan_guide_depth is not None and self.depth == self.plan_guide_depth:
+            self.plan_guide_depth = None
+
+    def find_by_id(self, element_id):
+        return next((item for item in self.tags if item[1].get("id") == element_id), None)
+
+    def find_by_class(self, class_name):
+        return [item for item in self.tags if class_name in item[1].get("class", "").split()]
+
+
+class HomeConversionContractTests(unittest.TestCase):
+    def setUp(self):
+        self.html = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.css = (ROOT / "styles.css").read_text(encoding="utf-8")
+        self.js = (ROOT / "app.js").read_text(encoding="utf-8")
+        self.dom = HomeParser()
+        self.dom.feed(self.html)
+
+    def test_mobile_navigation_has_an_accessible_disclosure_contract(self):
+        toggle = self.dom.find_by_id("nav-menu-toggle")
+        menu = self.dom.find_by_id("primary-navigation")
+
+        self.assertIsNotNone(toggle)
+        self.assertEqual(toggle[0], "button")
+        self.assertEqual(toggle[1].get("aria-controls"), "primary-navigation")
+        self.assertEqual(toggle[1].get("aria-expanded"), "false")
+        self.assertIsNotNone(menu)
+        self.assertIn("nav-toggle", self.css)
+        self.assertIn("navMenuToggle.addEventListener", self.js)
+
+    def test_mobile_menu_label_is_available_to_screen_readers_without_being_visible(self):
+        self.assertRegex(
+            self.css,
+            re.compile(r"\.sr-only\s*\{[^}]*position:absolute[^}]*clip:rect\(0,0,0,0\)", re.DOTALL),
+        )
+
+    def test_hero_exposes_clickable_google_proof_and_specific_offer(self):
+        proof = self.dom.find_by_class("google-proof")
+
+        self.assertEqual(len(proof), 1)
+        self.assertEqual(proof[0][0], "a")
+        self.assertEqual(proof[0][1].get("href"), "https://share.google/kcG03yAl2QiHq6T3Y")
+        self.assertEqual(proof[0][1].get("target"), "_blank")
+        self.assertIn("transformam cliques em conversas no WhatsApp", self.html)
+
+    def test_offer_includes_human_handoff_and_four_plan_decision_cues(self):
+        self.assertEqual(len(self.dom.find_by_class("offer-team-note")), 1)
+        self.assertEqual(len(self.dom.find_by_class("plan-guide")), 1)
+        self.assertEqual(self.dom.plan_guide_items, 4)
+        self.assertRegex(self.html, re.compile(r'href="#quem"[^>]*>.*(?:Welber|Caio)', re.DOTALL))
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -9,6 +9,29 @@
 
   var docEl = document.documentElement;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var navMenuToggle = document.getElementById('nav-menu-toggle');
+  var primaryNavigation = document.getElementById('primary-navigation');
+
+  if (navMenuToggle && primaryNavigation) {
+    function closeNavigation() {
+      navMenuToggle.setAttribute('aria-expanded', 'false');
+      primaryNavigation.classList.remove('is-open');
+    }
+
+    navMenuToggle.addEventListener('click', function () {
+      var willOpen = navMenuToggle.getAttribute('aria-expanded') !== 'true';
+      navMenuToggle.setAttribute('aria-expanded', String(willOpen));
+      primaryNavigation.classList.toggle('is-open', willOpen);
+    });
+
+    primaryNavigation.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeNavigation);
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeNavigation();
+    });
+  }
 
   if (reduce || !window.gsap || !window.ScrollTrigger) {
     docEl.classList.add('static');
@@ -371,7 +394,7 @@
       scrollTrigger: { trigger: el, start: 'top 92%', once: true }
     });
   });
-  gsap.utils.toArray('.quem-foto, .quem-texto, .plans-note, .faq-item').forEach(function (el) {
+  gsap.utils.toArray('.offer-team-note, .plan-guide, .quem-foto, .quem-texto, .plans-note, .faq-item').forEach(function (el) {
     gsap.from(el, {
       opacity: 0, y: 24, duration: 0.7, ease: 'power2.out',
       scrollTrigger: { trigger: el, start: 'top 92%', once: true }
