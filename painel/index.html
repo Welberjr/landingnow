@@ -220,8 +220,9 @@ body::after{content:'';position:fixed;top:-20%;left:-10%;width:800px;height:800p
   .cb2{gap:4px}.bd{font-size:10px;padding:3px 8px}.dv{font-size:20px}
 }
 /* Kanban dos leads da Lia */
-.kb{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;align-items:flex-start}
-.kc2{flex:0 0 250px;background:var(--bg-s);border:1px solid var(--ln);border-radius:var(--rad);padding:10px;transition:border-color .15s,background .15s}
+.wrap.largo{max-width:none;padding:0 28px}
+.kb{display:flex;gap:12px;padding-bottom:10px;align-items:flex-start}
+.kc2{flex:1 1 0;min-width:190px;background:var(--bg-s);border:1px solid var(--ln);border-radius:var(--rad);padding:10px;transition:border-color .15s,background .15s}
 .kc2.over{border-color:var(--acc);background:var(--ns)}
 .kh{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid var(--ln)}
 .kt{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
@@ -233,9 +234,16 @@ body::after{content:'';position:fixed;top:-20%;left:-10%;width:800px;height:800p
 .kcd .kmeta{font-size:11px;color:var(--is);line-height:1.45}
 .kcd .kpe{font-size:10px;color:var(--mut);margin-top:5px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .kcd a.kwa{color:var(--vd);font-weight:700}
-.ksel{background:var(--bg-s);border:1px solid var(--ln);color:var(--mut);border-radius:6px;font-family:'Figtree';font-size:10px;padding:2px 4px;margin-top:6px;width:100%}
+/* No computador o card se move arrastando, entao o seletor so aparece onde
+   arrastar nao funciona (dedo). Assim o card fica baixo e a coluna cabe na
+   tela sem empurrar a pagina pra baixo. */
+.ksel{display:none;background:var(--bg-s);border:1px solid var(--ln);color:var(--mut);border-radius:6px;font-family:'Figtree';font-size:10px;padding:2px 4px;margin-top:6px;width:100%}
+@media(max-width:900px),(pointer:coarse){.ksel{display:block}}
 .kvazio{font-size:11px;color:var(--mut);text-align:center;padding:10px 0}
-@media(max-width:640px){.kc2{flex:0 0 82vw}}
+.kmais{width:100%;background:transparent;border:1px dashed var(--ln);color:var(--mut);font-family:'Figtree';font-size:11px;font-weight:700;padding:6px;border-radius:8px;cursor:pointer}
+.kmais:hover{border-color:var(--acc);color:var(--acc)}
+@media(max-width:900px){.kb{overflow-x:auto}.kc2{flex:0 0 240px}}
+@media(max-width:640px){.wrap.largo{padding:0 16px}.kc2{flex:0 0 82vw}}
 </style>
 </head>
 <body>
@@ -444,6 +452,8 @@ document.querySelectorAll('.tab').forEach(t=>{
     document.getElementById('ab-'+t.dataset.tab).classList.add('on');
     if(t.dataset.tab==='dash')renderDash();
     if(t.dataset.tab==='leads')carregarLeads();
+    // o kanban usa a tela toda, pra caber sem rolar pro lado
+    document.querySelector('#mp .wrap').classList.toggle('largo',t.dataset.tab==='leads');
   };
 });
 let BRIEFS=[],PARC=[],PAG=1,FILT='todos',BUSQ='';
@@ -983,6 +993,8 @@ document.getElementById('dper').onchange=renderDash;
    lia_leads e fechada pra chave publica; so abre pra quem estiver em lia_admins.
 --------------------------------------------------------------------------- */
 let LEADS=[],LVISTA='funil',LBUSCA='';
+const POR_COLUNA=5;              // quantos cards antes do "ver mais"
+const LABERTAS=new Set();        // colunas que o Welber ja mandou abrir
 const LCOLS={
   funil:[{k:'novo',l:'Novo'},{k:'qualificando',l:'Qualificando'},{k:'proposta',l:'Proposta'},
          {k:'negociando',l:'Negociando'},{k:'ganho',l:'Ganho'},{k:'perdido',l:'Perdido'}],
@@ -1085,12 +1097,22 @@ function renderLeads(){
   });
   c.innerHTML='<div class="kb">'+LCOLS[LVISTA].map(col=>{
     const dela=visiveis.filter(l=>(l.estagio||'novo')===col.k);
+    // mostra os mais recentes primeiro e corta em POR_COLUNA, pra coluna cheia
+    // nao empurrar a pagina pra baixo. O resto abre no "ver mais".
+    const aberta=LABERTAS.has(col.k)||LBUSCA;
+    const mostra=aberta?dela:dela.slice(0,POR_COLUNA);
+    const escondidos=dela.length-mostra.length;
     return '<div class="kc2" data-col="'+col.k+'">'+
       '<div class="kh"><span class="kt" style="color:'+(LCOR[col.k]||'var(--mut)')+'">'+col.l+'</span>'+
         '<span class="kn">'+dela.length+'</span></div>'+
-      (dela.length?dela.map(cardLead).join(''):'<div class="kvazio">vazio</div>')+
+      (dela.length?mostra.map(cardLead).join(''):'<div class="kvazio">vazio</div>')+
+      (escondidos>0?'<button class="kmais" data-abrir="'+col.k+'">ver mais '+escondidos+'</button>':'')+
+      (aberta&&!LBUSCA&&dela.length>POR_COLUNA?'<button class="kmais" data-fechar="'+col.k+'">ver menos</button>':'')+
     '</div>';
   }).join('')+'</div>';
+
+  c.querySelectorAll('[data-abrir]').forEach(b=>b.onclick=()=>{LABERTAS.add(b.dataset.abrir);renderLeads();});
+  c.querySelectorAll('[data-fechar]').forEach(b=>b.onclick=()=>{LABERTAS.delete(b.dataset.fechar);renderLeads();});
 
   // arrastar e soltar
   c.querySelectorAll('.kcd').forEach(card=>{
