@@ -1078,22 +1078,28 @@ module.exports = async function handler(req, res) {
   // valor) e se o banco responde. E o jeito de conferir de fora, sem adivinhar,
   // se a troca pela chave de servico funcionou antes de fechar o banco.
   if (req.method === 'GET') {
-    let banco = 'sem chave configurada';
-    if (SUPABASE_URL && SUPABASE_ANON) {
+    const sonda = async function (tabela) {
+      if (!SUPABASE_URL || !SUPABASE_ANON) return 'sem chave configurada';
       try {
-        const r = await fetch(`${SUPABASE_URL}/rest/v1/lia_conversas?select=phone&limit=1`, {
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/${tabela}?select=*&limit=1`, {
           headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
         });
-        banco = r.ok ? 'ok' : 'sem acesso (' + r.status + ')';
+        if (!r.ok) return 'sem acesso (' + r.status + ')';
+        const d = await r.json();
+        return Array.isArray(d) && d.length ? 'ok, com dado' : 'ok, porem vazio';
       } catch (e) {
-        banco = 'erro de rede';
+        return 'erro de rede';
       }
-    }
+    };
+    // A sonda do lia_leads e a que importa: essa tabela nasce fechada pra chave
+    // publica. Se ela responder "ok, porem vazio" ou "ok, com dado", a chave em
+    // uso e mesmo privilegiada e da pra revogar a anon sem derrubar a LIA.
     return res.status(200).json({
-      status: 'zapi-webhook online v21-crm',
+      status: 'zapi-webhook online v22-crm',
       chave: NOME_DA_CHAVE,
       servico: NOME_DA_CHAVE !== 'SUPABASE_ANON_KEY',
-      banco,
+      banco: await sonda('lia_conversas'),
+      crm: await sonda('lia_leads'),
     });
   }
   if (req.method === 'OPTIONS') return res.status(200).end();
