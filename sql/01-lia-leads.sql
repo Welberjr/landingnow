@@ -43,9 +43,9 @@ create table if not exists public.lia_admins (
   email text primary key
 );
 
--- TROQUE pelos e-mails de verdade do painel (o teu e o do Caio) antes de rodar.
 insert into public.lia_admins (email) values
-  ('welber.especialistadigital@gmail.com')
+  ('welber.especialistadigital@gmail.com'),
+  ('caiovinipb@gmail.com')
   on conflict (email) do nothing;
 
 -- Fechado por padrao: so a chave de servico (webhook e cron) escreve e le tudo.
@@ -59,7 +59,16 @@ revoke all on public.lia_admins from anon;
 revoke all on public.lia_leads  from authenticated;
 revoke all on public.lia_admins from authenticated;
 
-grant select on public.lia_leads to authenticated;
+grant select on public.lia_leads  to authenticated;
+grant select on public.lia_admins to authenticated;
+
+-- Cada um so enxerga a PROPRIA linha de admin. Sem essa politica, a consulta
+-- abaixo (que roda com a permissao de quem perguntou, nao com a do banco) nao
+-- acharia nada e a aba de Leads viria vazia ate pra voces dois.
+drop policy if exists "cada um ve a propria linha" on public.lia_admins;
+create policy "cada um ve a propria linha" on public.lia_admins
+  for select to authenticated
+  using (email = auth.jwt() ->> 'email');
 
 drop policy if exists "socios leem o crm" on public.lia_leads;
 create policy "socios leem o crm" on public.lia_leads
