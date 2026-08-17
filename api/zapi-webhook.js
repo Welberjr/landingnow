@@ -26,11 +26,19 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 // A anon estava publicada em painel/index.html, que e versionado em repo
 // publico, entao ela perde o acesso as tabelas da LIA assim que a service key
 // estiver na Vercel (SQL em sql/02-fechar-banco.sql).
-// Aceita os dois nomes de env porque em outros projetos ela se chama
-// SUPABASE_SERVICE_ROLE_KEY: nao vale quebrar por causa de uma palavra.
-const SUPABASE_ANON = process.env.SUPABASE_SERVICE_KEY
-  || process.env.SUPABASE_SERVICE_ROLE_KEY
-  || process.env.SUPABASE_ANON_KEY;
+// Chave de acesso ao banco, na ordem de preferencia. A de servico so existe
+// aqui no servidor; a anon fica por ultimo porque ela esta publicada em
+// painel/index.html, que e versionado em repo publico.
+// Sao varios nomes de proposito: em cada projeto essa env foi batizada de um
+// jeito, e nao vale a LIA ficar na chave exposta por causa de uma palavra.
+const CHAVES_POSSIVEIS = [
+  'SUPABASE_SERVICE_KEY',
+  'SUPABASE_SERVICE_ROLE_KEY',
+  'Service_Role',
+  'SUPABASE_ANON_KEY',
+];
+const NOME_DA_CHAVE = CHAVES_POSSIVEIS.find(function (n) { return process.env[n]; }) || null;
+const SUPABASE_ANON = NOME_DA_CHAVE ? process.env[NOME_DA_CHAVE] : undefined;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MAX_HISTORICO_SALVO = 40;
 const MAX_HISTORICO_CONTEXTO = 20;
@@ -1066,7 +1074,28 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v20-crm' });
+  // Healthcheck com diagnostico: diz QUAL env de chave esta valendo (nunca o
+  // valor) e se o banco responde. E o jeito de conferir de fora, sem adivinhar,
+  // se a troca pela chave de servico funcionou antes de fechar o banco.
+  if (req.method === 'GET') {
+    let banco = 'sem chave configurada';
+    if (SUPABASE_URL && SUPABASE_ANON) {
+      try {
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/lia_conversas?select=phone&limit=1`, {
+          headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
+        });
+        banco = r.ok ? 'ok' : 'sem acesso (' + r.status + ')';
+      } catch (e) {
+        banco = 'erro de rede';
+      }
+    }
+    return res.status(200).json({
+      status: 'zapi-webhook online v21-crm',
+      chave: NOME_DA_CHAVE,
+      servico: NOME_DA_CHAVE !== 'SUPABASE_ANON_KEY',
+      banco,
+    });
+  }
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
@@ -1484,6 +1513,8 @@ module.exports = async function handler(req, res) {
 module.exports.helpers = {
   SYSTEM_PROMPT,
   MODELO,
+  SUPABASE_KEY: SUPABASE_ANON,
+  NOME_DA_CHAVE,
   canonicalBR,
   primeiroNomeDe,
   delaysHumanos,
