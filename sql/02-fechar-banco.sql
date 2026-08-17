@@ -19,8 +19,15 @@
 -- Se rodar isto antes do passo 1, a LIA para de gravar conversa na hora.
 -- ===========================================================================
 
--- Ninguem de fora encosta nas tabelas da LIA. Quem escreve e le e a chave de
--- servico, que so existe dentro do servidor e nunca sai no HTML.
+-- Primeiro garante o acesso de quem PRECISA continuar entrando: o papel de
+-- servico, que e o webhook e o cron. Isso vem antes de qualquer revoke pra nao
+-- existir a chance de a LIA perder acesso junto com o resto.
+grant all on public.lia_conversas   to service_role;
+grant all on public.lia_processados to service_role;
+grant all on public.lia_leads       to service_role;
+grant all on public.lia_admins      to service_role;
+
+-- Agora sim: ninguem de fora encosta nas tabelas da LIA.
 alter table public.lia_conversas   enable row level security;
 alter table public.lia_processados enable row level security;
 
