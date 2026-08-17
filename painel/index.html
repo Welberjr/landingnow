@@ -1074,12 +1074,23 @@ function renderLeadsKpis(){
 
 function esc(t){return String(t==null?'':t).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));}
 
+/* No formulario vem "ERICK" e "erick", do jeito que a pessoa digitou. Arruma
+   so na exibicao: quem escreveu com maiuscula e minuscula de proposito
+   (Real Glass, Chaveiro HL) fica como esta. */
+function nomeBonito(t){
+  const s=String(t==null?'':t).trim();
+  if(!s)return s;
+  if(s!==s.toUpperCase()&&s!==s.toLowerCase())return s;
+  return s.toLowerCase().replace(/(^|[\s'-])([a-zà-ú])/g,(m,a,b)=>a+b.toUpperCase())
+          .replace(/\b(Da|De|Do|Das|Dos|E)\b/g,x=>x.toLowerCase());
+}
+
 function cardLead(l){
   // O titulo e o NEGOCIO quando existe. Quem revende fecha varias paginas e o
   // briefing vem sempre com o nome dele, entao por pessoa os cards ficariam
   // todos iguais. A pessoa vira a primeira linha do detalhe.
-  const titulo=l.negocio||l.nome||'Sem nome';
-  const pessoa=(l.negocio&&l.nome)?'com '+l.nome:null;
+  const titulo=nomeBonito(l.negocio)||nomeBonito(l.nome)||'Sem nome';
+  const pessoa=(l.negocio&&l.nome)?'com '+nomeBonito(l.nome):null;
   const detalhe=[pessoa,l.nicho,l.plano_ofertado?l.plano_ofertado+(l.valor_ofertado?' R$ '+l.valor_ofertado:''):null,
     l.objecao?'travou em: '+l.objecao:null,l.proximo_passo?'proximo: '+l.proximo_passo:null,l.motivo]
     .filter(Boolean).map(esc).join(' &middot; ');
