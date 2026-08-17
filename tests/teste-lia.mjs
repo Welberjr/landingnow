@@ -259,5 +259,38 @@ const { res: resNu, pega: pegaNu } = resposta();
 await followup({ method: 'GET', headers: {}, query: {} }, resNu);
 checar('sem segredo, 401', pegaNu().status === 401, JSON.stringify(pegaNu()));
 
+// ===========================================================================
+// O caso do Sergio, visto no CRM em 17/08: ficha em "novo" com o PRO ja
+// ofertado. Quem recebeu preco nao esta mais no comeco da fila, e lead parado
+// em "novo" tambem engana o kanban e a leitura do funil.
+console.log('\n[9] Plano ofertado nao pode conviver com estagio "novo"');
+limpar();
+respostaIA = 'O PRO sai por R$ 497 e fica pronto em 5 dias.\n[[CRM: nome=Sergio; plano=PRO; valor=497]]';
+await evento({ messageId: 'P1', phone: TEL_CLIENTE, connectedPhone: CONECTADO, fromMe: false,
+  senderName: 'Sergio', text: { message: 'Quanto custa?' } });
+checar('ofertou o plano e a ficha saiu de "novo"', leads.get(TEL_CLIENTE)?.estagio === 'proposta',
+  JSON.stringify(leads.get(TEL_CLIENTE)));
+
+// A ficha ja gravada errada tambem tem que se acertar sozinha na proxima
+// mensagem, sem ninguem editar o banco na mao.
+limpar();
+leads.set('551163411212', { phone: '551163411212', chave_conversa: '5511963411212', nome: 'Sergio',
+  estagio: 'novo', plano_ofertado: 'PRO', eh_cliente: false });
+respostaIA = 'Fechado, te mando o link.';
+await evento({ messageId: 'P2', phone: '5511963411212', connectedPhone: CONECTADO, fromMe: false,
+  senderName: 'Sergio', text: { message: 'Vou ver com meu socio e te falo' } });
+checar('ficha velha se corrigiu na proxima mensagem', leads.get('551163411212')?.estagio === 'proposta',
+  JSON.stringify(leads.get('551163411212')));
+
+// E o conserto nao pode empurrar pra tras quem ja andou no funil.
+limpar();
+leads.set('551163411212', { phone: '551163411212', chave_conversa: '5511963411212', nome: 'Sergio',
+  estagio: 'negociando', plano_ofertado: 'PRO', eh_cliente: false });
+respostaIA = 'Perfeito, aviso os socios.';
+await evento({ messageId: 'P3', phone: '5511963411212', connectedPhone: CONECTADO, fromMe: false,
+  senderName: 'Sergio', text: { message: 'Achei caro ainda' } });
+checar('nao rebaixou quem ja estava negociando', leads.get('551163411212')?.estagio === 'negociando',
+  JSON.stringify(leads.get('551163411212')));
+
 console.log(falhas === 0 ? '\nTUDO PASSOU' : '\n' + falhas + ' TESTE(S) FALHARAM');
 process.exit(falhas === 0 ? 0 : 1);

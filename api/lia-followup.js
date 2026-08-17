@@ -155,7 +155,7 @@ module.exports = async function handler(req, res) {
       // canonicaliza pra achar a linha, e assim o numero cru nao se perde.
       await H.salvarLead(chaveConversa, Object.assign(
         { followup_enviado_em: agora.toISOString() },
-        H.normalizarCrm(crm) || {}
+        H.normalizarCrm(crm, lead) || {}
       ));
       enviados.push({ phone, nome: lead.nome || null, texto });
     } catch (e) {

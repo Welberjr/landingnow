@@ -611,9 +611,9 @@ function extrairCrm(texto) {
 // Traduz o bloco cru da LIA pras colunas da tabela, jogando fora o que nao
 // reconhece. Campo que ela nao mandou fica de fora do update, pra nao apagar
 // o que ja estava certo.
-function normalizarCrm(crm) {
-  if (!crm) return null;
+function normalizarCrm(crm, leadAtual) {
   const out = {};
+  crm = crm || {};
   if (crm.nicho) out.nicho = crm.nicho;
   if (crm.nome) out.nome = crm.nome;
   if (crm.negocio) out.negocio = crm.negocio;
@@ -635,6 +635,16 @@ function normalizarCrm(crm) {
     if (isFinite(n) && n > 0) out.valor_ofertado = n;
   }
   if (out.estagio === 'ganho' || out.estagio === 'cliente') out.eh_cliente = true;
+
+  // Coerencia: ela quase sempre manda plano= e esquece estagio=, e a ficha fica
+  // parada em "novo" com o preco ja na mesa. Isso engana o kanban, engana a
+  // leitura do funil e faz a propria LIA achar que o assunto nem comecou. Quem
+  // recebeu proposta esta, no minimo, em "proposta". Nunca puxa pra tras: se ja
+  // andou pra negociando, ganho, perdido ou qualquer outro, fica onde esta.
+  const planoFinal = out.plano_ofertado || (leadAtual && leadAtual.plano_ofertado);
+  const estagioFinal = out.estagio || (leadAtual && leadAtual.estagio) || 'novo';
+  if (planoFinal && (estagioFinal === 'novo' || estagioFinal === 'qualificando')) out.estagio = 'proposta';
+
   return Object.keys(out).length ? out : null;
 }
 
@@ -1526,7 +1536,7 @@ module.exports = async function handler(req, res) {
       { ultima_mensagem_em: agoraIso },
       primeiroNome ? { nome: primeiroNome } : {},
       lead ? {} : { estagio: 'novo', origem: 'whatsapp' },
-      normalizarCrm(crm) || {}
+      normalizarCrm(crm, lead) || {}
     );
     if (userMessage && ehDespedidaDeLead(userMessage)) fichaNova.despedida_em = agoraIso;
     await salvarLead(chave, fichaNova);
