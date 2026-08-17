@@ -1111,14 +1111,25 @@ module.exports = async function handler(req, res) {
     const segredo = process.env.CRON_SECRET;
     const token = String((req.query && req.query.token) || '');
     if (segredo && token === segredo && SUPABASE_URL && SUPABASE_ANON) {
-      try {
-        const r = await fetch(
-          `${SUPABASE_URL}/rest/v1/lia_leads?select=nome,negocio,estagio,nicho,plano_ofertado,objecao,ultima_mensagem_em,followup_enviado_em&order=ultima_mensagem_em.desc.nullslast&limit=15`,
-          { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` } }
-        );
-        base.leads = r.ok ? await r.json() : 'erro ' + r.status;
-      } catch (e) {
-        base.leads = 'erro de rede';
+      // Duas tentativas: a completa e, se a coluna negocio ainda nao existir no
+      // banco, a antiga. Sem isso o diagnostico responde erro e quem esta
+      // olhando de fora entende "nenhum lead", que e bem pior do que um erro.
+      const colunas = [
+        'nome,negocio,estagio,nicho,plano_ofertado,objecao,ultima_mensagem_em,followup_enviado_em',
+        'nome,estagio,nicho,plano_ofertado,objecao,ultima_mensagem_em,followup_enviado_em',
+      ];
+      base.leads = 'nao consultado';
+      for (const sel of colunas) {
+        try {
+          const r = await fetch(
+            `${SUPABASE_URL}/rest/v1/lia_leads?select=${sel}&order=ultima_mensagem_em.desc.nullslast&limit=15`,
+            { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` } }
+          );
+          if (r.ok) { base.leads = await r.json(); break; }
+          base.leads = 'erro ' + r.status;
+        } catch (e) {
+          base.leads = 'erro de rede';
+        }
       }
     }
     return res.status(200).json(base);
