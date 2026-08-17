@@ -1021,6 +1021,20 @@ async function carregarLeads(){
     if(r.status===401){lt();toast('Sessao expirada. Faca login novamente.','er');setTimeout(()=>location.reload(),1600);return;}
     if(!r.ok)throw new Error('HTTP '+r.status);
     LEADS=await r.json();
+    // Quadro vazio tem duas causas bem diferentes: nao ter lead, ou o login
+    // nao estar liberado em lia_admins (o banco devolve lista vazia, nao erro).
+    // Sem distinguir, a tela mente com cara de normalidade.
+    if(!LEADS.length){
+      const a=await fetch(SB+'/rest/v1/lia_admins?select=email',{headers:{'apikey':AK,'Authorization':'Bearer '+gt()}});
+      const adm=a.ok?await a.json():[];
+      if(!adm.length){
+        let quem='';try{quem=JSON.parse(atob(gt().split('.')[1])).email||'';}catch(e){}
+        c.innerHTML='<div class="est">O CRM esta fechado pra esse login'+(quem?' ('+quem+')':'')+
+          '.<br>Pra liberar, esse e-mail precisa estar na tabela lia_admins do Supabase.</div>';
+        document.getElementById('lkpis').innerHTML='';
+        return;
+      }
+    }
     initFiltrosLeads();renderLeadsKpis();renderLeads();
   }catch(e){
     c.innerHTML='<div class="est">Nao consegui carregar os leads ('+e.message+').<br>Se isso persistir, confira se o seu e-mail esta na tabela lia_admins.</div>';
