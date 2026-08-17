@@ -1094,13 +1094,31 @@ module.exports = async function handler(req, res) {
     // A sonda do lia_leads e a que importa: essa tabela nasce fechada pra chave
     // publica. Se ela responder "ok, porem vazio" ou "ok, com dado", a chave em
     // uso e mesmo privilegiada e da pra revogar a anon sem derrubar a LIA.
-    return res.status(200).json({
-      status: 'zapi-webhook online v22-crm',
+    const base = {
+      status: 'zapi-webhook online v23-crm',
       chave: NOME_DA_CHAVE,
       servico: NOME_DA_CHAVE !== 'SUPABASE_ANON_KEY',
       banco: await sonda('lia_conversas'),
       crm: await sonda('lia_leads'),
-    });
+    };
+
+    // Resumo pra acompanhar as primeiras conversas de verdade. Fica atras do
+    // mesmo segredo do cron porque, mesmo sem texto de mensagem, nome e
+    // telefone de cliente nao podem ficar num endereco publico.
+    const segredo = process.env.CRON_SECRET;
+    const token = String((req.query && req.query.token) || '');
+    if (segredo && token === segredo && SUPABASE_URL && SUPABASE_ANON) {
+      try {
+        const r = await fetch(
+          `${SUPABASE_URL}/rest/v1/lia_leads?select=nome,estagio,nicho,plano_ofertado,objecao,ultima_mensagem_em,followup_enviado_em&order=ultima_mensagem_em.desc.nullslast&limit=15`,
+          { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` } }
+        );
+        base.leads = r.ok ? await r.json() : 'erro ' + r.status;
+      } catch (e) {
+        base.leads = 'erro de rede';
+      }
+    }
+    return res.status(200).json(base);
   }
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
