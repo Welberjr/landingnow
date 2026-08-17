@@ -219,6 +219,23 @@ body::after{content:'';position:fixed;top:-20%;left:-10%;width:800px;height:800p
   .fg{grid-template-columns:1fr}.ac{gap:6px}.ba{font-size:11px;padding:7px 12px}
   .cb2{gap:4px}.bd{font-size:10px;padding:3px 8px}.dv{font-size:20px}
 }
+/* Kanban dos leads da Lia */
+.kb{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;align-items:flex-start}
+.kc2{flex:0 0 250px;background:var(--bg-s);border:1px solid var(--ln);border-radius:var(--rad);padding:10px;transition:border-color .15s,background .15s}
+.kc2.over{border-color:var(--acc);background:var(--ns)}
+.kh{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid var(--ln)}
+.kt{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.kn{font-size:11px;font-weight:700;color:var(--mut);background:var(--bg);padding:2px 8px;border-radius:100px}
+.kcd{background:var(--bg-c);border:1px solid var(--ln);border-radius:10px;padding:10px 11px;margin-bottom:8px;cursor:grab}
+.kcd:active{cursor:grabbing}
+.kcd.arrastando{opacity:.4}
+.kcd b{font-size:13px;display:block;margin-bottom:3px}
+.kcd .kmeta{font-size:11px;color:var(--is);line-height:1.45}
+.kcd .kpe{font-size:10px;color:var(--mut);margin-top:5px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.kcd a.kwa{color:var(--vd);font-weight:700}
+.ksel{background:var(--bg-s);border:1px solid var(--ln);color:var(--mut);border-radius:6px;font-family:'Figtree';font-size:10px;padding:2px 4px;margin-top:6px;width:100%}
+.kvazio{font-size:11px;color:var(--mut);text-align:center;padding:10px 0}
+@media(max-width:640px){.kc2{flex:0 0 82vw}}
 </style>
 </head>
 <body>
@@ -965,14 +982,16 @@ document.getElementById('dper').onchange=renderDash;
    Tudo aqui e so leitura: quem escreve e a propria Lia, pelo webhook. A tabela
    lia_leads e fechada pra chave publica; so abre pra quem estiver em lia_admins.
 --------------------------------------------------------------------------- */
-let LEADS=[],LFILT='todos',LBUSCA='';
-const LEST=[
-  {k:'todos',l:'Todos'},{k:'novo',l:'Novos'},{k:'qualificando',l:'Qualificando'},
-  {k:'proposta',l:'Proposta'},{k:'negociando',l:'Negociando'},{k:'ganho',l:'Ganhos'},
-  {k:'perdido',l:'Perdidos'},{k:'cliente',l:'Clientes'},{k:'suporte',l:'Suporte'}
-];
+let LEADS=[],LVISTA='funil',LBUSCA='';
+const LCOLS={
+  funil:[{k:'novo',l:'Novo'},{k:'qualificando',l:'Qualificando'},{k:'proposta',l:'Proposta'},
+         {k:'negociando',l:'Negociando'},{k:'ganho',l:'Ganho'},{k:'perdido',l:'Perdido'}],
+  posvenda:[{k:'cliente',l:'Cliente'},{k:'suporte',l:'Suporte'}]
+};
+const LVISTAS=[{k:'funil',l:'Funil de venda'},{k:'posvenda',l:'Clientes e suporte'}];
 const LCOR={novo:'var(--az)',qualificando:'var(--az)',proposta:'var(--acc)',negociando:'var(--acc)',
   ganho:'var(--vd)',perdido:'var(--hot)',cliente:'var(--vd)',suporte:'var(--hot)'};
+const LTODOS=[...LCOLS.funil,...LCOLS.posvenda];
 
 function quando(iso){
   if(!iso)return '';
@@ -998,14 +1017,36 @@ async function carregarLeads(){
 
 function initFiltrosLeads(){
   const c=document.getElementById('lfls');if(c.dataset.pronto)return;c.dataset.pronto='1';
-  LEST.forEach(f=>{
+  LVISTAS.forEach(f=>{
     const b=document.createElement('button');
-    b.className='bf'+(f.k===LFILT?' on':'');b.textContent=f.l;
-    b.onclick=()=>{LFILT=f.k;[...c.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');renderLeads();};
+    b.className='bf'+(f.k===LVISTA?' on':'');b.textContent=f.l;
+    b.onclick=()=>{LVISTA=f.k;[...c.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');renderLeads();};
     c.appendChild(b);
   });
   document.getElementById('lq').oninput=e=>{LBUSCA=e.target.value.toLowerCase();renderLeads();};
   document.getElementById('lbrec').onclick=carregarLeads;
+}
+
+/* Move o lead de coluna. Escreve so o estagio: o resto da ficha e da Lia, e o
+   banco so liberou essa coluna pra quem esta em lia_admins. */
+async function moverLead(phone,estagio){
+  const lead=LEADS.find(l=>l.phone===phone);
+  if(!lead||lead.estagio===estagio)return;
+  const antes=lead.estagio;
+  lead.estagio=estagio;renderLeadsKpis();renderLeads();          // mexe na tela na hora
+  try{
+    const r=await fetch(SB+'/rest/v1/lia_leads?phone=eq.'+encodeURIComponent(phone),{
+      method:'PATCH',
+      headers:{'apikey':AK,'Authorization':'Bearer '+gt(),'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({estagio:estagio,atualizado_em:new Date().toISOString()})
+    });
+    if(r.status===401){lt();toast('Sessao expirada. Faca login novamente.','er');setTimeout(()=>location.reload(),1600);return;}
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    toast((lead.nome||phone)+' agora esta em '+estagio+'.');
+  }catch(e){
+    lead.estagio=antes;renderLeadsKpis();renderLeads();           // deu errado, volta
+    toast('Nao consegui mover ('+e.message+'). Nada foi alterado.','er');
+  }
 }
 
 function renderLeadsKpis(){
@@ -1019,31 +1060,59 @@ function renderLeadsKpis(){
     '<div class="kc"><div class="kl">'+k[0]+'</div><div class="kv">'+k[1]+'</div></div>').join('');
 }
 
+function esc(t){return String(t==null?'':t).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));}
+
+function cardLead(l){
+  const detalhe=[l.nicho,l.plano_ofertado?l.plano_ofertado+(l.valor_ofertado?' R$ '+l.valor_ofertado:''):null,
+    l.objecao?'travou em: '+l.objecao:null,l.proximo_passo?'proximo: '+l.proximo_passo:null,l.motivo]
+    .filter(Boolean).map(esc).join(' &middot; ');
+  const opcoes=LTODOS.map(o=>'<option value="'+o.k+'"'+(o.k===l.estagio?' selected':'')+'>'+o.l+'</option>').join('');
+  return '<div class="kcd" draggable="true" data-phone="'+esc(l.phone)+'">'+
+    '<b>'+esc(l.nome||'Sem nome')+'</b>'+
+    '<div class="kmeta">'+(detalhe||'sem detalhes ainda')+'</div>'+
+    '<div class="kpe"><span>'+esc(l.phone)+'</span><span>&middot;</span><span>'+quando(l.ultima_mensagem_em)+'</span>'+
+      (l.followup_enviado_em?'<span>&middot;</span><span>retomado</span>':'')+
+      '<a class="kwa" href="https://wa.me/'+esc(l.chave_conversa||l.phone)+'" target="_blank" rel="noopener">WhatsApp</a></div>'+
+    '<select class="ksel" data-phone="'+esc(l.phone)+'">'+opcoes+'</select>'+
+  '</div>';
+}
+
 function renderLeads(){
   const c=document.getElementById('llista');
-  const lista=LEADS.filter(l=>{
-    if(LFILT!=='todos'&&l.estagio!==LFILT)return false;
+  const visiveis=LEADS.filter(l=>{
     if(!LBUSCA)return true;
     return [l.nome,l.phone,l.nicho,l.objecao,l.motivo].filter(Boolean).join(' ').toLowerCase().includes(LBUSCA);
   });
-  if(!lista.length){c.innerHTML='<div class="est">Nenhum lead por aqui ainda.</div>';return;}
-  c.innerHTML=lista.map(l=>{
-    const cor=LCOR[l.estagio]||'var(--mut)';
-    const linha2=[l.nicho,l.plano_ofertado?l.plano_ofertado+(l.valor_ofertado?' R$ '+l.valor_ofertado:''):null,
-      l.objecao?'travou em: '+l.objecao:null,l.proximo_passo?'proximo: '+l.proximo_passo:null]
-      .filter(Boolean).join(' &middot; ');
-    return '<div style="background:var(--bg-c);border:1px solid var(--ln);border-radius:var(--rad);padding:14px 16px;margin-bottom:10px">'+
-      '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'+
-        '<strong style="font-size:15px">'+(l.nome||'Sem nome')+'</strong>'+
-        '<span class="ts" style="color:'+cor+';border:1px solid '+cor+'">'+(l.estagio||'novo')+'</span>'+
-        (l.followup_enviado_em?'<span class="ts">retomado</span>':'')+
-        '<a class="ts" style="margin-left:auto" href="https://wa.me/'+(l.chave_conversa||l.phone)+'" target="_blank" rel="noopener">abrir no WhatsApp</a>'+
-      '</div>'+
-      '<div class="fv" style="margin-top:6px">'+(linha2||'sem detalhes ainda')+'</div>'+
-      '<div style="margin-top:8px;font-size:11px;color:var(--mut);font-weight:600">'+l.phone+
-        ' &middot; falou '+quando(l.ultima_mensagem_em)+(l.motivo?' &middot; '+l.motivo:'')+'</div>'+
+  c.innerHTML='<div class="kb">'+LCOLS[LVISTA].map(col=>{
+    const dela=visiveis.filter(l=>(l.estagio||'novo')===col.k);
+    return '<div class="kc2" data-col="'+col.k+'">'+
+      '<div class="kh"><span class="kt" style="color:'+(LCOR[col.k]||'var(--mut)')+'">'+col.l+'</span>'+
+        '<span class="kn">'+dela.length+'</span></div>'+
+      (dela.length?dela.map(cardLead).join(''):'<div class="kvazio">vazio</div>')+
     '</div>';
-  }).join('');
+  }).join('')+'</div>';
+
+  // arrastar e soltar
+  c.querySelectorAll('.kcd').forEach(card=>{
+    card.addEventListener('dragstart',e=>{
+      e.dataTransfer.setData('text/plain',card.dataset.phone);
+      e.dataTransfer.effectAllowed='move';card.classList.add('arrastando');
+    });
+    card.addEventListener('dragend',()=>card.classList.remove('arrastando'));
+  });
+  c.querySelectorAll('.kc2').forEach(col=>{
+    col.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';col.classList.add('over');});
+    col.addEventListener('dragleave',()=>col.classList.remove('over'));
+    col.addEventListener('drop',e=>{
+      e.preventDefault();col.classList.remove('over');
+      moverLead(e.dataTransfer.getData('text/plain'),col.dataset.col);
+    });
+  });
+  // no celular arrastar nao funciona bem, entao o card tambem tem o seletor
+  c.querySelectorAll('.ksel').forEach(sel=>{
+    sel.addEventListener('mousedown',e=>e.stopPropagation());
+    sel.addEventListener('change',e=>moverLead(sel.dataset.phone,e.target.value));
+  });
 }
 </script>
 </body>

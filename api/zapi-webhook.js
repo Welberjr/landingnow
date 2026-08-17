@@ -1367,7 +1367,11 @@ module.exports = async function handler(req, res) {
     // POS-VENDA: quem ja e cliente nao pode receber venda. A LIA responde uma
     // linha acolhendo, pausa a conversa e chama os socios.
     // -----------------------------------------------------------------------
-    if ((lead && lead.eh_cliente) || (userMessage && cheiroDePosVenda(userMessage))) {
+    // O estagio conta junto com o eh_cliente pra quando um socio arrastar o card
+    // pra Cliente no painel: o kanban so escreve o estagio, e mesmo assim o
+    // arrasto tem que calar a venda de verdade.
+    const ehClienteAgora = !!lead && (lead.eh_cliente || lead.estagio === 'cliente' || lead.estagio === 'ganho');
+    if (ehClienteAgora || (userMessage && cheiroDePosVenda(userMessage))) {
       const aviso = (primeiroNome ? primeiroNome + ' ' : '') + rotuloCliente +
         ' esta falando de pos-venda, nao de compra. Pausei e nao ofereci nada.' +
         (userMessage ? '\nMensagem: "' + String(userMessage).slice(0, 180) + '"' : '') +
