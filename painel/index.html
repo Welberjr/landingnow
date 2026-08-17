@@ -239,6 +239,7 @@ body::after{content:'';position:fixed;top:-20%;left:-10%;width:800px;height:800p
       <button class="tab on" data-tab="briefings">Briefings</button>
       <button class="tab" data-tab="parceiros">Parceiros</button>
       <button class="tab" data-tab="notas">Notas</button>
+      <button class="tab" data-tab="leads">Leads da Lia</button>
       <button class="tab" data-tab="dash">Dashboard</button>
     </div>
     <div class="tr">
@@ -299,6 +300,16 @@ body::after{content:'';position:fixed;top:-20%;left:-10%;width:800px;height:800p
       <div class="nn" id="bnn">+ Clique para adicionar uma nota rapida</div>
       <div class="ng" id="ln2"><div class="est">Carregando...</div></div>
     </div>
+    <div class="ab" id="ab-leads">
+      <div class="kg" id="lkpis"></div>
+      <div class="tb">
+        <input class="bi" id="lq" type="search" placeholder="Buscar nome, telefone, nicho...">
+        <div class="fls" id="lfls"></div>
+        <button class="bex" id="lbrec">Recarregar</button>
+      </div>
+      <div id="llista"><div class="est">Carregando...</div></div>
+    </div>
+
     <div class="ab" id="ab-dash">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
         <h2 style="font-size:18px;font-weight:800">Dashboard</h2>
@@ -415,6 +426,7 @@ document.querySelectorAll('.tab').forEach(t=>{
     t.classList.add('on');
     document.getElementById('ab-'+t.dataset.tab).classList.add('on');
     if(t.dataset.tab==='dash')renderDash();
+    if(t.dataset.tab==='leads')carregarLeads();
   };
 });
 let BRIEFS=[],PARC=[],PAG=1,FILT='todos',BUSQ='';
@@ -947,6 +959,92 @@ function renderDash(){
   }
 }
 document.getElementById('dper').onchange=renderDash;
+
+/* ---------------------------------------------------------------------------
+   LEADS DA LIA
+   Tudo aqui e so leitura: quem escreve e a propria Lia, pelo webhook. A tabela
+   lia_leads e fechada pra chave publica; so abre pra quem estiver em lia_admins.
+--------------------------------------------------------------------------- */
+let LEADS=[],LFILT='todos',LBUSCA='';
+const LEST=[
+  {k:'todos',l:'Todos'},{k:'novo',l:'Novos'},{k:'qualificando',l:'Qualificando'},
+  {k:'proposta',l:'Proposta'},{k:'negociando',l:'Negociando'},{k:'ganho',l:'Ganhos'},
+  {k:'perdido',l:'Perdidos'},{k:'cliente',l:'Clientes'},{k:'suporte',l:'Suporte'}
+];
+const LCOR={novo:'var(--az)',qualificando:'var(--az)',proposta:'var(--acc)',negociando:'var(--acc)',
+  ganho:'var(--vd)',perdido:'var(--hot)',cliente:'var(--vd)',suporte:'var(--hot)'};
+
+function quando(iso){
+  if(!iso)return '';
+  const dias=Math.floor((Date.now()-new Date(iso).getTime())/86400000);
+  if(dias<=0)return 'hoje';
+  if(dias===1)return 'ontem';
+  return 'ha '+dias+' dias';
+}
+
+async function carregarLeads(){
+  const c=document.getElementById('llista');
+  try{
+    const r=await fetch(SB+'/rest/v1/lia_leads?select=*&order=ultima_mensagem_em.desc.nullslast',
+      {headers:{'apikey':AK,'Authorization':'Bearer '+gt()}});
+    if(r.status===401){lt();toast('Sessao expirada. Faca login novamente.','er');setTimeout(()=>location.reload(),1600);return;}
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    LEADS=await r.json();
+    initFiltrosLeads();renderLeadsKpis();renderLeads();
+  }catch(e){
+    c.innerHTML='<div class="est">Nao consegui carregar os leads ('+e.message+').<br>Se isso persistir, confira se o seu e-mail esta na tabela lia_admins.</div>';
+  }
+}
+
+function initFiltrosLeads(){
+  const c=document.getElementById('lfls');if(c.dataset.pronto)return;c.dataset.pronto='1';
+  LEST.forEach(f=>{
+    const b=document.createElement('button');
+    b.className='bf'+(f.k===LFILT?' on':'');b.textContent=f.l;
+    b.onclick=()=>{LFILT=f.k;[...c.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');renderLeads();};
+    c.appendChild(b);
+  });
+  document.getElementById('lq').oninput=e=>{LBUSCA=e.target.value.toLowerCase();renderLeads();};
+  document.getElementById('lbrec').onclick=carregarLeads;
+}
+
+function renderLeadsKpis(){
+  const n=e=>LEADS.filter(l=>l.estagio===e).length;
+  const emJogo=LEADS.filter(l=>['novo','qualificando','proposta','negociando'].includes(l.estagio)).length;
+  const kpis=[
+    ['Em jogo',emJogo],['Ganhos',n('ganho')],['Perdidos',n('perdido')],
+    ['Retomados',LEADS.filter(l=>l.followup_enviado_em).length]
+  ];
+  document.getElementById('lkpis').innerHTML=kpis.map(k=>
+    '<div class="kc"><div class="kl">'+k[0]+'</div><div class="kv">'+k[1]+'</div></div>').join('');
+}
+
+function renderLeads(){
+  const c=document.getElementById('llista');
+  const lista=LEADS.filter(l=>{
+    if(LFILT!=='todos'&&l.estagio!==LFILT)return false;
+    if(!LBUSCA)return true;
+    return [l.nome,l.phone,l.nicho,l.objecao,l.motivo].filter(Boolean).join(' ').toLowerCase().includes(LBUSCA);
+  });
+  if(!lista.length){c.innerHTML='<div class="est">Nenhum lead por aqui ainda.</div>';return;}
+  c.innerHTML=lista.map(l=>{
+    const cor=LCOR[l.estagio]||'var(--mut)';
+    const linha2=[l.nicho,l.plano_ofertado?l.plano_ofertado+(l.valor_ofertado?' R$ '+l.valor_ofertado:''):null,
+      l.objecao?'travou em: '+l.objecao:null,l.proximo_passo?'proximo: '+l.proximo_passo:null]
+      .filter(Boolean).join(' &middot; ');
+    return '<div style="background:var(--bg-c);border:1px solid var(--ln);border-radius:var(--rad);padding:14px 16px;margin-bottom:10px">'+
+      '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'+
+        '<strong style="font-size:15px">'+(l.nome||'Sem nome')+'</strong>'+
+        '<span class="ts" style="color:'+cor+';border:1px solid '+cor+'">'+(l.estagio||'novo')+'</span>'+
+        (l.followup_enviado_em?'<span class="ts">retomado</span>':'')+
+        '<a class="ts" style="margin-left:auto" href="https://wa.me/'+(l.chave_conversa||l.phone)+'" target="_blank" rel="noopener">abrir no WhatsApp</a>'+
+      '</div>'+
+      '<div class="fv" style="margin-top:6px">'+(linha2||'sem detalhes ainda')+'</div>'+
+      '<div style="margin-top:8px;font-size:11px;color:var(--mut);font-weight:600">'+l.phone+
+        ' &middot; falou '+quando(l.ultima_mensagem_em)+(l.motivo?' &middot; '+l.motivo:'')+'</div>'+
+    '</div>';
+  }).join('');
+}
 </script>
 </body>
 </html>

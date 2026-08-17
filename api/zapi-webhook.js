@@ -21,7 +21,12 @@
 // ============================================================================
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON = process.env.SUPABASE_ANON_KEY;
+// Chave de acesso ao banco. Prefere a chave de SERVICO, que so existe aqui no
+// servidor; a anon fica de reserva pra nada cair enquanto a env nova nao sobe.
+// A anon estava publicada em painel/index.html, que e versionado em repo
+// publico, entao ela perde o acesso as tabelas da LIA assim que a service key
+// estiver na Vercel (SQL em sql/02-fechar-banco.sql).
+const SUPABASE_ANON = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MAX_HISTORICO_SALVO = 40;
 const MAX_HISTORICO_CONTEXTO = 20;
@@ -70,6 +75,78 @@ function pedeParaParar(texto) {
   if (/(par[ae]r?|pare) (de|com) (mandar|enviar|responder|falar|me mandar|me enviar)/.test(t)) return true;
   if (/(me deixa em paz|nao me mande? mais|nao quero mais (falar|receber|nada)|descadastr|sai do meu|me tira d)/.test(t)) return true;
   if (t.length <= 32 && /^(pare|para|parar|chega|stop|silencio|quieto)[\s!.,]*(ai|com isso|por favor|pfv|pf)?[\s!.,]*$/.test(t)) return true;
+  return false;
+}
+
+// ---------------------------------------------------------------------------
+// SABER CALAR
+// A conversa acabou e o cliente so esta sendo educado ("ok", "obrigada",
+// "depois eu falo com voces"). A LIA agradece UMA vez e depois fica quieta.
+// Isso nao pode ser so instrucao de prompt: a API sempre devolve texto, entao
+// se depender da boa vontade dela, ela fala. Tem que ser trava de codigo.
+// ---------------------------------------------------------------------------
+const PALAVRAS_DE_CORTESIA = new Set(('ok okay okei oki blz beleza ta tah bom certo combinado perfeito otimo show top ' +
+  'legal massa valeu vlw obrigado obrigada brigado brigada obg agradecido agradecida nada isso sim uhum aham ' +
+  'entendi entendido ja vi tmj abraco abracos abs att dia tarde noite ate logo mais depois falo falamos conversamos ' +
+  'volta voltamos conversar retorno aviso chamo qualquer coisa eu te lhe com voces voce vou pensar ver decidir ' +
+  'amanha semana breve tambem so a o e de da do que me na no um uma pra para por favor pf pfv').split(' '));
+
+function ehSoCortesia(texto) {
+  const t = semAcento(texto)
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!t) return true;                       // so emoji ou so pontuacao
+  if (t.length > 70) return false;
+  return t.split(' ').every(function (p) { return PALAVRAS_DE_CORTESIA.has(p); });
+}
+
+// "Vou pensar e te falo", "depois eu falo com voces", "qualquer coisa eu chamo".
+// Marca a despedida do lead: e exatamente esse cliente que o follow-up de dois
+// dias vem buscar depois.
+function ehDespedidaDeLead(texto) {
+  const t = semAcento(texto);
+  if (/(vou|vamos) (pensar|ver|analisar|conversar|decidir|avaliar)/.test(t)) return true;
+  if (/(depois|mais tarde|amanha|semana que vem)[^.]{0,20}(falo|te falo|te chamo|retorno|volto|aviso)/.test(t)) return true;
+  if (/(qualquer coisa|se precisar|quando (eu )?decidir)[^.]{0,20}(chamo|falo|aviso)/.test(t)) return true;
+  if (/(volto a falar|te falo depois|te aviso|te retorno|entro em contato)/.test(t)) return true;
+  return ehSoCortesia(texto);
+}
+
+// Mensagem que merece resposta mesmo depois da despedida: tem pergunta, pedido
+// ou assunto de verdade.
+function pareceMensagemDeVerdade(texto) {
+  const bruto = String(texto || '');
+  if (/\?/.test(bruto)) return true;
+  if (bruto.length > 90) return true;        // texto longo nunca e so cortesia
+  const t = semAcento(bruto);
+  return /\b(quero|queria|gostaria|pode|poderia|manda|mande|envia|envie|como|quanto|qual|quais|quando|onde|porque|por que|preciso|fecha|fechar|fechamos|vamos|bora|aceito|topo|link|pix|pagar|paguei|comprovante|briefing|duvida|ajuda|ajudar|problema|erro|orcamento|prazo|plano|site|landing|pagina)\b/.test(t);
+}
+
+// A ultima troca ja foi uma despedida? Deriva do proprio historico, sem
+// precisar de estado novo no banco: se a mensagem anterior do cliente ja era
+// cortesia e a LIA respondeu, o assunto morreu ali.
+function jaSeDespediram(historico) {
+  const msgs = (historico || []).filter(function (m) { return m && m.content; });
+  if (!msgs.length) return false;
+  // Olha a ULTIMA mensagem do cliente antes desta. Nao exige resposta da LIA no
+  // meio: depois que ela cala, o historico termina em mensagem do cliente, e a
+  // conversa continua encerrada do mesmo jeito.
+  const anteriorDoCliente = [...msgs].reverse().find(function (m) { return m.role === 'user'; });
+  if (!anteriorDoCliente) return false;
+  return ehDespedidaDeLead(anteriorDoCliente.content);
+}
+
+// ---------------------------------------------------------------------------
+// POS-VENDA: quem ja e cliente nao pode receber venda.
+// Foi o que aconteceu com o cliente que so queria um ajuste e levou enxurrada
+// de oferta. Aqui a LIA cala, chama o Welber e o Caio, e sai da frente.
+// ---------------------------------------------------------------------------
+function cheiroDePosVenda(texto) {
+  const t = semAcento(texto);
+  if (/(voces (fizeram|criaram|montaram|entregaram|desenvolveram)|(site|landing|pagina) que voces|ja sou cliente|ja fechei com voces|ja contratei|comprei com voces|fiz o pagamento com voces)/.test(t)) return true;
+  if (/(nao esta (abrindo|funcionando|no ar|carregando)|nao abre|saiu do ar|fora do ar|caiu o site|deu erro|esta bugad)/.test(t)) return true;
+  if (/\b(suporte|manutencao)\b/.test(t)) return true;
   return false;
 }
 
@@ -492,6 +569,118 @@ async function registrarFromMe(body, ids) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// CRM (tabela lia_leads)
+// A LIA preenche sozinha, de carona na resposta que ela ja ia dar: ela devolve
+// um bloco [[CRM: ...]] no fim do texto, o codigo arranca esse bloco antes de
+// enviar e grava. Custo zero de IA, e o cliente nunca ve.
+// ---------------------------------------------------------------------------
+const ESTAGIOS = ['novo', 'qualificando', 'proposta', 'negociando', 'ganho', 'perdido', 'cliente', 'suporte'];
+const PLANOS = ['START', 'PRO', 'PREMIUM', 'PREMIUM IA', 'AMOSTRA'];
+
+function extrairCrm(texto) {
+  let crm = null;
+  const limpo = String(texto || '').replace(/\[\[\s*CRM\s*:?\s*([\s\S]*?)\]\]/gi, function (m, g1) {
+    const dados = {};
+    for (const parte of String(g1 || '').split(';')) {
+      const i = parte.indexOf('=');
+      if (i === -1) continue;
+      const chave = semAcento(parte.slice(0, i)).replace(/\W/g, '');
+      const valor = parte.slice(i + 1).trim();
+      if (!chave || !valor || /^(nao sei|nulo|null|vazio|-)$/i.test(valor)) continue;
+      dados[chave] = valor.slice(0, 240);
+    }
+    if (Object.keys(dados).length) crm = dados;
+    return '';
+  }).trim();
+  return { limpo, crm };
+}
+
+// Traduz o bloco cru da LIA pras colunas da tabela, jogando fora o que nao
+// reconhece. Campo que ela nao mandou fica de fora do update, pra nao apagar
+// o que ja estava certo.
+function normalizarCrm(crm) {
+  if (!crm) return null;
+  const out = {};
+  if (crm.nicho) out.nicho = crm.nicho;
+  if (crm.nome) out.nome = crm.nome;
+  if (crm.objecao) out.objecao = crm.objecao;
+  if (crm.motivo) out.motivo = crm.motivo;
+  if (crm.proximo) out.proximo_passo = crm.proximo;
+  if (crm.proximopasso) out.proximo_passo = crm.proximopasso;
+  if (crm.origem) out.origem = crm.origem;
+  if (crm.estagio) {
+    const e = semAcento(crm.estagio).replace(/\W/g, '');
+    if (ESTAGIOS.indexOf(e) !== -1) out.estagio = e;
+  }
+  if (crm.plano) {
+    const p = String(crm.plano).toUpperCase().replace(/[^A-Z ]/g, '').trim();
+    if (PLANOS.indexOf(p) !== -1) out.plano_ofertado = p;
+  }
+  if (crm.valor) {
+    const n = Number(String(crm.valor).replace(/[^\d]/g, ''));
+    if (isFinite(n) && n > 0) out.valor_ofertado = n;
+  }
+  if (out.estagio === 'ganho' || out.estagio === 'cliente') out.eh_cliente = true;
+  return Object.keys(out).length ? out : null;
+}
+
+async function lerLead(phone) {
+  if (!SUPABASE_URL || !SUPABASE_ANON || !phone) return null;
+  try {
+    const url = `${SUPABASE_URL}/rest/v1/lia_leads?phone=eq.${encodeURIComponent(canonicalBR(phone))}&select=*`;
+    const r = await fetch(url, { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` } });
+    if (!r.ok) return null;                  // tabela ainda nao criada: segue a vida
+    const data = await r.json();
+    return Array.isArray(data) && data.length ? data[0] : null;
+  } catch (e) {
+    console.error('[crm] erro ao ler:', e);
+    return null;
+  }
+}
+
+// O lead e sempre gravado na forma canonica do telefone, mas a conversa fica
+// guardada com o numero cru que o Z-API mandou (que pode ter o nono digito).
+// Por isso a chave da conversa vai junto: sem ela o follow-up procurava o
+// historico na chave errada e mandava retomada sem contexto nenhum.
+async function salvarLead(phone, dados) {
+  if (!SUPABASE_URL || !SUPABASE_ANON || !phone || !dados) return;
+  try {
+    const corpo = Object.assign(
+      { phone: canonicalBR(phone), chave_conversa: String(phone), atualizado_em: new Date().toISOString() },
+      dados
+    );
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/lia_leads`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON,
+        Authorization: `Bearer ${SUPABASE_ANON}`,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates',
+      },
+      body: JSON.stringify(corpo),
+    });
+    if (!r.ok) console.error('[crm] salvar falhou:', r.status, await r.text());
+  } catch (e) {
+    console.error('[crm] erro ao salvar:', e);
+  }
+}
+
+// Ficha curta do lead pra LIA saber com quem esta falando antes de responder.
+function resumoDoLead(lead) {
+  if (!lead) return '';
+  const partes = [];
+  if (lead.nome) partes.push('nome ' + lead.nome);
+  if (lead.nicho) partes.push('nicho ' + lead.nicho);
+  if (lead.estagio) partes.push('estagio ' + lead.estagio);
+  if (lead.plano_ofertado) partes.push('ja ofertei o ' + lead.plano_ofertado + (lead.valor_ofertado ? ' por R$ ' + lead.valor_ofertado : ''));
+  if (lead.objecao) partes.push('objecao dele: ' + lead.objecao);
+  if (lead.proximo_passo) partes.push('proximo passo combinado: ' + lead.proximo_passo);
+  if (lead.eh_cliente) partes.push('ATENCAO: essa pessoa JA E CLIENTE, nao ofereca nada, so ajude e chame os socios');
+  if (!partes.length) return '';
+  return '\n\nFICHA INTERNA DESSE CONTATO (nunca cite isso pro cliente): ' + partes.join('; ') + '.';
+}
+
 async function listarPausadas() {
   if (!SUPABASE_URL || !SUPABASE_ANON) return [];
   try {
@@ -700,9 +889,21 @@ Quase todo cliente que chega aqui veio de um anuncio do plano PRO de R$ 497. Ent
 2. Nunca puxe o cliente para baixo. E proibido voce sugerir o START de R$ 297 por iniciativa propria so porque acha que e mais barato ou mais simples. O START so entra nas situacoes especificas descritas mais abaixo, nunca antes.
 3. Nunca puxe o cliente para cima. Nao fique oferecendo o PREMIUM de R$ 997 nem o PREMIUM IA de R$ 1.497 por conta propria. Se o cliente tiver interesse em mais recursos ou em IA, ele mesmo pergunta.
 4. Se o cliente perguntar se existem outros planos ou outros precos, ai sim voce informa que existem, de forma honesta e curta, mas sempre reforcando o valor do PRO e trazendo o cliente de volta pra ele. Voce informa que existem, e recomenda o PRO.
-O START de R$ 297 so pode partir de voce em duas situacoes, nunca fora delas:
+O START de R$ 297 so pode partir de voce em tres situacoes, nunca fora delas:
 a) O cliente pediu diretamente uma opcao mais barata ou perguntou pelos planos mais em conta.
 b) O cliente deixou claro que nao tem como fechar o PRO mesmo parcelado (falou que esta muito apertado, que nao tem esse valor agora, que esta dificil), e isso so depois de voce ja ter oferecido o parcelamento em ate 12x e ele ainda assim sinalizar que nao da. Ai sim voce apresenta o START como alternativa, com cuidado, pra nao deixar o cliente sem solucao.
+c) Voce sentiu que vai PERDER o cliente. Nao precisa dele falar com todas as letras que nao tem o dinheiro: se depois do preco ele esfriou, achou caro, ficou em silencio no assunto, disse "vou pensar", "esta fora do meu orcamento", "por enquanto nao da", ou qualquer sinal de que a conversa vai morrer ali, voce pode apresentar o START. Primeiro tente o parcelamento; se mesmo assim o clima for de despedida, oferece o START de forma leve e natural, como quem esta ajudando e nao como quem esta implorando venda. Exemplo do tom: "Entendo! Olha, se o momento pede algo mais enxuto, tem o START por R$ 297, que ja te coloca no ar com uma pagina bem feita. Quer que eu te explique rapidinho?".
+Ordem sagrada, nunca pule etapa nem inverta: PRO 497, depois parcelamento em ate 12x, depois START 297, e so entao a AMOSTRA SEM CUSTO descrita abaixo.
+
+AMOSTRA SEM CUSTO (a ultima cartada, use com criterio):
+Se o cliente recusou tambem o START e voce ja tem certeza de que ele vai embora sem comprar nada, voce pode fazer a ultima oferta: a LandingNow cria a landing page dele sem nenhum custo antecipado, ele ve pronta, e so paga se aprovar. Se ele nao aprovar, nao paga nada e nao fica devendo nada. O valor, se ele aprovar, e de R$ 297.
+Regras dessa oferta:
+1. So depois do START ter sido recusado. Nunca antes, nunca como primeira nem segunda opcao.
+2. So quando o cliente estiver de saida de verdade. Se ele ainda esta conversando e considerando, voce continua no PRO ou no START.
+3. Uma vez por cliente. Se ele recusar tambem a amostra, agradeca com carinho, se coloque a disposicao e encerre. Nao insista.
+4. Deixe absolutamente claro que ele nao paga nada agora e nao paga nada se nao gostar.
+5. Sempre que usar essa oferta, avise os socios pelo marcador interno: [[AVISAR_WELBER: AMOSTRA SEM CUSTO oferecida pro cliente NOME (TELEFONE). Ele so paga R$ 297 se aprovar.]]
+Exemplo do tom: "Entao deixa eu te fazer uma proposta diferente: a gente monta sua landing page do jeito que a gente faz pros clientes, sem voce pagar nada agora. Voce ve pronta, e se gostar, ai sim paga os R$ 297. Se nao gostar, nao paga nada e ta tudo certo entre a gente. Topa?".
 
 DETECCAO DE INTENCAO (a regra mais importante de todas):
 Antes de cada resposta, identifique em qual momento o cliente esta:
@@ -803,6 +1004,31 @@ O cliente NUNCA ve esse marcador, ele e removido antes do envio. Use o marcador 
 4. Cliente pediu expressamente falar com o responsavel: [[AVISAR_WELBER: Cliente NOME pediu pra falar com voces.]]
 Fora desses casos, NAO use o marcador. Nunca mencione ao cliente que existe esse canal interno, nem sistema de avisos, nem comandos.
 
+SABER A HORA DE CALAR (regra de educacao, leve a serio):
+Conversa tem fim. Quando o cliente se despede ou so esta sendo educado ("ok", "obrigada", "valeu", "beleza", "depois eu falo com voces", "vou pensar e te falo"), voce responde UMA vez, curtinho e caloroso, e para por ai. Se ele mandar mais um "ok" ou mais um "obrigada" depois disso, NAO responda de novo, nao puxe assunto, nao pergunte mais nada, nao ofereca mais nada. Ficar respondendo "ok" com "ok" e cansativo e passa impressao de robo.
+Voce so volta a falar se ele trouxer assunto de verdade: uma pergunta, um pedido, uma duvida nova.
+Despedida boa e curta e sem gancho. Nada de "posso te ajudar em mais alguma coisa?" no fim de toda mensagem.
+
+QUEM JA E CLIENTE NAO RECEBE VENDA (regra seria, nunca quebre):
+Tem gente que fala com voce depois de ja ter comprado. Vem pedir um ajuste, uma alteracao, um suporte, avisar que algo nao esta abrindo, tirar duvida de algo que ja foi entregue. Nesses casos:
+1. NAO ofereca plano nenhum, nao fale de preco, nao tente vender nada, em hipotese alguma.
+2. Acolha em uma linha e diga que ja esta chamando o Welber e o Caio.
+3. Use o marcador: [[AVISAR_WELBER: Pos-venda. Cliente NOME (TELEFONE) precisa de X. Nao ofereci nada.]]
+Se voce ficar em duvida se a pessoa e cliente ou lead, trate como cliente e chame os socios. Errar oferecendo venda pra quem ja comprou e muito pior do que errar chamando um humano.
+
+FICHA DO CRM (regra tecnica, obrigatoria em toda resposta):
+No FINAL de toda resposta, em uma linha separada, escreva o marcador com o que voce entendeu do contato ate agora. O cliente NUNCA ve isso, o sistema remove antes de enviar:
+[[CRM: nome=; nicho=; estagio=; plano=; valor=; objecao=; motivo=; proximo=]]
+Como preencher cada campo (se nao souber algum, deixe vazio ou omita o campo, nunca invente):
+nome: primeiro nome da pessoa.
+nicho: o ramo do negocio dela em uma ou duas palavras (advocacia, estetica, lan house, restaurante, imobiliaria).
+estagio: um destes, exatamente: novo (acabou de chegar), qualificando (voce esta entendendo o negocio), proposta (ja apresentou plano e preco), negociando (ele objetou, esta pensando, pediu prazo), ganho (fechou e pagou ou disse que pagou), perdido (disse que nao quer), cliente (ja era cliente antes), suporte (veio por pos-venda).
+plano: START, PRO, PREMIUM, PREMIUM IA ou AMOSTRA, conforme o que voce ofereceu nesta conversa.
+valor: so o numero do valor ofertado, sem R$ nem pontuacao (297, 497, 997, 1497).
+objecao: o que travou, em poucas palavras (achou caro, vai pensar, ja tem site, sem tempo, quer ver portfolio).
+motivo: por que ganhou ou por que perdeu, quando ja der pra saber.
+proximo: o proximo passo combinado (mandar briefing, aguardar decisao dele, conferir pagamento).
+
 OBJECOES (responda curto, com empatia, sem ficar na defensiva):
 Achou caro ou disse que esta apertado: primeiro mantenha o cliente no PRO. Reforce com gentileza que a qualidade e a mesma de quem cobra muito mais, e mostre as facilidades de pagamento: da pra dividir no Pix em duas partes (a segunda so na entrega, apos a aprovacao) ou parcelar no cartao em ate 12x, alem da garantia de reembolso. Pergunte o que cabe melhor pra ele. So se, mesmo depois disso, o cliente deixar claro que realmente nao tem como fechar o PRO nem parcelado, ai voce apresenta o START de R$ 297 como uma opcao mais em conta, explicando o que ele inclui e as diferencas em relacao ao PRO.
 Vai pensar: tudo bem, pergunta com leveza o que ainda ficou de duvida pra ajudar. Se nao houver duvida, diga que fica a disposicao e que quando ela quiser e so chamar.
@@ -836,7 +1062,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v19-lid' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v20-crm' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
@@ -1078,9 +1304,51 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ignored: 'no-content' });
     }
 
-    // 1. Le o historico persistido
+    // 1. Le o historico persistido e a ficha do lead
     const { mensagens: historico, nome: nomeSalvo } = await lerConversa(chave);
     const primeiroNome = primeiroNomeDe(nomeSalvo || senderName);
+    const lead = await lerLead(chave);
+    const agoraIso = new Date().toISOString();
+
+    // -----------------------------------------------------------------------
+    // SABER CALAR: a conversa ja se encerrou e o cliente so esta sendo educado.
+    // A LIA agradece uma vez (na troca anterior) e daqui pra frente fica quieta
+    // ate ele voltar com assunto de verdade. Sem isso vira aquele pingue-pongue
+    // de "ok" com "ok" que aconteceu com a Adriana em 16/08.
+    // -----------------------------------------------------------------------
+    if (userMessage && jaSeDespediram(historico) && !pareceMensagemDeVerdade(userMessage)) {
+      historico.push({ role: 'user', content: userMessage, t: Date.now() });
+      await salvarConversa(chave, historico, primeiroNome);
+      await salvarLead(chave, { ultima_mensagem_em: agoraIso, despedida_em: agoraIso });
+      console.log('[lia] silencio cortes', { chave });
+      return res.status(200).json({ ok: true, silencio: 'cortesia' });
+    }
+
+    // -----------------------------------------------------------------------
+    // POS-VENDA: quem ja e cliente nao pode receber venda. A LIA responde uma
+    // linha acolhendo, pausa a conversa e chama os socios.
+    // -----------------------------------------------------------------------
+    if ((lead && lead.eh_cliente) || (userMessage && cheiroDePosVenda(userMessage))) {
+      const aviso = (primeiroNome ? primeiroNome + ' ' : '') + rotuloCliente +
+        ' esta falando de pos-venda, nao de compra. Pausei e nao ofereci nada.' +
+        (userMessage ? '\nMensagem: "' + String(userMessage).slice(0, 180) + '"' : '') +
+        '\nhttps://wa.me/' + rotuloCliente;
+      const acolhida = (primeiroNome ? 'Oi, ' + primeiroNome + '! ' : 'Oi! ') +
+        'Ja estou chamando o Welber e o Caio aqui pra te atender direitinho nisso. E rapidinho!';
+      historico.push({ role: 'user', content: userMessage || '[o cliente enviou uma midia]', t: Date.now() });
+      historico.push({ role: 'assistant', content: acolhida, t: Date.now() });
+      await salvarConversa(chave, historico, primeiroNome);
+      await definirPausaVarios(alvosPausa, true);
+      await salvarLead(chave, {
+        nome: primeiroNome || null,
+        estagio: 'suporte',
+        eh_cliente: true,
+        ultima_mensagem_em: agoraIso,
+      });
+      await enviarWhatsapp(chave, acolhida, 3, 0);
+      await notificarAdmin('Pos-venda, nao venda: ' + aviso);
+      return res.status(200).json({ ok: true, paused: 'pos-venda' });
+    }
 
     // -----------------------------------------------------------------------
     // TRAVA 3: freio de arranque. Se a LIA ja disparou demais nessa conversa,
@@ -1128,9 +1396,9 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ error: 'api-key-missing' });
     }
 
-    const systemFinal = primeiroNome
+    const systemFinal = (primeiroNome
       ? `${SYSTEM_PROMPT}\n\nO nome do cliente com quem voce esta falando agora e: ${primeiroNome}. Use sempre apenas esse primeiro nome.`
-      : SYSTEM_PROMPT;
+      : SYSTEM_PROMPT) + resumoDoLead(lead);
 
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -1156,8 +1424,10 @@ module.exports = async function handler(req, res) {
     const data = await anthropicResponse.json();
     const rawReply = data?.content?.[0]?.text || 'Pode repetir, por favor? Acho que me perdi aqui.';
 
-    // 3. Extrai avisos internos pro Welber e limpa o texto
-    const { limpo, avisos } = extrairAvisos(rawReply);
+    // 3. Extrai avisos internos e a ficha do CRM, e limpa o texto.
+    // Os dois marcadores saem antes do envio: o cliente nunca ve nada disso.
+    const { limpo: semAvisos, avisos } = extrairAvisos(rawReply);
+    const { limpo, crm } = extrairCrm(semAvisos);
     const reply = sanitizarTexto(limpo) || 'Pode repetir, por favor? Acho que me perdi aqui.';
 
     // Re-checa a pausa: pode ter sido pausada ENQUANTO a resposta era gerada
@@ -1173,6 +1443,18 @@ module.exports = async function handler(req, res) {
     historico.push({ role: 'user', content: registroUser, t: Date.now() });
     historico.push({ role: 'assistant', content: reply, t: Date.now() });
     await salvarConversa(chave, historico, primeiroNome);
+
+    // 4b. Atualiza o CRM com o que ela leu da conversa. Campo que ela nao
+    // mandou fica como estava, pra uma resposta distraida nao apagar o que ja
+    // estava certo.
+    const fichaNova = Object.assign(
+      { ultima_mensagem_em: agoraIso },
+      primeiroNome ? { nome: primeiroNome } : {},
+      lead ? {} : { estagio: 'novo', origem: 'whatsapp' },
+      normalizarCrm(crm) || {}
+    );
+    if (userMessage && ehDespedidaDeLead(userMessage)) fichaNova.despedida_em = agoraIso;
+    await salvarLead(chave, fichaNova);
 
     // 5. Envia UMA mensagem com demora humana
     const { typing, message: dmsg } = delaysHumanos(reply);
@@ -1191,4 +1473,28 @@ module.exports = async function handler(req, res) {
     console.error('[zapi-webhook] Erro inesperado:', err);
     return res.status(200).json({ ok: false });
   }
+};
+
+// Exposto pro cron de follow-up (api/lia-followup.js). Melhor compartilhar do
+// que copiar: regra de pausa duplicada e regra que vai divergir.
+module.exports.helpers = {
+  SYSTEM_PROMPT,
+  MODELO,
+  canonicalBR,
+  primeiroNomeDe,
+  delaysHumanos,
+  sanitizarTexto,
+  extrairAvisos,
+  extrairCrm,
+  normalizarCrm,
+  resumoDoLead,
+  expandirIds,
+  estaPausadaQualquer,
+  definirPausaVarios,
+  lerConversa,
+  salvarConversa,
+  lerLead,
+  salvarLead,
+  enviarWhatsapp,
+  notificarAdmin,
 };
