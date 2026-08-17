@@ -106,8 +106,87 @@ const ADMIN_CANONS = Array.from(new Set(
 ));
 const ADMIN_CANON = ADMIN_CANONS[0];
 function ehAdmin(phone) {
-  return !!phone && ADMIN_CANONS.indexOf(canonicalBR(phone)) !== -1;
+  return !!phone && ehAdminId(canonicalBR(phone));
 }
+
+// ---------------------------------------------------------------------------
+// LID x telefone (incidente de 16/08/2026)
+// O WhatsApp migrou os contatos pro LID e o Z-API passou a mandar, em parte dos
+// eventos, um identificador de 14+ digitos no lugar do telefone. Como a pausa
+// era gravada e consultada por UM campo so, ela ia parar numa chave que ninguem
+// consultava: gravava ctrl:62113968054524 e conferia ctrl:553198432712. Era por
+// isso que a LIA continuava respondendo depois de pausada. Pior: o proprio dono
+// deixou de ser reconhecido quando a mensagem dele chegou com LID, e o comando
+// "pausar NUMERO" virou conversa de cliente.
+// Agora a conversa e identificada pelo CONJUNTO de identificadores do evento e
+// a pausa vale se qualquer um deles bater.
+// ---------------------------------------------------------------------------
+function soDigitos(v) {
+  return String(v || '').replace(/\D/g, '');
+}
+
+// Telefone de verdade tem no maximo 13 digitos (55 + DDD + 9 digitos). Acima
+// disso, ou marcado com @lid, e identificador interno do WhatsApp.
+function ehLid(v) {
+  return /@lid/i.test(String(v || '')) || soDigitos(v).length >= 14;
+}
+
+// LIDs dos socios. Sem isso a LIA nao reconhece o proprio dono quando o evento
+// chega com LID. Formato da env ADMIN_LIDS: LID:TELEFONE ou so o LID, varios
+// separados por virgula.
+const ADMIN_LID_MAP = Object.create(null);
+ADMIN_LID_MAP['62113968054524'] = canonicalBR(ADMIN_PHONE); // Welber, do chatLid do payload de 10/06
+for (const par of String(process.env.ADMIN_LIDS || '').split(',')) {
+  const lid = soDigitos(par.split(':')[0]);
+  const tel = soDigitos(par.split(':')[1] || '');
+  if (lid) ADMIN_LID_MAP[lid] = tel ? canonicalBR(tel) : ADMIN_CANON;
+}
+
+function ehAdminId(id) {
+  if (!id) return false;
+  return ADMIN_CANONS.indexOf(id) !== -1 || !!ADMIN_LID_MAP[id];
+}
+
+// Numero pra onde responder um comando de socio (nunca mandar pra um LID).
+function telefoneAdmin(ids) {
+  for (const id of ids || []) {
+    if (ADMIN_CANONS.indexOf(id) !== -1) return id;
+    if (ADMIN_LID_MAP[id]) return ADMIN_LID_MAP[id];
+  }
+  return ADMIN_CANON;
+}
+
+// Todos os jeitos que o Z-API pode identificar a conversa neste evento.
+function idsDaConversa(body) {
+  const brutos = [
+    body && body.phone,
+    body && body.chatLid,
+    body && body.participantLid,
+    body && body.senderLid,
+    body && body.participantPhone,
+    body && body.senderPhone,
+  ];
+  const conectado = canonicalBR((body && body.connectedPhone) || '');
+  const out = [];
+  for (const bruto of brutos) {
+    const id = canonicalBR(bruto);
+    if (!id || id.length < 10) continue;
+    if (conectado && id === conectado) continue; // numero da propria empresa
+    if (out.indexOf(id) === -1) out.push(id);
+  }
+  return out;
+}
+
+// Chave de armazenamento e de envio: telefone de verdade sempre que houver.
+// Quando body.phone ja e um telefone, nada muda em relacao ao comportamento
+// antigo (nao mexer nisso preserva o historico das conversas ja gravadas).
+function chaveDaConversa(body, ids) {
+  const bruto = String((body && body.phone) || '');
+  if (bruto && !ehLid(bruto)) return bruto;
+  const real = (ids || []).find(function (id) { return !ehLid(id) && !ehAdminId(id); });
+  return real || soDigitos(bruto) || '';
+}
+
 const MODELO = 'claude-sonnet-4-6';
 
 function primeiroNomeDe(nome) {
@@ -271,34 +350,46 @@ async function salvarConversa(phone, mensagens, nome) {
 // Pausa por conversa (registro de controle ctrl:PHONE na lia_conversas)
 // nome_cliente = 'paused' ou 'active'
 // ---------------------------------------------------------------------------
-async function estaPausada(phone) {
-  phone = canonicalBR(phone);
-  if (!SUPABASE_URL || !SUPABASE_ANON) return false;
+// A pausa vale se QUALQUER identificador da conversa estiver marcado. E o que
+// faz a pausa gravada com o telefone continuar valendo quando o proximo evento
+// chegar so com o LID, e vice-versa.
+async function estaPausadaQualquer(ids) {
+  const lista = Array.from(new Set((ids || []).map(canonicalBR).filter(Boolean)));
+  if (!lista.length || !SUPABASE_URL || !SUPABASE_ANON) return false;
   try {
-    const url = `${SUPABASE_URL}/rest/v1/lia_conversas?phone=eq.${encodeURIComponent('ctrl:' + phone)}&select=nome_cliente`;
+    const chaves = lista.map(function (id) { return '"ctrl:' + id + '"'; }).join(',');
+    const url = `${SUPABASE_URL}/rest/v1/lia_conversas?phone=in.(${encodeURIComponent(chaves)})&nome_cliente=eq.paused&select=phone`;
     const r = await fetch(url, {
       headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
     });
-    if (!r.ok) return false;
+    if (!r.ok) { console.error('[pausa] consulta falhou:', r.status); return false; }
     const data = await r.json();
-    return Array.isArray(data) && data.length > 0 && data[0].nome_cliente === 'paused';
+    return Array.isArray(data) && data.length > 0;
   } catch (e) {
     console.error('[pausa] erro ao consultar:', e);
     return false;
   }
 }
 
-async function definirPausa(phone, pausada) {
-  phone = canonicalBR(phone);
-  if (!SUPABASE_URL || !SUPABASE_ANON) return;
+async function estaPausada(phone) {
+  return estaPausadaQualquer([phone]);
+}
+
+// Grava a pausa em TODOS os identificadores conhecidos da conversa.
+async function definirPausaVarios(ids, pausada) {
+  const lista = Array.from(new Set((ids || []).map(canonicalBR).filter(Boolean)));
+  if (!lista.length || !SUPABASE_URL || !SUPABASE_ANON) return;
   try {
-    const body = JSON.stringify({
-      phone: 'ctrl:' + phone,
-      mensagens: [],
-      nome_cliente: pausada ? 'paused' : 'active',
-      total_mensagens: 0,
-      updated_at: new Date().toISOString(),
-    });
+    const agora = new Date().toISOString();
+    const body = JSON.stringify(lista.map(function (id) {
+      return {
+        phone: 'ctrl:' + id,
+        mensagens: [],
+        nome_cliente: pausada ? 'paused' : 'active',
+        total_mensagens: 0,
+        updated_at: agora,
+      };
+    }));
     const r = await fetch(`${SUPABASE_URL}/rest/v1/lia_conversas`, {
       method: 'POST',
       headers: {
@@ -312,6 +403,92 @@ async function definirPausa(phone, pausada) {
     if (!r.ok) console.error('[pausa] salvar falhou:', r.status, await r.text());
   } catch (e) {
     console.error('[pausa] erro ao salvar:', e);
+  }
+}
+
+async function definirPausa(phone, pausada) {
+  return definirPausaVarios([phone], pausada);
+}
+
+// ---------------------------------------------------------------------------
+// Mapa LID <-> telefone. Sempre que os dois aparecem no mesmo evento, o par
+// fica guardado (lidmap:LID -> telefone e telmap:TELEFONE -> LID). E o que
+// permite o socio pausar digitando o telefone e a pausa valer quando a proxima
+// mensagem do cliente chegar identificada so pelo LID.
+// ---------------------------------------------------------------------------
+async function aprenderLids(ids) {
+  const lids = (ids || []).filter(ehLid);
+  const telefone = (ids || []).find(function (id) { return !ehLid(id); });
+  if (!lids.length || !telefone || !SUPABASE_URL || !SUPABASE_ANON) return;
+  try {
+    const agora = new Date().toISOString();
+    const linhas = [];
+    for (const lid of lids) {
+      linhas.push({ phone: 'lidmap:' + lid, mensagens: [], nome_cliente: telefone, total_mensagens: 0, updated_at: agora });
+      linhas.push({ phone: 'telmap:' + telefone, mensagens: [], nome_cliente: lid, total_mensagens: 0, updated_at: agora });
+    }
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/lia_conversas`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON,
+        Authorization: `Bearer ${SUPABASE_ANON}`,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates',
+      },
+      body: JSON.stringify(linhas),
+    });
+    if (!r.ok) console.error('[lidmap] salvar falhou:', r.status);
+  } catch (e) {
+    console.error('[lidmap] erro ao salvar:', e);
+  }
+}
+
+async function expandirIds(ids) {
+  const base = Array.from(new Set((ids || []).map(canonicalBR).filter(Boolean)));
+  if (!base.length || !SUPABASE_URL || !SUPABASE_ANON) return base;
+  try {
+    const chaves = base.map(function (id) {
+      return '"' + (ehLid(id) ? 'lidmap:' : 'telmap:') + id + '"';
+    }).join(',');
+    const url = `${SUPABASE_URL}/rest/v1/lia_conversas?phone=in.(${encodeURIComponent(chaves)})&select=phone,nome_cliente`;
+    const r = await fetch(url, {
+      headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
+    });
+    if (!r.ok) return base;
+    const data = await r.json();
+    for (const linha of Array.isArray(data) ? data : []) {
+      const achado = canonicalBR(linha && linha.nome_cliente);
+      if (achado && base.indexOf(achado) === -1) base.push(achado);
+    }
+    return base;
+  } catch (e) {
+    console.error('[lidmap] erro ao ler:', e);
+    return base;
+  }
+}
+
+// Registro cru dos eventos fromMe que nao deu pra identificar. Guarda so os
+// campos de identificacao (nunca o texto da mensagem) e mantem os 10 ultimos.
+// E o que vai mostrar, quando o Z-API religar, em que campo o telefone do
+// cliente realmente vem nesses eventos.
+async function registrarFromMe(body, ids) {
+  if (!SUPABASE_URL || !SUPABASE_ANON) return;
+  try {
+    const { mensagens } = await lerConversa('debug:fromme');
+    const linha = {
+      role: 'user',
+      content: new Date().toISOString() +
+        ' | ids=' + JSON.stringify(ids || []) +
+        ' | phone=' + String((body && body.phone) || '') +
+        ' | chatLid=' + String((body && body.chatLid) || '') +
+        ' | participantLid=' + String((body && body.participantLid) || '') +
+        ' | senderLid=' + String((body && body.senderLid) || '') +
+        ' | connectedPhone=' + String((body && body.connectedPhone) || '') +
+        ' | campos=' + Object.keys(body || {}).join(','),
+    };
+    await salvarConversa('debug:fromme', [...(mensagens || []), linha].slice(-10), 'debug');
+  } catch (e) {
+    console.error('[debug fromMe] erro:', e);
   }
 }
 
@@ -659,7 +836,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v17' });
+  if (req.method === 'GET') return res.status(200).json({ status: 'zapi-webhook online v19-lid' });
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo nao permitido' });
 
@@ -670,9 +847,11 @@ module.exports = async function handler(req, res) {
     const senderName = body?.senderName || body?.chatName || body?.pushName || null;
 
     // Grupos: a LIA NUNCA responde em grupos (atendimento e somente 1 a 1)
+    // O @lid escapa da regra de tamanho: LID nao e grupo, e identificador de
+    // contato, e chega com 14 a 15 digitos.
     const ehGrupo = body.isGroup === true || body.isGroup === 'true' ||
-      /-group$/i.test(String(phone || '')) ||
-      String(phone || '').replace(/\D/g, '').length > 15;
+      /-group$|@g\.us$/i.test(String(phone || '')) ||
+      (!ehLid(phone) && String(phone || '').replace(/\D/g, '').length > 15);
     if (ehGrupo) {
       return res.status(200).json({ ignored: 'grupo' });
     }
@@ -695,10 +874,25 @@ module.exports = async function handler(req, res) {
     }
 
     // -----------------------------------------------------------------------
+    // Identificacao da conversa. Junta tudo que o Z-API mandou (telefone, LID,
+    // participante) e completa com o mapa LID <-> telefone ja aprendido.
+    // -----------------------------------------------------------------------
+    const ids = await expandirIds(idsDaConversa(body));
+    await aprenderLids(ids);
+    const chave = chaveDaConversa(body, ids) || phone;
+    const ehChatAdmin = ids.some(function (id) { return ehAdminId(id); });
+    // Identificadores da OUTRA ponta. O que for socio sai fora: pausar o chat
+    // de quem respondeu nao cala a LIA com cliente nenhum, so atrapalha.
+    const idsConversa = ids.filter(function (id) { return !ehAdminId(id); });
+    const alvosPausa = idsConversa.length ? idsConversa : (chave ? [canonicalBR(chave)] : []);
+    const rotuloCliente = idsConversa.find(function (id) { return !ehLid(id); }) || canonicalBR(chave) || '';
+
+    // -----------------------------------------------------------------------
     // Mensagens enviadas PELO NUMERO da LandingNow (fromMe)
     // Pode ser: eco da propria LIA (ignorar), a keyword #lia digitada por um
-    // dos socios naquela conversa, ou um socio respondendo manualmente pelo
-    // WhatsApp Web (pausa automatica + aviso no canal admin).
+    // dos socios naquela conversa, um comando de socio no proprio chat dele,
+    // ou um socio respondendo manualmente pelo WhatsApp Web (pausa automatica
+    // + aviso no canal admin).
     // -----------------------------------------------------------------------
     const userMessageRaw =
       body?.text?.message ||
@@ -715,38 +909,61 @@ module.exports = async function handler(req, res) {
       // (Welber ou Caio no WhatsApp Web). So aqui a keyword vale: cliente
       // digitando #lia nao tem efeito nenhum.
       const kw = userMessageRaw.trim();
-      if (phone && /^#lia\s+(pausa|pausar|off|silencio)\b/i.test(kw)) {
-        await definirPausa(phone, true);
+      if (alvosPausa.length && /^#lia\s+(pausa|pausar|off|silencio)\b/i.test(kw)) {
+        await definirPausaVarios(alvosPausa, true);
         return res.status(200).json({ ok: true, paused: 'keyword' });
       }
-      if (phone && /^#lia\s+(voltar|volta|on|ativar)\b/i.test(kw)) {
-        await definirPausa(phone, false);
-        await enviarWhatsapp(phone, 'Estou de volta! Em que posso ajudar?', 3, 0);
+      if (alvosPausa.length && /^#lia\s+(voltar|volta|on|ativar)\b/i.test(kw)) {
+        await definirPausaVarios(alvosPausa, false);
+        await enviarWhatsapp(chave, 'Estou de volta! Em que posso ajudar?', 3, 0);
         return res.status(200).json({ ok: true, resumed: 'keyword' });
       }
+
+      // Comando de socio digitado no proprio chat dele. Precisa estar aqui:
+      // com o LID, a mensagem do dono chega marcada como fromMe e nunca chega
+      // no canal de comando la embaixo. Foi o que fez o "pausar NUMERO" do
+      // Welber ser tratado como conversa de cliente em 16/08.
+      // O comando tem que comecar a mensagem e ser curto, senao aviso da
+      // propria LIA (que cita "voltar NUMERO") viraria comando.
+      const ehComandoDeSocio =
+        kw.length <= 80 &&
+        /^(voltar|volta|liberar|libera|ativar|ativa|pausar|pausa|parar|silencio|status|fila|limpar\s+fila)\b/i.test(kw);
+      if (ehChatAdmin && ehComandoDeSocio) {
+        const resposta = await tratarComandoAdmin(kw);
+        await enviarWhatsapp(telefoneAdmin(ids), resposta, 2, 0);
+        return res.status(200).json({ ok: true, admin: 'fromMe' });
+      }
+
       // Eco de texto identico a alguma mensagem recente da LIA (fallback)
       if (userMessageRaw) {
-        const { mensagens: hEco } = await lerConversa(phone || '');
+        const { mensagens: hEco } = await lerConversa(chave || '');
         const recentesLia = [...(hEco || [])].reverse()
           .filter((m) => m && m.role === 'assistant').slice(0, 5);
         if (recentesLia.some((m) => m.content === userMessageRaw)) {
           return res.status(200).json({ ignored: 'eco-lia-texto' });
         }
       }
-      // Sobrou: um humano respondeu manualmente por este numero.
-      // Pausa a conversa na hora e avisa os socios. So volta com comando.
-      if (phone) {
-        const jaPausada = await estaPausada(phone);
+
+      // Sobrou: um humano respondeu manualmente nesta conversa.
+      // Pausa na hora, em todos os identificadores, e avisa os socios.
+      if (idsConversa.length) {
+        const jaPausada = await estaPausadaQualquer(idsConversa);
         if (!jaPausada) {
-          await definirPausa(phone, true);
+          await definirPausaVarios(idsConversa, true);
           await notificarAdmin(
-            'Pausei a Lia na conversa com ' + canonicalBR(phone) +
-            ' porque um de voces respondeu manualmente. Pra eu voltar la: voltar ' + canonicalBR(phone)
+            'Pausei a Lia na conversa com ' + rotuloCliente +
+            ' porque um de voces respondeu manualmente. Pra eu voltar la: voltar ' + rotuloCliente
           );
         }
         return res.status(200).json({ ok: true, paused: 'fromMe-humano' });
       }
-      return res.status(200).json({ ignored: 'fromMe' });
+
+      // Evento fromMe sem nenhum identificador de cliente (so o do proprio
+      // socio). Nao da pra saber que conversa pausar: registra e sai calado,
+      // em vez de gravar pausa numa chave inventada como acontecia antes.
+      await registrarFromMe(body, ids);
+      console.log('[zapi] fromMe sem identificador de conversa', { ids, campos: Object.keys(body || {}) });
+      return res.status(200).json({ ignored: 'fromMe-sem-identificador' });
     }
 
     // -----------------------------------------------------------------------
@@ -770,11 +987,14 @@ module.exports = async function handler(req, res) {
     }
 
     // -----------------------------------------------------------------------
-    // Canal de comando: mensagens vindas do WhatsApp pessoal do Welber
+    // Canal de comando: mensagens vindas do WhatsApp pessoal dos socios.
+    // Reconhece pelo conjunto de identificadores, nao so pelo telefone: com o
+    // LID no lugar do numero, o dono deixava de ser reconhecido e a LIA
+    // respondia pra ele como se fosse cliente.
     // -----------------------------------------------------------------------
-    if (ehAdmin(phone)) {
+    if (ehChatAdmin) {
       const resposta = await tratarComandoAdmin(userMessage || '');
-      await enviarWhatsapp(canonicalBR(phone), resposta, 2, 0);
+      await enviarWhatsapp(telefoneAdmin(ids), resposta, 2, 0);
       return res.status(200).json({ ok: true, admin: true });
     }
 
@@ -803,14 +1023,14 @@ module.exports = async function handler(req, res) {
     // -----------------------------------------------------------------------
     // Conversa pausada: nao responde, mas guarda a mensagem pro contexto
     // -----------------------------------------------------------------------
-    if (phone && (await estaPausada(phone))) {
-      const { mensagens: hist, nome } = await lerConversa(phone);
+    if (alvosPausa.length && (await estaPausadaQualquer(alvosPausa))) {
+      const { mensagens: hist, nome } = await lerConversa(chave);
       const registro = userMessage
         ? userMessage
         : (foiImagem ? '[o cliente enviou uma imagem]' : (foiAudio ? '[o cliente enviou um audio]' : null));
       if (registro) {
         hist.push({ role: 'user', content: registro });
-        await salvarConversa(phone, hist, primeiroNomeDe(nome || senderName));
+        await salvarConversa(chave, hist, primeiroNomeDe(nome || senderName));
       }
       return res.status(200).json({ ok: true, paused: true, silent: true });
     }
@@ -819,47 +1039,47 @@ module.exports = async function handler(req, res) {
     // TRAVA 2: o cliente pediu pra parar. Isso vem antes de qualquer resposta:
     // a LIA se desculpa UMA vez, pausa a conversa pra sempre e chama os socios.
     // -----------------------------------------------------------------------
-    if (phone && userMessage && pedeParaParar(userMessage)) {
-      await definirPausa(phone, true);
-      const { mensagens: histP, nome: nomeP } = await lerConversa(phone);
+    if (chave && userMessage && pedeParaParar(userMessage)) {
+      await definirPausaVarios(alvosPausa, true);
+      const { mensagens: histP, nome: nomeP } = await lerConversa(chave);
       const primeiro = primeiroNomeDe(nomeP || senderName);
       const desculpa = (primeiro ? 'Desculpa, ' + primeiro + '! ' : 'Desculpa! ') +
         'Parei por aqui. Se precisar de alguma coisa, e so me chamar.';
       histP.push({ role: 'user', content: userMessage, t: Date.now() });
       histP.push({ role: 'assistant', content: desculpa, t: Date.now() });
-      await salvarConversa(phone, histP, primeiro);
-      await enviarWhatsapp(phone, desculpa, 2, 0);
+      await salvarConversa(chave, histP, primeiro);
+      await enviarWhatsapp(chave, desculpa, 2, 0);
       await notificarAdmin(
-        'O cliente ' + (primeiro ? primeiro + ' ' : '') + canonicalBR(phone) +
-        ' pediu pra LIA parar. Pausei a conversa pra sempre.\nhttps://wa.me/' + canonicalBR(phone)
+        'O cliente ' + (primeiro ? primeiro + ' ' : '') + rotuloCliente +
+        ' pediu pra LIA parar. Pausei a conversa pra sempre.\nhttps://wa.me/' + rotuloCliente
       );
       return res.status(200).json({ ok: true, paused: 'pedido-do-cliente' });
     }
 
     // Audio que nao deu pra transcrever
     if (foiAudio && !userMessage) {
-      if (phone) {
-        await enviarWhatsapp(phone, 'Oi! Nao consegui ouvir direito seu audio agora. Pode mandar de novo ou, se preferir, me escrever por aqui?', 4);
+      if (chave) {
+        await enviarWhatsapp(chave, 'Oi! Nao consegui ouvir direito seu audio agora. Pode mandar de novo ou, se preferir, me escrever por aqui?', 4);
       }
       return res.status(200).json({ ok: true, note: 'audio-nao-transcrito' });
     }
 
     // Imagem que nao deu pra baixar
     if (foiImagem && !imagemBase64) {
-      if (phone) {
-        await enviarWhatsapp(phone, 'Oi! Recebi sua imagem mas nao consegui abrir ela aqui. Pode mandar de novo, por favor?', 4);
+      if (chave) {
+        await enviarWhatsapp(chave, 'Oi! Recebi sua imagem mas nao consegui abrir ela aqui. Pode mandar de novo, por favor?', 4);
       }
       return res.status(200).json({ ok: true, note: 'imagem-nao-carregada' });
     }
 
     const ehImagem = foiImagem && !!imagemBase64;
 
-    if (!phone || (!ehImagem && (!userMessage || typeof userMessage !== 'string'))) {
+    if (!chave || (!ehImagem && (!userMessage || typeof userMessage !== 'string'))) {
       return res.status(200).json({ ignored: 'no-content' });
     }
 
     // 1. Le o historico persistido
-    const { mensagens: historico, nome: nomeSalvo } = await lerConversa(phone);
+    const { mensagens: historico, nome: nomeSalvo } = await lerConversa(chave);
     const primeiroNome = primeiroNomeDe(nomeSalvo || senderName);
 
     // -----------------------------------------------------------------------
@@ -868,13 +1088,13 @@ module.exports = async function handler(req, res) {
     // -----------------------------------------------------------------------
     const rajada = estourouRajada(historico);
     if (rajada) {
-      await definirPausa(phone, true);
+      await definirPausaVarios(alvosPausa, true);
       historico.push({ role: 'user', content: userMessage || '[o cliente enviou uma imagem]', t: Date.now() });
-      await salvarConversa(phone, historico, primeiroNome);
+      await salvarConversa(chave, historico, primeiroNome);
       await notificarAdmin(
-        'Pausei sozinha a conversa com ' + (primeiroNome ? primeiroNome + ' ' : '') + canonicalBR(phone) +
+        'Pausei sozinha a conversa com ' + (primeiroNome ? primeiroNome + ' ' : '') + rotuloCliente +
         ': ja eram ' + rajada.max + ' respostas minhas em ' + Math.round(rajada.ms / 60000) +
-        ' minutos e isso nao parece normal. Melhor um de voces assumir.\nhttps://wa.me/' + canonicalBR(phone)
+        ' minutos e isso nao parece normal. Melhor um de voces assumir.\nhttps://wa.me/' + rotuloCliente
       );
       return res.status(200).json({ ok: true, paused: 'rajada' });
     }
@@ -941,9 +1161,9 @@ module.exports = async function handler(req, res) {
     const reply = sanitizarTexto(limpo) || 'Pode repetir, por favor? Acho que me perdi aqui.';
 
     // Re-checa a pausa: pode ter sido pausada ENQUANTO a resposta era gerada
-    if (await estaPausada(phone)) {
+    if (await estaPausadaQualquer(alvosPausa)) {
       historico.push({ role: 'user', content: registroUser });
-      await salvarConversa(phone, historico, primeiroNome);
+      await salvarConversa(chave, historico, primeiroNome);
       return res.status(200).json({ ok: true, paused: 'late-check' });
     }
 
@@ -952,17 +1172,17 @@ module.exports = async function handler(req, res) {
     // normalizar() antes de ir pra API, que so aceita role e content.
     historico.push({ role: 'user', content: registroUser, t: Date.now() });
     historico.push({ role: 'assistant', content: reply, t: Date.now() });
-    await salvarConversa(phone, historico, primeiroNome);
+    await salvarConversa(chave, historico, primeiroNome);
 
     // 5. Envia UMA mensagem com demora humana
     const { typing, message: dmsg } = delaysHumanos(reply);
-    await enviarWhatsapp(phone, reply, typing, dmsg);
+    await enviarWhatsapp(chave, reply, typing, dmsg);
 
     // 6. Notificacoes pro Welber, se houver
     if (avisos.length) {
-      const quem = primeiroNome ? primeiroNome + ' (' + phone + ')' : phone;
+      const quem = primeiroNome ? primeiroNome + ' (' + rotuloCliente + ')' : rotuloCliente;
       for (const aviso of avisos) {
-        await notificarAdmin(aviso + '\nCliente: ' + quem + '\nhttps://wa.me/' + phone);
+        await notificarAdmin(aviso + '\nCliente: ' + quem + '\nhttps://wa.me/' + rotuloCliente);
       }
     }
 
