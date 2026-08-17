@@ -16,7 +16,9 @@ const nucleo = require('./zapi-webhook.js');
 const H = nucleo.helpers;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY
+  || process.env.SUPABASE_SERVICE_ROLE_KEY
+  || process.env.SUPABASE_ANON_KEY;
 
 const PARADO_MS = 48 * 60 * 60 * 1000;       // 2 dias sem responder
 // Teto por execucao. Cada lead custa uma chamada de IA mais o envio, e a

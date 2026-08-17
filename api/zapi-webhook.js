@@ -26,7 +26,11 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 // A anon estava publicada em painel/index.html, que e versionado em repo
 // publico, entao ela perde o acesso as tabelas da LIA assim que a service key
 // estiver na Vercel (SQL em sql/02-fechar-banco.sql).
-const SUPABASE_ANON = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+// Aceita os dois nomes de env porque em outros projetos ela se chama
+// SUPABASE_SERVICE_ROLE_KEY: nao vale quebrar por causa de uma palavra.
+const SUPABASE_ANON = process.env.SUPABASE_SERVICE_KEY
+  || process.env.SUPABASE_SERVICE_ROLE_KEY
+  || process.env.SUPABASE_ANON_KEY;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MAX_HISTORICO_SALVO = 40;
 const MAX_HISTORICO_CONTEXTO = 20;

@@ -7,8 +7,10 @@
 -- cliente, com preco e tudo. Testado em 16/08/2026, respondia 200 com os dados.
 --
 -- ORDEM OBRIGATORIA, nao inverta:
---   1. Colocar SUPABASE_SERVICE_KEY nas envs da Vercel (Settings > Environment
---      Variables, valor em Supabase > Project Settings > API > service_role).
+--   1. Colocar a chave de servico nas envs da Vercel (Settings > Environment
+--      Variables, valor em Supabase > Project Settings > API > service_role,
+--      do projeto hubxacojvgoepowsgbas). O codigo aceita o nome
+--      SUPABASE_SERVICE_KEY ou SUPABASE_SERVICE_ROLE_KEY, tanto faz.
 --   2. Redeploy e conferir que https://landingnow.com.br/api/zapi-webhook
 --      responde o healthcheck.
 --   3. Rodar o 01-lia-leads.sql.
