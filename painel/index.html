@@ -1075,12 +1075,17 @@ function renderLeadsKpis(){
 function esc(t){return String(t==null?'':t).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));}
 
 function cardLead(l){
-  const detalhe=[l.nicho,l.plano_ofertado?l.plano_ofertado+(l.valor_ofertado?' R$ '+l.valor_ofertado:''):null,
+  // O titulo e o NEGOCIO quando existe. Quem revende fecha varias paginas e o
+  // briefing vem sempre com o nome dele, entao por pessoa os cards ficariam
+  // todos iguais. A pessoa vira a primeira linha do detalhe.
+  const titulo=l.negocio||l.nome||'Sem nome';
+  const pessoa=(l.negocio&&l.nome)?'com '+l.nome:null;
+  const detalhe=[pessoa,l.nicho,l.plano_ofertado?l.plano_ofertado+(l.valor_ofertado?' R$ '+l.valor_ofertado:''):null,
     l.objecao?'travou em: '+l.objecao:null,l.proximo_passo?'proximo: '+l.proximo_passo:null,l.motivo]
     .filter(Boolean).map(esc).join(' &middot; ');
   const opcoes=LTODOS.map(o=>'<option value="'+o.k+'"'+(o.k===l.estagio?' selected':'')+'>'+o.l+'</option>').join('');
   return '<div class="kcd" draggable="true" data-phone="'+esc(l.phone)+'">'+
-    '<b>'+esc(l.nome||'Sem nome')+'</b>'+
+    '<b>'+esc(titulo)+'</b>'+
     '<div class="kmeta">'+(detalhe||'sem detalhes ainda')+'</div>'+
     '<div class="kpe"><span>'+esc(l.phone)+'</span><span>&middot;</span><span>'+quando(l.ultima_mensagem_em)+'</span>'+
       (l.followup_enviado_em?'<span>&middot;</span><span>retomado</span>':'')+
@@ -1093,7 +1098,7 @@ function renderLeads(){
   const c=document.getElementById('llista');
   const visiveis=LEADS.filter(l=>{
     if(!LBUSCA)return true;
-    return [l.nome,l.phone,l.nicho,l.objecao,l.motivo].filter(Boolean).join(' ').toLowerCase().includes(LBUSCA);
+    return [l.nome,l.negocio,l.phone,l.nicho,l.objecao,l.motivo].filter(Boolean).join(' ').toLowerCase().includes(LBUSCA);
   });
   c.innerHTML='<div class="kb">'+LCOLS[LVISTA].map(col=>{
     const dela=visiveis.filter(l=>(l.estagio||'novo')===col.k);

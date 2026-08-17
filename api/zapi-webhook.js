@@ -616,6 +616,7 @@ function normalizarCrm(crm) {
   const out = {};
   if (crm.nicho) out.nicho = crm.nicho;
   if (crm.nome) out.nome = crm.nome;
+  if (crm.negocio) out.negocio = crm.negocio;
   if (crm.objecao) out.objecao = crm.objecao;
   if (crm.motivo) out.motivo = crm.motivo;
   if (crm.proximo) out.proximo_passo = crm.proximo;
@@ -683,6 +684,7 @@ function resumoDoLead(lead) {
   if (!lead) return '';
   const partes = [];
   if (lead.nome) partes.push('nome ' + lead.nome);
+  if (lead.negocio) partes.push('negocio ' + lead.negocio);
   if (lead.nicho) partes.push('nicho ' + lead.nicho);
   if (lead.estagio) partes.push('estagio ' + lead.estagio);
   if (lead.plano_ofertado) partes.push('ja ofertei o ' + lead.plano_ofertado + (lead.valor_ofertado ? ' por R$ ' + lead.valor_ofertado : ''));
@@ -1030,9 +1032,10 @@ Se voce ficar em duvida se a pessoa e cliente ou lead, trate como cliente e cham
 
 FICHA DO CRM (regra tecnica, obrigatoria em toda resposta):
 No FINAL de toda resposta, em uma linha separada, escreva o marcador com o que voce entendeu do contato ate agora. O cliente NUNCA ve isso, o sistema remove antes de enviar:
-[[CRM: nome=; nicho=; estagio=; plano=; valor=; objecao=; motivo=; proximo=]]
+[[CRM: nome=; negocio=; nicho=; estagio=; plano=; valor=; objecao=; motivo=; proximo=]]
 Como preencher cada campo (se nao souber algum, deixe vazio ou omita o campo, nunca invente):
-nome: primeiro nome da pessoa.
+nome: primeiro nome da pessoa com quem voce esta falando.
+negocio: o nome do negocio dela, do jeito que ela falou (ex: Barbearia do Ze, Clinica Sorriso, Auto Center Silva). Isso importa: tem gente que fecha varias paginas pra clientes diferentes, e sem o nome do negocio os cadastros ficam todos iguais.
 nicho: o ramo do negocio dela em uma ou duas palavras (advocacia, estetica, lan house, restaurante, imobiliaria).
 estagio: um destes, exatamente: novo (acabou de chegar), qualificando (voce esta entendendo o negocio), proposta (ja apresentou plano e preco), negociando (ele objetou, esta pensando, pediu prazo), ganho (fechou e pagou ou disse que pagou), perdido (disse que nao quer), cliente (ja era cliente antes), suporte (veio por pos-venda).
 plano: START, PRO, PREMIUM, PREMIUM IA ou AMOSTRA, conforme o que voce ofereceu nesta conversa.
@@ -1110,7 +1113,7 @@ module.exports = async function handler(req, res) {
     if (segredo && token === segredo && SUPABASE_URL && SUPABASE_ANON) {
       try {
         const r = await fetch(
-          `${SUPABASE_URL}/rest/v1/lia_leads?select=nome,estagio,nicho,plano_ofertado,objecao,ultima_mensagem_em,followup_enviado_em&order=ultima_mensagem_em.desc.nullslast&limit=15`,
+          `${SUPABASE_URL}/rest/v1/lia_leads?select=nome,negocio,estagio,nicho,plano_ofertado,objecao,ultima_mensagem_em,followup_enviado_em&order=ultima_mensagem_em.desc.nullslast&limit=15`,
           { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` } }
         );
         base.leads = r.ok ? await r.json() : 'erro ' + r.status;
