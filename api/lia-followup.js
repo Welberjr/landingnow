@@ -76,6 +76,7 @@ Faz dois dias que essa pessoa parou de responder. Voce vai mandar UMA mensagem p
 4. Se a objecao registrada foi preco, esse e o momento certo de apresentar o START de R$ 297 como alternativa mais em conta, de forma natural.
 5. Se ela ja tinha recusado tambem o START, ai voce pode fazer a oferta da AMOSTRA SEM CUSTO, seguindo as regras dela.
 6. Nunca diga que passou dois dias, nunca diga que e um sistema, nunca fale em follow-up.
+7. CASO ESPECIAL, o mais comum: se o cliente nunca respondeu nada alem do texto pronto do anuncio (aquele "Quero uma pagina para minha clinica" que o proprio anuncio enviou), NAO existe assunto pra retomar, entao nao finja que existe. A mensagem vira outra coisa: uma pergunta nova, concreta e com valor pra ele. As duas melhores: oferecer mandar um exemplo real de pagina do nicho dele, ou perguntar se ele prefere que voce ja diga direto o preco e o prazo, sem enrolacao. Escolha UMA, continue curtissima.
 
 Conversa ate aqui:
 ${contexto || '(sem historico salvo)'}
