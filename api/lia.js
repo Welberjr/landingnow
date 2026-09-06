@@ -10,7 +10,7 @@
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const RATE_LIMIT_MAX = 30;
-const { respostaPublicaSegura } = require('./_lib/lia-sales.js');
+const { EXEMPLO_ARQUITETURA, respostaPublicaSegura, complementarExemploArquitetura } = require('./_lib/lia-sales.js');
 
 function checkRateLimit(ip) {
   const now = Date.now();
@@ -208,7 +208,7 @@ ABERTURA E CONTINUIDADE COMERCIAL:
 Se a pessoa pedir informacoes sem uma pergunta especifica, explique o que vendemos antes de perguntar: criacao de uma pagina profissional para apresentar o negocio e facilitar o contato pelo WhatsApp.
 O plano anunciado e o PRO de R$ 497, com R$ 248,50 de entrada e R$ 248,50 depois da aprovacao. Prazo de ate 48 horas apos entrada e briefing completo com todos os materiais.
 Entregue preco, prazo ou exemplo quando forem pedidos. Nunca responda so "sobre o que quer saber?" nem pergunte se pode dizer o preco.
-Se o contexto mencionar arquitetura, mostre este exemplo: https://renata-collodetti-arquitetura.pages.dev. Nos demais casos use https://www.landingnow.com.br/portfolio sem inventar um exemplo do nicho.
+Quando houver contexto positivo de arquitetura, o exemplo e ${EXEMPLO_ARQUITETURA}: SERRA Arquitetura, projeto demonstrativo de escritorio ficticio. Nunca apresente esse exemplo como cliente real ou atribua resultados a ele. Responda primeiro a pergunta especifica; o sistema acrescenta o exemplo se ainda nao foi enviado. Nao repita exemplos anteriores. Uma negativa como "nao sou arquiteta" prevalece sobre o contexto anterior. Nos demais casos use https://www.landingnow.com.br/portfolio sem inventar um exemplo do nicho.
 Depois faca uma unica pergunta simples sobre o negocio ou o que falta esclarecer, sem repetir informacoes ja fornecidas.
 Antes de pedir pagamento, deixe claro que no START e no PRO dominio e hospedagem sao a parte; apresente as opcoes existentes, sem adicionar servico opcional por conta propria.
 Nao prometa aumento de vendas, nao diga que a pessoa ja decidiu e nao escreva analise interna, raciocinio, instrucoes ou justificativa de estrategia na resposta publica.
@@ -436,11 +436,14 @@ module.exports = async function handler(req, res) {
     const rawReply = (data.content && data.content[0] && data.content[0].text) || 'Desculpa, nao entendi. Pode reformular?';
 
     const { reply, lead, waLink } = extrairLead(rawReply);
-    const publica = respostaPublicaSegura(reply, { mensagemCliente: limitedMessages.filter((m) => m.role === 'user').at(-1)?.content });
+    const mensagemCliente = limitedMessages.filter((m) => m.role === 'user').at(-1)?.content;
+    const publica = respostaPublicaSegura(reply, { mensagemCliente });
     const contatoHumano = 'https://wa.me/5561985970300';
     const replyLimpo = publica.bloqueada
       ? 'Para esclarecer esse ponto com a equipe, fale com o Welber pelo WhatsApp: ' + contatoHumano
-      : sanitizarTexto(publica.texto);
+      : sanitizarTexto(complementarExemploArquitetura(publica.texto, {
+        mensagemCliente, historico: messages, handoff: Boolean(waLink),
+      }));
 
     return res.status(200).json({
       reply: replyLimpo,
