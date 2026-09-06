@@ -21,6 +21,7 @@
 // ============================================================================
 
 const vendas = require('./_lib/lia-sales.js');
+const { pedeParaParar, cheiroDePosVenda } = vendas;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 // Chave de acesso ao banco. Prefere a chave de SERVICO, que so existe aqui no
 // servidor; a anon fica de reserva pra nada cair enquanto a env nova nao sobe.
@@ -82,14 +83,7 @@ function semAcento(texto) {
 
 // O cliente pediu pra parar? Precisa ser explicito: "para" solto no meio de uma
 // frase ("landing page para minha loja") NAO conta.
-function pedeParaParar(texto) {
-  const t = semAcento(texto).replace(/\s+/g, ' ');
-  if (!t) return false;
-  if (/(par[ae]r?|pare) (de|com) (mandar|enviar|responder|falar|me mandar|me enviar)/.test(t)) return true;
-  if (/(me deixa em paz|nao me mande? mais|nao quero mais (falar|receber|nada)|descadastr|sai do meu|me tira d)/.test(t)) return true;
-  if (t.length <= 32 && /^(pare|para|parar|chega|stop|silencio|quieto)[\s!.,]*(ai|com isso|por favor|pfv|pf)?[\s!.,]*$/.test(t)) return true;
-  return false;
-}
+// A regra compartilhada tambem impede oferta de exemplo no chat do site.
 
 // ---------------------------------------------------------------------------
 // SABER CALAR
@@ -133,6 +127,8 @@ function pareceMensagemDeVerdade(texto) {
   if (/\?/.test(bruto)) return true;
   if (bruto.length > 90) return true;        // texto longo nunca e so cortesia
   const t = semAcento(bruto);
+  // Declaracao ou correcao de nicho e assunto real, inclusive depois de "ok".
+  if (/\barquitet(?:ura|o|a|os|as)\b/.test(t)) return true;
   return /\b(quero|queria|gostaria|pode|poderia|manda|mande|envia|envie|como|quanto|qual|quais|quando|onde|porque|por que|preciso|fecha|fechar|fechamos|vamos|bora|aceito|topo|link|pix|pagar|paguei|comprovante|briefing|duvida|ajuda|ajudar|problema|erro|orcamento|prazo|plano|site|landing|pagina)\b/.test(t);
 }
 
@@ -155,13 +151,7 @@ function jaSeDespediram(historico) {
 // Foi o que aconteceu com o cliente que so queria um ajuste e levou enxurrada
 // de oferta. Aqui a LIA cala, chama o Welber e o Caio, e sai da frente.
 // ---------------------------------------------------------------------------
-function cheiroDePosVenda(texto) {
-  const t = semAcento(texto);
-  if (/(voces (fizeram|criaram|montaram|entregaram|desenvolveram)|(site|landing|pagina) que voces|ja sou cliente|ja fechei com voces|ja contratei|comprei com voces|fiz o pagamento com voces)/.test(t)) return true;
-  if (/(nao esta (abrindo|funcionando|no ar|carregando)|nao abre|saiu do ar|fora do ar|caiu o site|deu erro|esta bugad)/.test(t)) return true;
-  if (/\b(suporte|manutencao)\b/.test(t)) return true;
-  return false;
-}
+// cheiroDePosVenda vem de lia-sales para os dois canais usarem a mesma trava.
 
 // Quantas respostas a LIA mandou nessa conversa dentro de cada janela
 function estourouRajada(historico) {
@@ -410,7 +400,7 @@ async function lerConversa(phone) {
 async function salvarConversa(phone, mensagens, nome) {
   if (!SUPABASE_URL || !SUPABASE_ANON) return false;
   try {
-    const recortadas = mensagens.slice(-MAX_HISTORICO_SALVO);
+    const recortadas = vendas.reterHistoricoComercial(mensagens, MAX_HISTORICO_SALVO);
     const body = JSON.stringify({
       phone,
       mensagens: recortadas,
@@ -1048,9 +1038,9 @@ QUEM E VOCE:
 Voce e a Lia da LandingNow. Converse com naturalidade e clareza. Se perguntarem se e IA, responda honestamente. Nao invente que e uma pessoa.
 
 PRIMEIRO CONTATO E CLAREZA DA OFERTA:
-Uma mensagem como "Ola, posso ter mais informacoes?" pede contexto. Explique primeiro que criamos uma landing page, uma pagina para apresentar o negocio e facilitar contatos pelo WhatsApp. Diga que o PRO custa R$ 497, com 50% na entrada e 50% apos aprovacao no Pix, e prazo de ate 48 horas apos a entrada e o envio completo dos materiais. Mostre um exemplo real e faca no maximo uma pergunta simples: "E esse tipo de pagina que voce procura?". Essa primeira explicacao pode ter quatro linhas curtas.
+Uma mensagem como "Ola, posso ter mais informacoes?" pede contexto. Explique primeiro que criamos uma landing page, uma pagina para apresentar o negocio e facilitar contatos pelo WhatsApp. Diga que o PRO custa R$ 497, com 50% na entrada e 50% apos aprovacao no Pix, e prazo de ate 48 horas apos a entrada e o envio completo dos materiais. Mostre um exemplo do portfolio, identificando quando for demonstrativo, e faca no maximo uma pergunta simples: "E esse tipo de pagina que voce procura?". Essa primeira explicacao pode ter quatro linhas curtas.
 Nao responda com "sobre o que quer saber?", nao pergunte de onde veio e nao exija nome, nicho ou Instagram antes de explicar a oferta. Se a pergunta ja for especifica, responda o que foi perguntado primeiro. Nao repita a apresentacao se ela ja estiver no historico.
-Quando houver referencia explicita a arquitetura no texto ou nos metadados documentados do anuncio, use https://renata-collodetti-arquitetura.pages.dev como exemplo do portfolio, sem afirmar que o contato e arquiteto. Sem esse contexto, use https://www.landingnow.com.br/portfolio e fale de negocio de forma neutra. Um anuncio indica a origem e a oferta, nao confirma nome, profissao, interesse real ou capacidade de compra da pessoa.
+Quando houver referencia positiva a arquitetura no texto ou nos metadados documentados do anuncio, o exemplo e ${vendas.EXEMPLO_ARQUITETURA}: SERRA Arquitetura, projeto demonstrativo de escritorio ficticio. Nunca apresente esse exemplo como cliente real ou atribua resultados a ele. Responda primeiro a pergunta especifica; o sistema acrescenta o exemplo se ainda nao foi enviado. Nao repita exemplos anteriores nem a abertura. Uma negativa como "nao sou arquiteta" prevalece sobre o anuncio. Sem esse contexto, use https://www.landingnow.com.br/portfolio e fale de negocio de forma neutra. Um anuncio indica a origem e a oferta, nao confirma nome, profissao, interesse real ou capacidade de compra da pessoa.
 Nao considere automaticamente toda mensagem generica como vinda de anuncio. Use apenas os metadados recebidos ou o relato explicito do contato. Silencio nao prova falta de interesse nem autoriza desconto automatico. Registre plano e valor no CRM apenas se ja apresentados ao contato.
 Voce nao consegue abrir links. Nao finja que analisou Instagram ou site do contato. Aproveite as informacoes ja dadas e pergunte apenas o que falta para o proximo passo.
 
@@ -1684,7 +1674,7 @@ module.exports = async function handler(req, res) {
 
     const referenciaAnterior = [...historico].reverse().find(m => m && m.role === 'user' && m.externalAdReply);
     const referral = referenciaRecebida || (referenciaAnterior && referenciaAnterior.externalAdReply) || null;
-    const contextoArquitetura = vendas.contextoDeArquitetura(userMessage, referral);
+    const contextoArquitetura = vendas.contextoDeArquitetura(userMessage, referral, historico);
     const primeiraResposta = !ehImagem && vendas.respostaInicialComercial({ mensagemCliente: userMessage, historico, referral });
     let rawReply = primeiraResposta ? primeiraResposta + '\n[[CRM: estagio=proposta; plano=PRO; valor=497]]' : null;
 
@@ -1731,8 +1721,10 @@ module.exports = async function handler(req, res) {
     const { limpo: semAvisos, avisos } = extrairAvisos(rawReply);
     const { limpo, crm } = extrairCrm(semAvisos);
     const guard = vendas.respostaPublicaSegura(limpo, { mensagemCliente: userMessage, contextoArquitetura, handoff: true });
-    const reply = sanitizarTexto(guard.texto);
     const passagemHumana = guard.bloqueada || avisos.some(aviso => !/^AMOSTRA SEM CUSTO oferecida/i.test(aviso));
+    const reply = sanitizarTexto(vendas.complementarExemploArquitetura(guard.texto, {
+      mensagemCliente: userMessage, historico, referral, handoff: passagemHumana || ehImagem,
+    }));
 
     // Re-checa a pausa: pode ter sido pausada ENQUANTO a resposta era gerada
     if (await estaPausadaQualquer(alvosPausa)) {

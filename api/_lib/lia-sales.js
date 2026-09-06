@@ -1,5 +1,7 @@
 // Regras deterministicas compartilhadas pelo webhook e pelo follow-up.
-const EXEMPLO_ARQUITETURA = 'https://renata-collodetti-arquitetura.pages.dev';
+const EXEMPLO_ARQUITETURA = 'https://serra-arquitetura-landingnow.welber-especialistad.chatgpt.site';
+// Reconhece o exemplo anterior para nao repetir a oferta em conversas antigas.
+const LINKS_ARQUITETURA = /https?:\/\/(?:serra-arquitetura-landingnow\.welber-especialistad\.chatgpt\.site|renata-collodetti-arquitetura\.pages\.dev)\/?(?:[?#][^\s)\]]*)?/gi;
 const PORTFOLIO = 'https://www.landingnow.com.br/portfolio';
 const ACOLHIDA_HUMANO = 'Vou encaminhar sua mensagem ao Welber e ao Caio. Eles estão em reunião e retornam assim que estiverem disponíveis.';
 
@@ -41,11 +43,86 @@ function extrairReferenciaAnuncio(body) {
   return ref;
 }
 
-function contextoDeArquitetura(mensagemCliente, referral) {
-  const texto = normalizar(mensagemCliente);
+function ultimaReferenciaArquitetura(mensagemCliente, historico = []) {
+  return [mensagemCliente, ...historico.filter(m => m && m.role === 'user').reverse().map(m => m.content)]
+    .find(m => /\barquitet(?:ura|o|a|os|as)\b/.test(normalizar(m)));
+}
+
+function contextoDeArquitetura(mensagemCliente, referral, historico = []) {
+  const texto = normalizar(ultimaReferenciaArquitetura(mensagemCliente, historico) || mensagemCliente);
   // Uma negativa explicita do cliente prevalece sobre o publico do anuncio.
-  if (/\bnao sou arquitet[oa]\b|\bnao (?:e|trabalho) (?:com |de )?arquitetura\b/.test(texto)) return false;
+  if (/\bnao sou (?:um |uma )?arquitet[oa]\b|\bnao (?:e|trabalho|atuo) (?:com |de |em )?arquitetura\b/.test(texto)) return false;
   return /\barquitet(?:ura|o|a|os|as)\b/.test(texto + ' ' + normalizar(referral ? `${referral.title || ''} ${referral.body || ''}` : ''));
+}
+
+function pedeParaParar(texto) {
+  const t = normalizar(texto);
+  if (!t) return false;
+  if (/(par[ae]r?|pare) (de|com) (mandar|enviar|responder|falar|me mandar|me enviar)/.test(t)) return true;
+  if (/(me deixa em paz|nao me mande? mais|nao quero mais (falar|receber|nada)|descadastr|sai do meu|me tira d)/.test(t)) return true;
+  return t.length <= 32 && /^(pare|para|parar|chega|stop|silencio|quieto)[\s!.,]*(ai|com isso|por favor|pfv|pf)?[\s!.,]*$/.test(t);
+}
+
+function cheiroDePosVenda(texto) {
+  const t = normalizar(texto);
+  return /(voces (fizeram|criaram|montaram|entregaram|desenvolveram)|(site|landing|pagina) que voces|ja sou cliente|ja fechei com voces|ja contratei|comprei com voces|fiz o pagamento com voces)/.test(t)
+    || /(nao esta (abrindo|funcionando|no ar|carregando)|nao abre|saiu do ar|fora do ar|caiu o site|deu erro|esta bugad)/.test(t)
+    || /\b(suporte|manutencao)\b/.test(t);
+}
+
+function exemploArquiteturaJaEnviado(historico = []) {
+  return historico.some(m => m && (m.exemploArquiteturaEnviado === true
+    || (m.role === 'assistant' && String(m.content || '').match(LINKS_ARQUITETURA))));
+}
+
+// A mensagem assistant so entra no historico depois do aceite do provedor.
+// Transfere a memoria para o JSON retido, sem contar respostas pendentes.
+function reterHistoricoComercial(mensagens, limite) {
+  const retidas = mensagens.slice(-limite);
+  if (retidas.length && exemploArquiteturaJaEnviado(mensagens)) {
+    retidas[retidas.length - 1] = { ...retidas.at(-1), exemploArquiteturaEnviado: true };
+  }
+  return retidas;
+}
+
+function complementarExemploArquitetura(texto, { mensagemCliente = '', historico = [], referral, handoff = false } = {}) {
+  const jaEnviado = exemploArquiteturaJaEnviado(historico);
+  const pedido = normalizar(mensagemCliente);
+  const pedeExemplo = /\b(?:manda|mande|mandar|envia|envie|enviar|mostra|mostre|mostrar|ver|tem|teria|possui)\b[^.!?]{0,60}\b(?:link|exemplo|modelo|portfolio)\b/.test(pedido)
+    || /\b(?:link|exemplo|modelo|portfolio)\b[^.!?]{0,30}\b(?:de novo|novamente|outra vez)\b/.test(pedido)
+    || /\b(?:reenvia|reenvie|reenviar)\b/.test(pedido);
+  // A ultima declaracao ou correcao de nicho prevalece sobre dados do anuncio.
+  const ultimoNicho = ultimaReferenciaArquitetura(mensagemCliente, historico);
+  const contextoArquitetura = contextoDeArquitetura(mensagemCliente, referral, historico)
+    || (!ultimoNicho && pedeExemplo && jaEnviado);
+  const permitido = !handoff && (!jaEnviado || pedeExemplo) && contextoArquitetura
+    && !classificarDesinteresse(mensagemCliente).encerrar && !pedeParaParar(mensagemCliente)
+    && !pedeAtendimentoHumano(mensagemCliente) && !cheiroDePosVenda(mensagemCliente)
+    && !/\bnao (?:quero|preciso)(?: ver| receber)? (?:um |de )?(?:exemplo|modelo|portfolio)\b/.test(normalizar(mensagemCliente));
+  let incluido = false;
+  const removido = '__EXEMPLO_ARQUITETURA_REMOVIDO__';
+  // Converte somente links deste exemplo para nao deixar Markdown incompleto.
+  const semMarkdown = String(texto || '').replace(/\[[^\]\n]*\]\((https?:\/\/[^\s)]+)\)/gi,
+    (link, url) => url.match(LINKS_ARQUITETURA) ? url : link);
+  // A IA pode repetir um link do contexto: a decisao final tambem e de codigo.
+  let resposta = semMarkdown.replace(LINKS_ARQUITETURA, () => {
+    if (!permitido) return removido;
+    if (incluido) return 'o mesmo exemplo';
+    incluido = true;
+    return EXEMPLO_ARQUITETURA;
+  }).trim();
+  if (!permitido) {
+    // Remove a chamada do exemplo, preservando as outras frases da resposta.
+    resposta = resposta.replace(/(?:^|[\n.!?]\s*|[,;]\s*(?:e\s+)?)(?:veja|acesse|confira|olhe|aqui (?:est[aá]|vai)|segue|(?:outro |este |esse |o )?(?:link|exemplo|modelo|portf[oó]lio)\s*:)[^\n.!?]*__EXEMPLO_ARQUITETURA_REMOVIDO__[.!?]?/gi,
+      (trecho) => /^[.!?]/.test(trecho) ? trecho[0] : '')
+      .replaceAll(removido, '').replace(/[ \t]+([,.!?])/g, '$1').replace(/\n{3,}/g, '\n\n').trim();
+    return resposta || (jaEnviado && !handoff ? 'O exemplo de arquitetura está na mensagem que enviei acima.' : 'Entendi sua mensagem.');
+  }
+  if (incluido) {
+    return /\bdemonstrativ[oa]\b/.test(normalizar(resposta)) && /\bfictici[oa]\b/.test(normalizar(resposta))
+      ? resposta : resposta + '\nSERRA Arquitetura é um projeto demonstrativo de escritório fictício.';
+  }
+  return resposta + '\nVeja o exemplo SERRA Arquitetura, um projeto demonstrativo de escritório fictício: ' + EXEMPLO_ARQUITETURA;
 }
 
 function ehEntradaGenerica(texto) {
@@ -59,12 +136,12 @@ function ehEntradaGenerica(texto) {
 function ofertaInicial(contextoArquitetura) {
   const produto = contextoArquitetura ? 'uma página para apresentar projetos de arquitetura e facilitar pedidos de orçamento pelo WhatsApp' : 'uma página profissional para apresentar seu negócio e facilitar o contato pelo WhatsApp';
   const exemplo = contextoArquitetura ? EXEMPLO_ARQUITETURA : PORTFOLIO;
-  return `Olá! Aqui é a Lia da LandingNow. Criamos ${produto}.\nO PRO custa R$ 497: 50% na entrada e 50% após aprovação, no Pix. Entrega em até 48 horas após a entrada e o envio completo dos materiais.\nVeja um exemplo${contextoArquitetura ? '' : ' no portfólio'}: ${exemplo}\nÉ esse tipo de página que você procura?`;
+  return `Olá! Aqui é a Lia da LandingNow. Criamos ${produto}.\nO PRO custa R$ 497: 50% na entrada e 50% após aprovação, no Pix. Entrega em até 48 horas após a entrada e o envio completo dos materiais.\nVeja ${contextoArquitetura ? 'SERRA Arquitetura, um projeto demonstrativo de escritório fictício' : 'um exemplo no portfólio'}: ${exemplo}\nÉ esse tipo de página que você procura?`;
 }
 
 function respostaInicialComercial({ mensagemCliente, historico = [], referral } = {}) {
   if (historico.some(m => m && m.role === 'assistant') || !ehEntradaGenerica(mensagemCliente)) return null;
-  return ofertaInicial(contextoDeArquitetura(mensagemCliente, referral));
+  return ofertaInicial(contextoDeArquitetura(mensagemCliente, referral, historico));
 }
 
 function pedeAtendimentoHumano(texto) {
@@ -93,4 +170,4 @@ function respostaPublicaSegura(texto, { mensagemCliente = '', contextoArquitetur
   return { texto: fallback, bloqueada: true, motivo };
 }
 
-module.exports = { ACOLHIDA_HUMANO, EXEMPLO_ARQUITETURA, classificarDesinteresse, primeiroNomeConfiavel, extrairReferenciaAnuncio, contextoDeArquitetura, respostaInicialComercial, respostaPublicaSegura, pedeAtendimentoHumano };
+module.exports = { ACOLHIDA_HUMANO, EXEMPLO_ARQUITETURA, classificarDesinteresse, primeiroNomeConfiavel, extrairReferenciaAnuncio, contextoDeArquitetura, respostaInicialComercial, respostaPublicaSegura, pedeAtendimentoHumano, pedeParaParar, cheiroDePosVenda, exemploArquiteturaJaEnviado, reterHistoricoComercial, complementarExemploArquitetura };
