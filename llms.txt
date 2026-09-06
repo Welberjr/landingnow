@@ -1,21 +1,24 @@
 # landingnow
 
-> Serviço de criação de landing pages profissionais para pequenos negócios brasileiros, tocado por dois sócios (Welber Júnior, em Brasília, DF, e Caio Gomes). Os planos Start e Pro ficam prontos em média em 24 horas, e cada plano tem um prazo máximo garantido, de 72 horas a 10 dias úteis. Todo o atendimento acontece pelo WhatsApp, sem agência e sem intermediários.
+> Serviço de criação de landing pages profissionais para pequenos negócios brasileiros, tocado por dois sócios (Welber Júnior, em Brasília, DF, e Caio Gomes). O Pro custa R$ 497 e fica pronto em até 48 horas após a entrada e o recebimento de todos os materiais. Os demais prazos seguem o plano escolhido. Todo o atendimento acontece pelo WhatsApp, sem agência e sem intermediários.
 
 ## O que a landingnow faz
 
-- Cria landing pages sob medida (design, texto, SEO, domínio e hospedagem configurados) com um único objetivo: transformar visitantes em conversas no WhatsApp do cliente.
+- Cria landing pages sob medida, com design, SEO e configuração técnica conforme o plano, para transformar visitantes em conversas no WhatsApp do cliente. No Start o cliente envia os textos; do Pro em diante a equipe reescreve a copy.
 - Público: pequenos negócios e profissionais autônomos do Brasil (saúde, arquitetura, gastronomia, educação, serviços locais e outros).
 - Mais de 120 páginas entregues e nota 5,0 no Google.
 
 ## Planos e preços (valores reais)
 
 - Start: R$ 297, landing de até 3 seções, média de 24h e prazo máximo de 72h.
-- Pro: R$ 497, até 5 seções com copy persuasiva, média de 24h e prazo máximo de 5 dias úteis.
+- Pro: R$ 497, até 5 seções com copy persuasiva e 3 rodadas de revisão, em até 48 horas após a entrada e o recebimento de todos os materiais.
 - Premium: R$ 997, até 7 seções com animações, hospedagem e domínio grátis no primeiro ano, em até 7 dias úteis.
 - Premium IA: R$ 1.497, tudo do Premium mais chatbot de IA com captura de leads, em até 10 dias úteis.
-- Pagamento: Pix de 50% no início e 50% na entrega, ou cartão em até 12x. Garantia de devolução total se o combinado não for atendido.
+- Os prazos começam após a entrada e o briefing completo. No Pro, o prazo de até 48 horas começa após a entrada e o recebimento de todos os materiais.
+- Domínio e hospedagem no Start e no Pro são à parte: domínio em torno de R$ 50/ano; hospedagem opcional com a equipe por R$ 10/mês ou R$ 100/ano. Premium e Premium IA incluem o primeiro ano.
+- Pagamento: Pix de 50% no início e 50% na entrega após aprovação, ou cartão em até 12x. Se o cliente não aprovar o resultado após as revisões inclusas no plano, há devolução de 100% do valor pago, mediante devolução dos arquivos e não publicação da página, conforme o contrato.
 - Ajustes após a entrega: R$ 49 por troca de texto e R$ 97 por ajuste de seção.
+- Sistemas, login, dashboard, SaaS e automações exigem orçamento conforme o escopo, fora dos planos de landing page.
 
 ## Páginas importantes
 

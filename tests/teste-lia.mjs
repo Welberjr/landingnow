@@ -15,6 +15,7 @@ const leads = new Map();       // phone -> linha
 const enviadas = [];           // {phone, message}
 let idSeq = 0;
 let respostaIA = 'Resposta automatica da Lia.';
+let duranteIA = null;
 
 function respJson(obj, status = 200) {
   return { ok: status < 300, status, json: async () => obj, text: async () => JSON.stringify(obj) };
@@ -75,7 +76,8 @@ global.fetch = async (url, opts = {}) => {
         linhas = linhas.filter((l) => casa(l, campo, expr));
       }
       const limite = Number(qs.get('limit') || 0);
-      return respJson(limite ? linhas.slice(0, limite) : linhas);
+      const offset = Number(qs.get('offset') || 0);
+      return respJson(limite ? linhas.slice(offset, offset + limite) : linhas.slice(offset));
     }
     return respJson([]);
   }
@@ -87,6 +89,7 @@ global.fetch = async (url, opts = {}) => {
   }
 
   if (url.includes('api.anthropic.com')) {
+    if (duranteIA) { const executar = duranteIA; duranteIA = null; await executar(); }
     return respJson({ content: [{ type: 'text', text: respostaIA }] });
   }
 
@@ -130,7 +133,7 @@ function checar(nome, condicao, detalhe) {
   console.log((condicao ? '  OK   ' : '  FALHOU ') + nome + (condicao ? '' : '  -> ' + detalhe));
   if (!condicao) falhas++;
 }
-function limpar() { conversas.clear(); leads.clear(); enviadas.length = 0; respostaIA = 'Resposta automatica da Lia.'; }
+function limpar() { conversas.clear(); leads.clear(); enviadas.length = 0; respostaIA = 'Resposta automatica da Lia.'; duranteIA = null; }
 
 // ===========================================================================
 console.log('\n[1] LID: socio assume na mao e a pausa tem que valer pro cliente');
@@ -265,7 +268,7 @@ checar('sem segredo, 401', pegaNu().status === 401, JSON.stringify(pegaNu()));
 // em "novo" tambem engana o kanban e a leitura do funil.
 console.log('\n[9] Plano ofertado nao pode conviver com estagio "novo"');
 limpar();
-respostaIA = 'O PRO sai por R$ 497 e fica pronto em 5 dias.\n[[CRM: nome=Sergio; plano=PRO; valor=497]]';
+respostaIA = 'O PRO sai por R$ 497 e fica pronto em ate 48 horas apos entrada e materiais.\n[[CRM: nome=Sergio; plano=PRO; valor=497]]';
 await evento({ messageId: 'P1', phone: TEL_CLIENTE, connectedPhone: CONECTADO, fromMe: false,
   senderName: 'Sergio', text: { message: 'Quanto custa?' } });
 checar('ofertou o plano e a ficha saiu de "novo"', leads.get(TEL_CLIENTE)?.estagio === 'proposta',
@@ -291,6 +294,64 @@ await evento({ messageId: 'P3', phone: '5511963411212', connectedPhone: CONECTAD
   senderName: 'Sergio', text: { message: 'Achei caro ainda' } });
 checar('nao rebaixou quem ja estava negociando', leads.get('551163411212')?.estagio === 'negociando',
   JSON.stringify(leads.get('551163411212')));
+
+// ===========================================================================
+console.log('\n[10] Retomada nao insiste em mensagem pronta, recusa ou retorno combinado');
+function prepararRetomada(mensagem) {
+  limpar();
+  leads.set('551163411212', { phone: '551163411212', chave_conversa: '5511963411212', nome: 'Luiz',
+    estagio: 'proposta', eh_cliente: false, ultima_mensagem_em: TRES_DIAS, followup_enviado_em: null });
+  conversas.set('5511963411212', { phone: '5511963411212', nome_cliente: 'Luiz', mensagens: [
+    { role: 'user', content: mensagem }, { role: 'assistant', content: 'O PRO custa R$ 497.' },
+  ] });
+}
+for (const mensagem of ['Olá! Posso ter mais informações sobre isso?', 'Quero ver um exemplo do site para arquitetos de R$ 497. O que está incluído?', 'Adicionei sem querer, não quero informação não', 'Vou pensar e depois eu te chamo']) {
+  prepararRetomada(mensagem);
+  const r = await rodarFollowup({ forcar: '1' });
+  checar('sem retomada: ' + mensagem, r.body.enviados === 0 && enviadas.length === 0, JSON.stringify(r));
+}
+
+console.log('\n[11] Planejamento interno da IA nao pode sair no follow-up');
+prepararRetomada('Tenho um escritório e queria saber o preço do site');
+respostaIA = 'Luiz nunca respondeu após o primeiro oi inicial. Vou tratar como o caso especial: não há assunto real pra retomar.\n---\nLuiz, quer ver o portfólio?';
+const vazamento = await rodarFollowup({ forcar: '1' });
+checar('bloqueou o texto interno sem enviar nem marcar envio', vazamento.body.enviados === 0 && enviadas.length === 0 &&
+  !leads.get('551163411212')?.followup_enviado_em, JSON.stringify(vazamento));
+
+console.log('\n[12] Pausa humana durante geracao cancela a retomada');
+prepararRetomada('Quanto custa o site para meu escritório?');
+respostaIA = 'O PRO custa R$ 497 e inclui até cinco seções. O site seria para seu escritório?';
+duranteIA = async () => { conversas.set('ctrl:551163411212', { phone: 'ctrl:551163411212', nome_cliente: 'paused' }); };
+const corridaPausa = await rodarFollowup({ forcar: '1' });
+checar('pausa mais recente venceu a resposta em andamento', corridaPausa.body.enviados === 0 && enviadas.length === 0,
+  JSON.stringify(corridaPausa));
+
+console.log('\n[13] Resposta nova do cliente durante geracao cancela a retomada antiga');
+prepararRetomada('Quanto custa o site para meu escritório?');
+respostaIA = 'O PRO custa R$ 497. Você já tem um site?';
+duranteIA = async () => {
+  const antiga = conversas.get('5511963411212');
+  conversas.set('5511963411212', { ...antiga, mensagens: [...antiga.mensagens, { role: 'user', content: 'Já conversei com o Welber, obrigada' }] });
+};
+const corridaMensagem = await rodarFollowup({ forcar: '1' });
+checar('nao enviou retomada desatualizada', corridaMensagem.body.enviados === 0 && enviadas.length === 0,
+  JSON.stringify(corridaMensagem));
+
+console.log('\n[14] Candidatos sem interesse nao bloqueiam os elegiveis das paginas seguintes');
+prepararRetomada('Tenho um escritório, quanto custa uma página?');
+const leadElegivel = leads.get('551163411212');
+leads.clear();
+for (let i = 0; i < 100; i++) {
+  const phone = '550000' + String(i).padStart(6, '0');
+  leads.set(phone, { phone, chave_conversa: phone, estagio: 'novo', eh_cliente: false,
+    ultima_mensagem_em: TRES_DIAS, followup_enviado_em: null });
+  conversas.set(phone, { phone, mensagens: [{ role: 'user', content: 'Olá! Posso ter mais informações sobre isso?' }] });
+}
+leads.set('551163411212', leadElegivel);
+respostaIA = 'O PRO custa R$ 497. Seu escritório já tem um site?';
+const paginada = await rodarFollowup({ forcar: '1' });
+checar('chegou ao lead elegivel depois dos 100 candidatos anteriores', paginada.body.enviados === 1 &&
+  enviadas.some((e) => e.phone === '5511963411212'), JSON.stringify(paginada));
 
 console.log(falhas === 0 ? '\nTUDO PASSOU' : '\n' + falhas + ' TESTE(S) FALHARAM');
 process.exit(falhas === 0 ? 0 : 1);
