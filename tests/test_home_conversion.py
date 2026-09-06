@@ -84,17 +84,20 @@ class HomeConversionContractTests(unittest.TestCase):
             re.compile(r"@media \(max-width:680px\)\{.*?\.plan-guide\{display:grid", re.DOTALL),
         )
 
-    def test_general_delivery_copy_uses_the_24_hour_average(self):
-        self.assertIn("Start e Pro com entrega média em 24 horas.", self.html)
+    def test_general_delivery_copy_uses_the_authorized_pro_deadline(self):
+        self.assertIn("Pro por R$ 497, em até 48 horas após a entrada e o recebimento de todos os materiais.", self.html)
         self.assertNotIn("a partir de 72h", self.html)
         self.assertIn("Entrega em até 72h após pagamento e briefing", self.html)
-        self.assertIn("no ar em até 5 dias úteis", self.html)
+        self.assertIn("no ar em até 48 horas após a entrada e o recebimento de todos os materiais", self.html)
+        self.assertNotIn("5 dias úteis", self.html)
 
-    def test_delivery_average_explains_that_each_plan_has_its_own_deadline(self):
+    def test_delivery_copy_keeps_the_start_condition_and_other_plan_deadlines(self):
         self.assertGreaterEqual(
-            self.html.count("Start e Pro: média de 24h; prazo máximo conforme o plano."),
+            self.html.count("48 horas após a entrada e o recebimento de todos os materiais"),
             2,
         )
+        self.assertIn("no ar em até 7 dias úteis", self.html)
+        self.assertIn("no ar em até 10 dias úteis", self.html)
         self.assertNotIn("<span>Brasília, DF</span>", self.html)
 
     def test_mobile_hero_keeps_compact_facts_on_one_line(self):

@@ -248,7 +248,7 @@
     <div class="wrap hero">
       <span class="eyebrow"><span class="pulse"></span>Vamos começar</span>
       <h1>Escolha seu plano e crie <span class="serif">a sua página.</span></h1>
-      <p class="sub">Selecione o plano que combina com o seu momento. Em seguida você preenche um briefing rápido e a gente coloca tudo no ar.</p>
+      <p class="sub">Selecione o plano que combina com o seu momento. O prazo começa após a entrada e o briefing completo. No Pro, são até 48 horas após a entrada e o recebimento de todos os materiais.</p>
     </div>
     <div class="wrap"><div class="planos" id="grid-planos"></div></div>
   </section>
@@ -361,7 +361,7 @@
           <div class="campo full grupo-cond" id="grupo-dominio">
             <label for="f-dominio">Domínio que você deseja <span class="req">*</span></label>
             <input type="text" id="f-dominio" placeholder="Ex: seunegocio.com.br" disabled>
-            <span class="hint">Se ainda não tem, sugira o nome desejado. O registro fica por sua conta no Registro.br, cerca de R$ 50 por ano.</span>
+            <span class="hint" id="dominio-hint">Se ainda não tem, sugira o nome desejado. No Start e no Pro, o registro fica por sua conta, cerca de R$ 50 por ano. Premium e Premium IA incluem o primeiro ano.</span>
           </div>
           <div class="campo full grupo-cond" id="grupo-referencias">
             <label for="f-ref">Sites ou marcas que você admira</label>
@@ -502,10 +502,10 @@ const LOGO_SRC = "/assets/marca.png";
 
 /* ====== PLANOS ====== */
 const PLANOS = {
-  start:{nome:'Start',preco:'R$ 297',prazo:'72 horas',tagline:'Pra começar com presença online.',
+  start:{nome:'Start',preco:'R$ 297',prazo:'72 horas',tagline:'Pra começar com presença online.',custos:'Você envia os textos. Domínio à parte (cerca de R$ 50/ano); hospedagem opcional por R$ 10/mês ou R$ 100/ano.',
     inclui:['Landing até 3 seções','Logo + 3 imagens enviadas por você','SEO otimizado, mínimo 80%','Botão direto pro WhatsApp','1 rodada de revisão inclusa'],
     maxFotos:3,dominio:false,referencias:false,chatbot:false,badge:''},
-  pro:{nome:'Pro',preco:'R$ 497',prazo:'5 dias úteis',tagline:'Pra vender de verdade.',
+  pro:{nome:'Pro',preco:'R$ 497',prazo:'48 horas',tagline:'Pra vender de verdade.',custos:'Domínio à parte (cerca de R$ 50/ano); hospedagem opcional por R$ 10/mês ou R$ 100/ano.',
     inclui:['Landing completa (até 5 seções)','Logo + 5 imagens enviadas por você','Copy persuasiva reescrita pela equipe','SEO otimizado, mínimo 90%','3 rodadas de revisão inclusas'],
     maxFotos:5,dominio:true,referencias:false,chatbot:false,badge:'Mais escolhido'},
   premium:{nome:'Premium',preco:'R$ 997',prazo:'7 dias úteis',tagline:'Pra crescer no próximo nível.',
@@ -525,7 +525,8 @@ function renderPlanos(){
     let tag=p.badge==='Mais escolhido'?'<span class="tag">Mais escolhido</span>':(p.badge==='Novo'?'<span class="tag novo">Novo</span>':'');
     const itens=p.inclui.map(it=>typeof it==='object'?'<li class="titulo">'+iconeCheck()+'<span>'+it.t+'</span></li>':'<li>'+iconeCheck()+'<span>'+it+'</span></li>').join('');
     const card=document.createElement('div');card.className='card'+(destaque?' destaque':'');
-    card.innerHTML=tag+'<div class="p-nome">Plano '+p.nome+'</div><div class="p-tagline">'+p.tagline+'</div><div class="p-preco">'+p.preco+'</div><div class="p-cond">Pix 50% + 50% ou 12x no cartão, em '+p.prazo.replace(' úteis','')+'</div><ul class="p-lista">'+itens+'</ul><button class="btn-plano" type="button">Selecionar '+p.nome+'</button>';
+    const condicaoPrazo=key==='pro'?' após a entrada e o recebimento de todos os materiais':' após entrada e briefing completo';
+    card.innerHTML=tag+'<div class="p-nome">Plano '+p.nome+'</div><div class="p-tagline">'+p.tagline+'</div><div class="p-preco">'+p.preco+'</div><div class="p-cond">Pix 50% + 50% ou 12x no cartão. Em até '+p.prazo+condicaoPrazo+'.</div><ul class="p-lista">'+itens+'</ul>'+(p.custos?'<p class="p-cond">'+p.custos+'</p>':'')+'<button class="btn-plano" type="button">Selecionar '+p.nome+'</button>';
     card.querySelector('.btn-plano').addEventListener('click',()=>selecionarPlano(key));
     grid.appendChild(card);
   });
@@ -539,9 +540,12 @@ function selecionarPlano(key){
   const _f=document.getElementById('form-brief');if(_f)_f.dataset.cienteOk='';
   document.getElementById('chip-nome').textContent=p.nome;
   document.getElementById('chip-preco').textContent=p.preco;
-  document.getElementById('chip-meta').textContent='Entrega em '+p.prazo;
+  document.getElementById('chip-meta').textContent='Entrega em até '+p.prazo+(key==='pro'?' após a entrada e todos os materiais':' após entrada e briefing completo');
   document.getElementById('dz-fotos-titulo').textContent='Enviar até '+p.maxFotos+' fotos do seu negócio';
   setCond('grupo-dominio',p.dominio,'f-dominio',true);
+  document.getElementById('dominio-hint').textContent=(key==='premium'||key==='premiumia')
+    ?'Se ainda não tem, sugira o nome desejado. O primeiro ano de domínio e hospedagem está incluído neste plano.'
+    :'Se ainda não tem, sugira o nome desejado. O registro fica por sua conta, cerca de R$ 50 por ano. A hospedagem é à parte, opcional com a gente por R$ 10/mês ou R$ 100/ano.';
   setCond('grupo-referencias',p.referencias,'f-ref',false);
   setCond('grupo-perguntas',p.chatbot,'f-faq',true);
   setCond('grupo-horario',p.chatbot,'f-horario',false);
@@ -728,12 +732,12 @@ form.addEventListener('submit',async(e)=>{
 /* ====== ESCOPO: o que o cliente vai receber ====== */
 const NAO_INCLUI={
   start:['Textos/copy reescritos pela equipe (no Start você envia os textos)','Hospedagem e domínio (por sua conta, ~R$ 50/ano no Registro.br; hospedagem opcional comigo por R$ 10/mês ou R$ 100/ano)','Vídeos e mais de 3 imagens','Atendente de IA (chatbot)','Mais de 3 seções','Revisões além de 1 rodada'],
-  pro:['Hospedagem e domínio grátis (registro por sua conta; grátis só no Premium e Premium IA)','Vídeos','Atendente de IA (chatbot)','Mais de 5 seções ou mais de 5 imagens','Revisões além de 3 rodadas'],
+  pro:['Hospedagem e domínio grátis (domínio por sua conta, cerca de R$ 50/ano; hospedagem opcional por R$ 10/mês ou R$ 100/ano)','Vídeos','Atendente de IA (chatbot)','Mais de 5 seções ou mais de 5 imagens','Revisões além de 3 rodadas'],
   premium:['Atendente de IA e captura automática de leads (recursos do Premium IA)','E-mail profissional próprio (recurso do Premium IA)','Revisões além de 5 rodadas'],
   premiumia:['Manutenção depois do 1º ano grátis (opcional: R$ 197/mês, sem fidelidade)']
 };
 const FORA_ESCOPO=['Gestão de tráfego e anúncios pagos','Produção de fotos ou vídeos profissionais (você envia o material)','Loja virtual / e-commerce com carrinho e checkout','Sistema de login ou área de membros','Criação de identidade visual (logo) do zero','Produção de conteúdo contínua (blog, posts de redes)'];
-const TERMOS=['Pagamento: 50% pra iniciar a produção + 50% na entrega, via Pix, ou em até 12x no cartão.','Garantia: se mesmo após as revisões inclusas você não aprovar o resultado, devolvo 100% do valor.','O prazo de entrega começa a contar após o pagamento da entrada e o envio do briefing completo.','As revisões valem dentro do prazo de produção do plano. Pedidos fora do que foi combinado são orçados à parte.','Após a entrega final (encerradas as revisões), alterações são cobradas à parte: R$ 49 por troca de palavra ou texto e R$ 97 por ajuste em uma seção. Ou manutenção mensal opcional de R$ 197 com ajustes ilimitados.'];
+const TERMOS=['Pagamento: 50% pra iniciar a produção + 50% na entrega, via Pix, ou em até 12x no cartão.','Garantia: se não aprovar o resultado após as revisões inclusas no plano, devolvemos 100% do valor pago, mediante devolução dos arquivos e não publicação da página, conforme o contrato.','O prazo de entrega começa após a entrada e o briefing completo. No Pro, são até 48 horas após a entrada e o recebimento de todos os materiais.','As revisões valem dentro do prazo de produção do plano. Pedidos fora do que foi combinado são orçados à parte.','Após a entrega final (encerradas as revisões), alterações são cobradas à parte: R$ 49 por troca de palavra ou texto e R$ 97 por ajuste em uma seção. Ou manutenção mensal opcional de R$ 197 com ajustes ilimitados.'];
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function listaIncluso(){return PLANOS[planoAtual].inclui.map(it=>typeof it==='object'?it.t:it);}
 function listaNaoIncluso(){return (NAO_INCLUI[planoAtual]||[]).concat(FORA_ESCOPO);}
