@@ -4,9 +4,6 @@
     "api/zapi-webhook.js": { "maxDuration": 30 },
     "api/lia-followup.js": { "maxDuration": 60 }
   },
-  "crons": [
-    { "path": "/api/lia-followup", "schedule": "0 13 * * *" }
-  ],
   "headers": [
     {
       "source": "/fonts/(.*)",
